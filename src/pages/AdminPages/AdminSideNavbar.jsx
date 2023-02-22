@@ -1,6 +1,6 @@
 import React from 'react'
 
-function AdminSideHomePage() {
+function AdminSideNavbar() {
   return (
     <div>
       
@@ -8,4 +8,4 @@ function AdminSideHomePage() {
   )
 }
 
-export default AdminSideHomePage
+export default AdminSideNavbar
