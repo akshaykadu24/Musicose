@@ -1,0 +1,21 @@
+
+for sighup and login
+
+for register           = http://localhost:8080/user/register
+for login              = http://localhost:8080/user/login
+
+
+for admin 
+
+get all products      =  http://localhost:8080/adminProducts
+create data in admin  =  http://localhost:8080/adminProducts/create
+for update            =  http://localhost:8080/adminProducts/update/id
+for delete            =  http://localhost:8080/adminProducts/delete/id
+
+for FrontEnd
+
+get all products      = http://localhost:8080/products
+add data in cart      =  http://localhost:8080/cart/create
+for update            =  http://localhost:8080/cart/update/id
+for delete            =  http://localhost:8080/cart/delete/id
+
