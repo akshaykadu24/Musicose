@@ -23,7 +23,7 @@ export const postLoginFailure = () => {
 export const login = (payload) => (dispatch) => {
     dispatch(postLoginRequest())
 
-     axios.post(`https://rich-red-indri-tie.cyclic.app/users/login`,payload)
+     axios.post(`/users/login`,payload)
         .then((res) => {
             localStorage.setItem("token",res.data.token)
             localStorage.setItem("adminkey",res.data.adminID)
@@ -39,7 +39,7 @@ export const login = (payload) => (dispatch) => {
 export const signup = (payload) => (dispatch) => {
     dispatch(postLoginRequest())
 
-     axios.post(`https://rich-red-indri-tie.cyclic.app/users/user/signup`,payload)
+     axios.post(`/users/user/signup`,payload)
         .then((res) => {
             // localStorage.setItem("token",res.data.token)
     console.log(res.data)
