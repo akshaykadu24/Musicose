@@ -5,8 +5,13 @@ import AdminSideAddProducts from './pages/AdminPages/AdminSideAddProducts';
 import EarbudProducts from './pages/earbuds/Earbuds';
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
+import { Button } from '@chakra-ui/react';
+import { useDispatch } from 'react-redux';
+import { logoutAction } from './redux/authReducer/auth.action';
 
 function App() {
+
+  const dispatch = useDispatch()
   return (
     <div className="App">
       
@@ -16,7 +21,7 @@ function App() {
 
         <Link to={"/earbuds"}>Earbuds</Link> &nbsp;
         <Link to={"/adminAddProduct"}>AdminAddProduct</Link> &nbsp;
-
+        <Button onClick={()=>{dispatch(logoutAction)}}>Logout</Button>
 
       </div>
     <Routes>
@@ -25,7 +30,6 @@ function App() {
 
       <Route path={"/earbuds"} element={<EarbudProducts/>}></Route>
       <Route path={"/adminAddProduct"} element={<AdminSideAddProducts/>}></Route>
-
 
 
     </Routes>
