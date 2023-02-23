@@ -1,12 +1,21 @@
 import React, { useState } from 'react'
 
+
+import {useDispatch,useSelector} from "react-redux"
+import { addProduct } from '../../redux/adminReducer/action'
+
 function AdminSideAddProducts() {
 
-  const [formData, setFormData] = useState({})
+  const [val, setVal] = useState({})
 
-  let handleChange = ()=>{
+  const dispatch = useDispatch((store)=>console.log(store))
 
+  let handleChange = (e)=>{
+    const {name,value} = e.target
+
+    setVal({...val,[name]:value})
   }
+
 
 
   return (
@@ -22,7 +31,7 @@ function AdminSideAddProducts() {
         <input type="text" onChange={(e)=>{handleChange(e)}} name="feature" id="" placeholder="Feature 1" required/> <br />
         <input type="text" onChange={(e)=>{handleChange(e)}} name="feature2" id="" placeholder="Feature 2" /> <br />
         <input type="text" onChange={(e)=>{handleChange(e)}} name="feature3" id="" placeholder="Feature 3" /> <br />
-        <button>ADD</button>
+        <button onClick={()=>dispatch(addProduct(val))}>ADD</button>
 
       </div>
     </div>
