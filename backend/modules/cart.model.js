@@ -10,7 +10,8 @@ const cartSchema = mongoose.Schema({
         price2: {type:String},
         feature: {type:String},
         feature2: {type:String},
-        feature3: {type:String}
+        feature3: {type:String},
+        quantity:{type:Number}
 })
 
 
