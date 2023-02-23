@@ -15,6 +15,11 @@ function AdminSideAddProducts() {
 
     setVal({...val,[name]:value})
   }
+  console.log(val)
+  
+  const handleSubmit =()=>{
+    dispatch(addProduct(val))
+  }
 
 
 
@@ -31,7 +36,7 @@ function AdminSideAddProducts() {
         <input type="text" onChange={(e)=>{handleChange(e)}} name="feature" id="" placeholder="Feature 1" required/> <br />
         <input type="text" onChange={(e)=>{handleChange(e)}} name="feature2" id="" placeholder="Feature 2" /> <br />
         <input type="text" onChange={(e)=>{handleChange(e)}} name="feature3" id="" placeholder="Feature 3" /> <br />
-        <button onClick={()=>dispatch(addProduct(val))}>ADD</button>
+        <button onClick={handleSubmit}>ADD</button>
 
       </div>
     </div>

@@ -4,11 +4,11 @@ const jwt = require("jsonwebtoken");
 const auth = (req,res,next)=>{
     
     let token = req.headers.authorization
-    console.log(token,"lll")
+    console.log(token,"auth")
     if(token){
         
             jwt.verify(token,"shhhh",(err,decoded)=>{
-                console.log(decoded)
+                console.log(decoded,"decoded")
                 if(err){
                     res.send({msg:"invalid token"})
                 }else{

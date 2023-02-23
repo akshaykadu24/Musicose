@@ -19,6 +19,7 @@ adminProductRoutes.post("/create",async(req,res)=>{
     try {
         let newProduct = new AdminProductModel(data)
         await newProduct.save()
+    
         res.send({msg:"product added successfully"})
     } catch (err) {
         res.send({msg:"err while adding product in admin",error:err})

@@ -5,7 +5,9 @@ import { reducer as adminReducer } from "./adminReducer/reducer";
 import { reducer as authReducer } from "./authReducer/reducer";
 
 const rootReducer = combineReducers({
-    productManager:productReducer,adminReducer,authReducer
+    productManager:productReducer,
+    adminManager:adminReducer,
+    authManager:authReducer
 })
 
 const composer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__||compose;

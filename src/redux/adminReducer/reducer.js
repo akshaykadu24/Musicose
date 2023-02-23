@@ -1,4 +1,4 @@
-import * as types from "./actionTypes";
+import { ADD_PRODUCT_SUCCESS, GET_PRODUCTS_FAILURE, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS, GET_PRODUCT_BY_ID_FAILURE, GET_PRODUCT_BY_ID_REQUEST, GET_PRODUCT_BY_ID_SUCCESS, GET_USERS_FAILURE, GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USER_PROFILE_FAILURE, GET_USER_PROFILE_REQUEST, GET_USER_PROFILE_SUCCESS } from "./actionTypes";
 
 const initialState = {
   products: [],
@@ -9,28 +9,28 @@ const initialState = {
   isError: false,
 };
 
-const reducer = (state = initialState, {type,action}) => {
+const reducer = (state = initialState, {type,payload}) => {
   switch (type) {
-    case types.GET_PRODUCTS_REQUEST:
+    case GET_PRODUCTS_REQUEST:
       return {
         ...state,
         isLoading: true,
         isError: false,
       };
-    case types.GET_PRODUCTS_SUCCESS:
+    case GET_PRODUCTS_SUCCESS:
       return {
         ...state,
         products: payload,
         isLoading: false,
         isError: false,
       };
-    case types.GET_PRODUCTS_FAILURE:
+    case GET_PRODUCTS_FAILURE:
       return {
         ...state,
         isLoading: false,
         isError: true,
       };
-    case GET_PRODUCTS_SUCCESS:{
+    case ADD_PRODUCT_SUCCESS:{
       return{
         ...state,
         isLoading:false,
@@ -38,48 +38,48 @@ const reducer = (state = initialState, {type,action}) => {
       }
     }
 
-    case types.GET_USERS_REQUEST:
+    case GET_USERS_REQUEST:
       return {
         ...state,
         isLoading: true,
         isError: false,
       };
-    case types.GET_USERS_SUCCESS:
+    case GET_USERS_SUCCESS:
       return {
         ...state,
         users: payload,
         isLoading: false,
         isError: false,
       };
-    case types.GET_USERS_FAILURE:
+    case GET_USERS_FAILURE:
       return {
         ...state,
         isLoading: false,
         isError: true,
       };
-    case types.GET_PRODUCT_BY_ID_REQUEST:
+    case GET_PRODUCT_BY_ID_REQUEST:
       return {
         ...state,
       };
-    case types.GET_PRODUCT_BY_ID_SUCCESS:
+    case GET_PRODUCT_BY_ID_SUCCESS:
       return {
         ...state,
         productItem: payload,
       };
-    case types.GET_PRODUCT_BY_ID_FAILURE:
+    case GET_PRODUCT_BY_ID_FAILURE:
       return {
         ...state,
       };
-    case types.GET_USER_PROFILE_REQUEST:
+    case GET_USER_PROFILE_REQUEST:
       return {
         ...state,
       };
-    case types.GET_USER_PROFILE_SUCCESS:
+    case GET_USER_PROFILE_SUCCESS:
       return {
         ...state,
         userprofile: payload,
       };
-    case types.GET_USER_PROFILE_FAILURE:
+    case GET_USER_PROFILE_FAILURE:
       return {
         ...state,
       };
