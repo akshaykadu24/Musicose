@@ -3,7 +3,8 @@ import { Link, Route, Routes } from 'react-router-dom';
 import './App.css';
 import AdminSideAddProducts from './pages/AdminPages/AdminSideAddProducts';
 import EarbudProducts from './pages/earbuds/Earbuds';
-import Login from './pages/login/Login';
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/Signup';
 
 function App() {
   return (
@@ -11,6 +12,8 @@ function App() {
       
       <div>
         <Link to={"/login"}>Login </Link> &nbsp;
+        <Link to={"/signup"}>SignUp </Link> &nbsp;
+
         <Link to={"/earbuds"}>Earbuds</Link> &nbsp;
         <Link to={"/adminAddProduct"}>AdminAddProduct</Link> &nbsp;
 
@@ -18,6 +21,8 @@ function App() {
       </div>
     <Routes>
       <Route path={"/login"} element={<Login/>}></Route>
+      <Route path={"/signup"} element={<Signup/>}></Route>
+
       <Route path={"/earbuds"} element={<EarbudProducts/>}></Route>
       <Route path={"/adminAddProduct"} element={<AdminSideAddProducts/>}></Route>
 
