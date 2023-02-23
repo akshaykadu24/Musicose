@@ -1,4 +1,4 @@
-import { ADD_PRODUCT_SUCCESS, GET_PRODUCTS_FAILURE, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS, GET_PRODUCT_BY_ID_FAILURE, GET_PRODUCT_BY_ID_REQUEST, GET_PRODUCT_BY_ID_SUCCESS, GET_USERS_FAILURE, GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USER_PROFILE_FAILURE, GET_USER_PROFILE_REQUEST, GET_USER_PROFILE_SUCCESS } from "./actionTypes";
+import { ADD_PRODUCT_SUCCESS, GET_PRODUCTS_FAILURE, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS, GET_PRODUCT_BY_ID_FAILURE, GET_PRODUCT_BY_ID_REQUEST, GET_PRODUCT_BY_ID_SUCCESS, GET_USERS_FAILURE, GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USER_PROFILE_FAILURE, GET_USER_PROFILE_REQUEST, GET_USER_PROFILE_SUCCESS } from "./action.types";
 
 const initialState = {
   products: [],
@@ -9,7 +9,7 @@ const initialState = {
   isError: false,
 };
 
-const reducer = (state = initialState, {type,payload}) => {
+const adminReducer = (state = initialState, {type,payload}) => {
   switch (type) {
     case GET_PRODUCTS_REQUEST:
       return {
@@ -88,4 +88,4 @@ const reducer = (state = initialState, {type,payload}) => {
   }
 };
 
-export { reducer };
+export default adminReducer 
