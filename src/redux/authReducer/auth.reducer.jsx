@@ -1,5 +1,5 @@
+import { USER_LOGIN_FAILURE, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT } from "./auth.actionTypes"
 
-import * as types from './ActionTypes'
 
 const initialState = {
     isAuth: false,
@@ -9,29 +9,35 @@ const initialState = {
 }
 
 
-export const reducer = (state = initialState, action) => {
-    const { type, payload } = action;
+export const authReducer = (state = initialState, { type, payload }) => {
+    
 
     switch (type) {
-        case types.USER_LOGIN_REQUEST: {
+        case USER_LOGIN_REQUEST: {
             return {
-                ...state, isAuthLoading: true
+                ...state, 
+                isAuthLoading: true
             }
         }
-        case types.USER_LOGIN_SUCCESS: {
+        case USER_LOGIN_SUCCESS: {
             return {
-                ...state, isAuthLoading: false, isAuth:true, token: payload
+                ...state,
+                isAuthLoading: false, 
+                isAuth:true, 
+                token: payload
             }
         }
-        case types.USER_LOGIN_FAILURE: {
+        case USER_LOGIN_FAILURE: {
             return {
-                ...state, isAuthLoading: false, isAuthError: true
+                ...state, 
+                isAuthLoading: false, 
+                isAuthError: true
             }
         }
-        case types.USER_LOGOUT:{
+        case USER_LOGOUT:{
             return {
                     isAuth: false,
-                    token: payload,
+                    token: undefined,
                     isAuthLoading: false,
                     isAuthError: false
                 

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { USER_LOGIN_FAILURE, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_SIGNUP_FAILURE, USER_SIGNUP_REQUEST, USER_SIGNUP_SUCCESS } from './auth.actionTypes'
+import { USER_LOGIN_FAILURE, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_SIGNUP_FAILURE, USER_SIGNUP_REQUEST, USER_SIGNUP_SUCCESS } from './auth.actionTypes'
 
 
 
@@ -20,7 +20,7 @@ export const loginAction = (payload) => (dispatch) => {
             console.log(res)
             
             localStorage.setItem("token",JSON.stringify(res.data.token))
-            dispatch({type:USER_LOGIN_SUCCESS,payload:res})
+            dispatch({type:USER_LOGIN_SUCCESS,payload:res.data.token})
             
           }).catch(err=>{
             dispatch({type:USER_LOGIN_FAILURE})
@@ -48,8 +48,8 @@ export const signupAction = (payload) => (dispatch) => {
     })
    )
 }
-// export const logOutUser =(payload)=>{
-//     return {
-//         type:USER_LOGOUT,payload: payload
-//     }
-// }
+export const logoutAction = (dispatch)=>{
+    return (
+        dispatch({type:USER_LOGOUT})
+    )
+}
