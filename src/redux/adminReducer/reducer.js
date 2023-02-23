@@ -9,8 +9,7 @@ const initialState = {
   isError: false,
 };
 
-const reducer = (state = initialState, action) => {
-  const { type, payload } = action;
+const reducer = (state = initialState, {type,action}) => {
   switch (type) {
     case types.GET_PRODUCTS_REQUEST:
       return {
@@ -31,6 +30,14 @@ const reducer = (state = initialState, action) => {
         isLoading: false,
         isError: true,
       };
+    case GET_PRODUCTS_SUCCESS:{
+      return{
+        ...state,
+        isLoading:false,
+        products:payload
+      }
+    }
+
     case types.GET_USERS_REQUEST:
       return {
         ...state,

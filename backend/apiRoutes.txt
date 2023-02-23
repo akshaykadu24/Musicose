@@ -15,7 +15,7 @@ for delete            =  http://localhost:8080/adminProducts/delete/id
 for FrontEnd
 
 get all products      = http://localhost:8080/products
-add data in cart      =  http://localhost:8080/cart/create
+add data in cart      =  http://localhost:8080/cart/create/id
 for update            =  http://localhost:8080/cart/update/id
 for delete            =  http://localhost:8080/cart/delete/id
 

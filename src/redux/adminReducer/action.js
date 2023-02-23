@@ -41,8 +41,8 @@ const getProductById = (id) => (dispatch) => {
 
 const getProducts = () => (dispatch) => {
   dispatch({ type: types.GET_PRODUCTS_REQUEST });
-  return axios
-    .get(`/products`, {
+  return( 
+    axios.get(`/products`, {
       headers: {
         Authorization: localStorage.getItem("token"),
       },
@@ -53,7 +53,7 @@ const getProducts = () => (dispatch) => {
     .catch((e) => {
       dispatch({ type: types.GET_PRODUCTS_FAILURE, payload: e });
       console.log(e);
-    });
+    }));
 };
 
 
@@ -78,19 +78,26 @@ const getUsers = () => (dispatch) => {
 
 const addProduct = (product) => (dispatch) => {
   dispatch({ type: types.ADD_PRODUCT_REQUEST });
-  return axios
-    .post("/products/add", product, {
+  return( 
+    axios({
+      method:"POST",
+      url:"http://localhost:8080/products/create",
+      data:product,
+
       headers: {
-        Authorization: localStorage.getItem("token"),
+        "Content-Type":"application/json",
+        "Authorization": localStorage.getItem("token"),
+
       },
     })
-    .then((r) => {
-      dispatch({ type: types.ADD_PRODUCT_SUCCESS, payload: r.data });
+    .then((res) => {
+      console.log(res)
+      // dispatch({ type: ADD_PRODUCT_SUCCESS, payload: res.msg });
       console.log("inside action file:", r);
     })
     .catch((e) => {
       dispatch({ type: types.ADD_PRODUCT_FAILURE, payload: e });
-    });
+    }));
 };
 
 
