@@ -15,16 +15,30 @@ import {
     ModalFooter,
     ModalCloseButton
   } from "@chakra-ui/react";
+import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
   
 
 
   function Login() {
     const toast = useToast();
+    const [val,setVal] = useState({})
+    const dispatch = useDispatch()
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [on, setOn] = useState(true);
-    const handleSubmit = (e) => {
+
+    const handleChange = (e)=>{
+      const {name,value} = e.target
+
+      setVal({...val,[name]:value})
+    }
+    console.log(val)
+    const handlelLogin = (e) => {
+      // dispatch(login(val))
+      
+
       e.preventDefault();
       toast({
         title: "Welcome",
@@ -39,21 +53,23 @@ import { NavLink } from "react-router-dom";
     return (
       <>
         <Button variantColor="teal" onClick={onOpen}>
-          Login/Signup
+          Login
         </Button>
   
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          {on?<ModalContent>
-            <ModalHeader>Login/Signup</ModalHeader>
+          <ModalContent>
+            <ModalHeader>Login</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handlelLogin}>
                 <FormControl>
                   <FormLabel htmlFor="email">Email</FormLabel>
                   <Input
                     type="email"
                     id="email"
+                    name="email"
+                    onChange={(e)=>{handleChange(e)}}
                     placeholder="Enter your email"
                     aria-describedby="email-helper-text"
                   />
@@ -63,7 +79,9 @@ import { NavLink } from "react-router-dom";
                   <FormLabel htmlFor="password">Password</FormLabel>
                   <Input
                     type="password"
-                    id="password"
+                    id="pass"
+                    name="pass"
+                    onChange={(e)=>{handleChange(e)}}
                     placeholder="Enter your password"
                     aria-describedby="password-helper-text"
                   />
@@ -72,77 +90,14 @@ import { NavLink } from "react-router-dom";
             </ModalBody>
   
             <ModalFooter>
-              <Button variantColor="teal" mr={3} onClick={handleSubmit}>
+              <Button variantColor="teal" backgroundColor={"Black"} color={"white"} mr={3} onClick={handlelLogin}>
                 Login
               </Button>
-              <NavLink
-                ml={2}
-                textDecor ="underline"
-                fontSize = "sm"
-                color = "blue.500"
-                // href = "/singup"
-                onClick={() => setOn(!on)}
-                // to="/signup"
-              >
-                {on?"Signup":"login"}
-              </NavLink>
+              
             </ModalFooter>
           </ModalContent>:
           
-          <ModalContent>
-            <ModalHeader>Signup</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <form onSubmit={handleSubmit}>
-                <FormControl>
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <Input
-                    type="email"
-                    id="email"
-                    placeholder="Enter your email"
-                    aria-describedby="email-helper-text"
-                  />
-                </FormControl>
-  
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <Input
-                    type="password"
-                    id="password"
-                    placeholder="Enter your password"
-                    aria-describedby="password-helper-text"
-                  />
-                </FormControl>
-  
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="name">Name</FormLabel>
-                  <Input
-                    type="text"
-                    id="name"
-                    placeholder="Enter your name"
-                    aria-describedby="name-helper-text"
-                  />
-                </FormControl>
-  
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="phone">Phone</FormLabel>
-                  <Input
-                    type="tel"
-                    id="phone"
-                    placeholder="Enter your phone number"
-                    aria-describedby="phone-helper-text"
-                  />
-                </FormControl>
-              </form>
-            </ModalBody>
-  
-            <ModalFooter>
-            <Button variantColor="teal" mr={3} onClick={handleSubmit}>
-              Signup
-            </Button>
-            <Link  onClick={() => setOn(!on)}> {on?"Signup":"login"}</Link>
-          </ModalFooter>
-          </ModalContent>}
+          
         </Modal>
       </>
     );

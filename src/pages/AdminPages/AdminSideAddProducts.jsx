@@ -1,21 +1,21 @@
 import React, { useState } from 'react'
 
 
-import {useDispatch,useSelector} from "react-redux"
+import {useDispatch} from "react-redux"
 import { addProduct } from '../../redux/adminReducer/admin.action'
 
 function AdminSideAddProducts() {
 
   const [val, setVal] = useState({})
 
-  const dispatch = useDispatch((store)=>console.log(store))
+  const dispatch = useDispatch()
 
   let handleChange = (e)=>{
     const {name,value} = e.target
 
     setVal({...val,[name]:value})
   }
-  console.log(val)
+  // console.log(val)
   
   const handleSubmit =()=>{
     dispatch(addProduct(val))
