@@ -1,10 +1,8 @@
 import {
-    Box,
     FormControl,
     FormLabel,
     Input,
     Button,
-    Link,
     useToast,
     useDisclosure,
     Modal,
@@ -15,10 +13,9 @@ import {
     ModalFooter,
     ModalCloseButton
   } from "@chakra-ui/react";
-import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { loginAction } from "../../redux/authReducer/auth.action";
   
 
 
@@ -27,7 +24,6 @@ import { NavLink } from "react-router-dom";
     const [val,setVal] = useState({})
     const dispatch = useDispatch()
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [on, setOn] = useState(true);
 
     const handleChange = (e)=>{
       const {name,value} = e.target
@@ -36,7 +32,7 @@ import { NavLink } from "react-router-dom";
     }
     console.log(val)
     const handlelLogin = (e) => {
-      // dispatch(login(val))
+      dispatch(loginAction(val))
       
 
       e.preventDefault();
