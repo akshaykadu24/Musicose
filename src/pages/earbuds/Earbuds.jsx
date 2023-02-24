@@ -32,8 +32,41 @@ const EarbudProducts = () => {
   console.log(products.data);
 
   useEffect(() => {
-    dispatch(getearbudproduct());
-  }, []);
+    dispatch(
+      getearbudproduct(
+        search,
+        low,
+        high,
+        sort,
+        popularity,
+        alphabet,
+        ascending,
+        descending
+      )
+    );
+  }, [search, low, high, sort, popularity, alphabet, ascending, descending]);
+
+  // const handleClick=()=>{
+
+  //     dispatch(addCart({...product,size:size}));
+  //     toast({
+  //       title: 'Add to Cart.',
+  //       description: "Item added to Cart Successfully.",
+  //       status: 'success',
+  //       duration: 3000,
+  //       isClosable: true,
+  //       position:"top"
+  //     })
+  // }
+
+  let exist = false;
+  // let mySize;
+  // cartItems.forEach((e)=>{
+  //   if(e.id==id){
+  //  exist=true;
+  //  mySize=e.size;
+  //   }
+  // })
 
   return (
     <>
@@ -65,8 +98,9 @@ const EarbudProducts = () => {
 
 
 
+      
 
-
+      <Wrap spacing={"80px"} width={"90%"} justify="center">
 
                 </DrawerBody>
               </DrawerContent>

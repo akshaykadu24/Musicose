@@ -1,0 +1,249 @@
+.admin_navbar_outerbox {
+    height: 100vh;
+    padding-top: 3%;
+    width: 100%;
+    position: sticky;
+    top: 0;
+}
+
+.admin_navbar {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin_navbar>div {
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 90%;
+    color: rgb(76, 1, 1);
+    background-color: rgb(241, 248, 253);
+    padding: 3%;
+    display: block;
+    margin-top: 7%;
+    text-align: left;
+}
+
+.adminSideDisplaynone .AdminSideProfile {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    border-radius: 10px;
+    height: 30vh;
+    margin-top: 5%;
+    height: fit-content;
+    background-color: white;
+    padding: 6%;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
+.adminSideDisplaynone .AdminSideProfile img {
+    width: 30%;
+    border-radius: 50%;
+    height: 100%;
+}
+
+.adminSideDisplaynone .AdminSideProfile p {
+    font-weight: bold;
+    text-align: left;
+}
+
+.adminSideDisplaynone .AdminSideProfile p:first-child {
+    font-size: 70%;
+    color: rgb(105, 0, 0);
+}
+
+.adminSideDisplaynone .AdminSideProfile p:last-child {
+    font-size: 70%;
+    color: blue;
+}
+
+@media all and (min-width: 951px) and (max-width: 1200px) {
+
+    .adminSideDisplaynone .AdminSideProfile {
+        width: 90%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile img {
+        width: 40%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p:first-child {
+        font-size: 50%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p:last-child {
+        font-size: 60%;
+    }
+}
+
+@media all and (min-width: 551px) and (max-width: 950px) {
+
+    .admin_navbar>div {
+        font-size: 80%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile {
+        width: 90%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile img {
+        width: 50%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile div p:first-child {
+        font-size: 70%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p:last-child {
+        font-size: 50%;
+    }
+}
+
+@media all and (min-width: 400px) and (max-width: 550px) {
+
+    .admin_navbar_outerbox {
+        height: fit-content;
+        width: 100%;
+        position: relative;
+        margin: auto;
+        top: auto;
+        margin-bottom: 4%;
+    }
+
+    .admin_navbar {
+        font-weight: bold;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin: auto;
+    }
+
+    .admin_navbar>div {
+        width: fit-content;
+        padding: auto;
+        margin: auto;
+        text-align: center;
+        padding: 1% 3%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile {
+        width: 30%;
+        height: fit-content;
+        margin-top: 5%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile img {
+        width: 50%;
+        border-radius: 50%;
+        height: 100%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p {
+        font-weight: bold;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p:first-child {
+        font-size: 70%;
+        color: blue;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p:last-child {
+        font-size: 70%;
+        color: blue;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile {
+        width: 20%;
+        padding: 2%;
+        margin: 2%;
+        margin-bottom: 3%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile img {
+        width: 50%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p:first-child {
+        font-size: 70%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p:last-child {
+        font-size: 40%;
+    }
+}
+
+@media all and (min-width: 281px) and (max-width: 400px) {
+
+    .admin_navbar_outerbox {
+        height: fit-content;
+        width: 100%;
+        position: relative;
+        margin: auto;
+        top: auto;
+        margin-bottom: 5%;
+    }
+
+    .admin_navbar {
+        font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        margin: auto;
+    }
+
+    .admin_navbar>div {
+        width: 90%;
+        padding: auto;
+        margin: auto;
+        margin-top: 1%;
+        text-align: center;
+        padding: 1% 3%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile {
+        width: 30%;
+        height: fit-content;
+        margin-top: 5%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile img {
+        width: 50%;
+        border-radius: 50%;
+        height: 100%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p {
+        font-weight: bold;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p:first-child {
+        font-size: 70%;
+        color: blue;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p:last-child {
+        font-size: 70%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile {
+        width: 27%;
+        padding: 2%;
+        margin: 0%;
+        margin-bottom: 3%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile img {
+        width: 40%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p:first-child {
+        font-size: 70%;
+    }
+
+    .adminSideDisplaynone .AdminSideProfile p:last-child {
+        font-size: 50%;
+    }
+}
