@@ -5,8 +5,10 @@ const jwt = require("jsonwebtoken")
 
 const userRoutes = express.Router()
 
-userRoutes.get("/",(req,res)=>{
-    res.send("All users")
+userRoutes.get("/",async(req,res)=>{
+
+    let data = await UserModel.find()
+    res.send(data)
 })
 
 userRoutes.post("/register",async(req,res)=>{
@@ -31,6 +33,12 @@ userRoutes.post("/register",async(req,res)=>{
         }
     }
 
+})
+
+userRoutes.delete("/delete/:id",async(req,res)=>{
+    let id = req.params.id
+    await UserModel.findByIdAndDelete(id)
+    res.send("Product is deleted from database")
 })
 
 userRoutes.post("/login",async(req,res)=>{

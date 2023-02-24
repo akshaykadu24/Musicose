@@ -1,0 +1,79 @@
+.adminProductContainer {
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    justify-content: space-around;
+    margin: auto;
+    margin-top: 3%;
+}
+
+.adminProductContainer>div:first-child {
+    width: 15%;
+}
+
+.adminProductContainer>div:last-child {
+    width: 80%;
+    margin: auto;
+}
+
+.admin_products_grid_container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    gap: 0.2% 2%;
+}
+
+.product_heading {
+    background-color: purple;
+    display: flex;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    justify-content: center;
+    text-align: center;
+    padding: 1%;
+    font-size: 130%;
+    font-weight: bold;
+    color: white;
+}
+
+@media all and (min-width: 651px) and (max-width: 1100px) {
+
+    .admin_products_grid_container {
+        gap: 0.1% 2%;
+    }
+
+}
+
+@media all and (min-width: 551px) and (max-width: 650px) {
+
+    .admin_products_grid_container {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        width: 100%;
+        gap: 0.1% 2%;
+    }
+
+}
+
+@media all and (min-width: 280px) and (max-width: 550px) {
+
+    .adminProductContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .adminProductContainer>div:first-child {
+        width: 100%;
+        margin: auto;
+    }
+
+    .adminProductContainer>div:last-child {
+        width: 90%;
+        margin: auto;
+    }
+
+    .admin_products_grid_container {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 0.1% 2%;
+    }
+
+}

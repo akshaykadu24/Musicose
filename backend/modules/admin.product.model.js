@@ -5,7 +5,7 @@ const adminProductSchema = mongoose.Schema({
         product_item_meta__title: {type:String},
         product_item__primary_image: {type:String},
         product_item__secondary_image: {type:String},
-        caterogy:{type:String},
+        category:{type:String},
         price: {type:String},
         price2: {type:String},
         feature: {type:String},

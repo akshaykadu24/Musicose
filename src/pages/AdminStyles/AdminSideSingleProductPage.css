@@ -1,0 +1,184 @@
+.admin_side_product_item {
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+    width: 100%;
+    border-radius: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 3%;
+    justify-content: space-between;
+    border: 2px solid rgb(33, 100, 2);
+    background-color: white;
+}
+
+.admin_side_product_item .product_img_box {
+    width: 30%;
+    padding-top: 2%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.admin_side_product_item .product_img_box>div:last-child {
+    display: flex;
+    justify-content: center;
+}
+
+.admin_side_product_item .products_second_box {
+    width: 70%;
+    padding-left: 3%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.admin_side_product_item .product_img_box div:last-child {
+    display: flex;
+    justify-content: center;
+}
+
+.admin_side_product_item .product_img_box div img {
+    width: 100%;
+    margin: auto;
+}
+
+.admin_side_product_item .products_second_box .product_information {
+    margin: 0%;
+}
+
+.admin_side_product_item .products_second_box .product_information li {
+    font-weight: 500;
+    font-size: 90%;
+    margin: 0%;
+}
+
+.admin_side_product_item .products_second_box .product_information li span {
+    color: rgb(3, 95, 89);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.admin_side_product_item .products_second_box .product_bottom_section {
+    display: flex;
+    flex-direction: row;
+    margin: 2%;
+    margin-top: 5%;
+    padding-left: 7%;
+    justify-content: space-between;
+}
+
+.availableContainer {
+    border: 2px solid black;
+    width: fit-content;
+    padding: 0.5% 4%;
+    margin: 1%;
+    font-size: 80%;
+    border-radius: 10px;
+}
+
+.blue {
+    color: blue;
+}
+
+.red {
+    color: red;
+}
+
+.strikthrough {
+    color: rgb(157, 3, 73);
+    text-decoration: line-through;
+}
+
+
+@media all and (min-width: 651px) and (max-width: 800px) {
+
+    .admin_side_product_item {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .admin_side_product_item .product_img_box {
+        width: 90%;
+        margin: auto;
+        height: fit-content;
+    }
+
+    .admin_side_product_item .products_second_box {
+        width: 90%;
+        padding-left: 3%;
+        margin: auto;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .admin_side_product_item .product_img_box div:last-child {
+        display: flex;
+        justify-content: center;
+    }
+
+    .admin_side_product_item .product_img_box div img {
+        width: 100%;
+        height: 200px;
+        margin: auto;
+    }
+
+    .admin_side_product_item .products_second_box .product_information li {
+        font-size: 85%;
+    }
+
+    .availableContainer {
+        font-size: 70%;
+        margin-bottom: 3%;
+    }
+
+}
+
+@media all and (min-width: 281px) and (max-width: 400px) {
+
+    .admin_side_product_item {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .admin_side_product_item .product_img_box {
+        width: 90%;
+        margin: auto;
+        height: fit-content;
+    }
+
+    .admin_side_product_item .products_second_box {
+        width: 90%;
+        padding-left: 3%;
+        margin: auto;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .admin_side_product_item .product_img_box div:last-child {
+        display: flex;
+        justify-content: center;
+    }
+
+    .admin_side_product_item .product_img_box div img {
+        width: 100%;
+        height: 150px;
+        margin: auto;
+    }
+
+    .admin_side_product_item .products_second_box .product_information li {
+        font-size: 85%;
+    }
+
+    .availableContainer {
+        font-size: 70%;
+        margin-bottom: 3%;
+    }
+
+}

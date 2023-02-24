@@ -1,0 +1,95 @@
+.single_admin_container {
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+    width: 100%;
+    background-color: rgb(241, 248, 253);
+    padding: 3%;
+    border-radius: 10px;
+}
+
+.single_admin_container div:first-child {
+    padding-top: 5%;
+}
+
+.single_admin_container div:first-child img {
+    width: 70%;
+    margin: auto;
+    border-top-left-radius: 7%;
+    border-top-right-radius: 7%;
+}
+
+.single_admin_container div {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.single_admin_container div:nth-child(2) {
+    margin-top: 5%;
+    margin-bottom: 3%;
+    padding-left: 5%;
+}
+
+.single_admin_container div:nth-child(2) p {
+    margin: 1%;
+}
+
+.single_admin_container div p {
+    font-size: 80%;
+    font-weight: bold;
+    color: rgb(2, 2, 149);
+}
+
+.single_admin_container div p span {
+    font-weight: bolder;
+    font-size: 100%;
+    font-family: 'Times New Roman', Times, serif;
+    color: black;
+}
+
+.single_admin_container .admin_single_bottom_section {
+    display: flex;
+    height: fit-content;
+    width: 90%;
+    margin: auto;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.color_red {
+    color: red;
+}
+
+@media all and (min-width: 651px) and (max-width: 1050px) {
+
+    .single_admin_container div:first-child img {
+        width: 60%;
+    }
+
+    .single_admin_container div p {
+        font-size: 70%;
+    }
+
+}
+
+@media all and (min-width: 401px) and (max-width: 650px) {
+
+    .single_admin_container div:first-child img {
+        width: 60%;
+    }
+
+    .single_admin_container div p {
+        font-size: 55%;
+    }
+
+}
+
+@media all and (min-width: 281px) and (max-width: 400px) {
+    
+    .single_admin_container div:first-child img {
+        width: 50%;
+    }
+
+    .single_admin_container div p {
+        font-size: 100%;
+    }
+}
