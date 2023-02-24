@@ -1,23 +1,22 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import "../AdminStyles/AdminSideProducts.css";
 import { getProducts } from "../../redux/adminReducer/action";
 import { AdminSideNavbar } from "../AdminPages/AdminSideNavbar";
 import { AdminSideSingleProductPage } from "./AdminSideSingleProductPage";
-// import loading from "../AdminAssets/giphy.gif";
 import error from "../AdminAssets/serverError.gif";
 
 const AdminSideProducts = () => {
-  const dispatch = useDispatch();
-  const products = useSelector((store) => store.adminReducer.products);
-  const Loading = useSelector((store) => store.adminReducer.isLoading);
-  const IsError = useSelector((store) => store.adminReducer.isError);
+//   const dispatch = useDispatch();
+//   const products = useSelector((store) => store.adminReducer.products);
+//   const Loading = useSelector((store) => store.adminReducer.isLoading);
+//   const IsError = useSelector((store) => store.adminReducer.isError);
 
-  useEffect(() => {
-    if (products.length === 0) {
-      dispatch(getProducts());
-    }
-  }, [products.length, dispatch]);
+//   useEffect(() => {
+//     if (products.length === 0) {
+//       dispatch(getProducts());
+//     }
+//   }, [products.length, dispatch]);
 
   return (
     <div>
