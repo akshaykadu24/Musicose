@@ -54,45 +54,18 @@ const productReducer = (state, action) => {
         price: Number(action.payload),
       };
 
-    case "price2":
-      return {
-        ...state,
-        price2: Number(action.payload),
-      };
+
+  const dispatch = useDispatch()
+  let handleChange = (e)=>{
+    const {name,value} = e.target
+
+    setVal({...val,[name]:value})
+  }
+  // console.log(val)
+  
+  const handleSubmit =()=>{
+    dispatch(addProduct(val))
     
-    case "category":
-      return {
-        ...state,
-        category: action.payload,
-      };
-   
-      case "features":
-      return {
-        ...state,
-        features3: action.payload,
-      };
-      case "features2":
-      return {
-        ...state,
-        features3: action.payload,
-      };
-    case "features3":
-      return {
-        ...state,
-        features3: action.payload,
-      };
-    case "isavailable":
-      return {
-        ...state,
-        isavailable: action.payload,
-      };
-    case "quantity":
-      return {
-        ...state,
-        quantity: Number(action.payload),
-      };
-    default:
-      return state;
   }
 };
 
