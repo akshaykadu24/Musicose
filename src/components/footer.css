@@ -1,0 +1,256 @@
+.disclaimer {
+  background-color: #fe0500;
+  color: white;
+  padding: 15px;
+}
+
+.disclaimerText {
+  margin: 0px;
+  width: 70%;
+  margin: auto;
+  font-size: 0.9rem;
+}
+
+.footer {
+  width: 100%;
+  min-height: 524px;
+  background-color: white;
+  color: black;
+  box-sizing: border-box;
+  /* border: 1px solid black; */
+}
+
+.firstFooterDiv {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.sendEmailBox {
+  flex: 0.3;
+  margin-left: 40px;
+  padding: 5px;
+  box-sizing: border-box;
+  /* border: 1px solid teal; */
+}
+
+.subscribeText {
+  font-size: 0.9rem;
+  width: 90%;
+  color: rgb(84, 82, 82);
+  text-align: start;
+}
+
+.footerLogo {
+  width: 25%;
+  /* border: 1px solid orange; */
+}
+.footerLogo > img {
+  width: 100px;
+  height: 70px;
+  border-radius: 10px;
+}
+
+.footerInputDiv {
+  border: 1px solid #fe0500;
+  height: 50px;
+  width: 90%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 5px;
+  flex-wrap: wrap;
+  padding-left: 5px;
+}
+
+.footerInput {
+  background-color: transparent;
+  height: 60%;
+  width: 60%;
+  font-size: 0.8rem;
+  margin-left: 2px;
+  border: none;
+  color: rgb(84, 82, 82);
+}
+
+.footerInput,
+.footerInput::placeholder {
+  font-size: 0.8rem;
+}
+
+.footerInput:focus {
+  outline: none;
+}
+
+.footerBtn {
+  width: 35%;
+  height: 80%;
+  background-color: rgb(255, 0, 0);
+  border: #fe0500;
+  color: white;
+  font-weight: bold;
+  font-size: 00.9rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.footerLinks {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+  flex: 0.8;
+  padding-top: 20px;
+  cursor: pointer;
+}
+
+.footerLinks > div {
+  font-size: 0.85rem;
+  color: rgb(84, 82, 82);
+}
+
+.linksHeader {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.hideLinks > p:hover {
+  color: rgb(14, 10, 10);
+}
+
+.mediaLinks {
+  width: 90%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 67px;
+  gap: 0.5%;
+  padding-left: 50px;
+  cursor: pointer;
+  margin: -8px 0px;
+}
+
+.mediaLinks > div {
+  width: 3.5%;
+  height: 55px;
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
+  border-radius: 10px;
+}
+.fb:hover {
+  background-color: #0e73d9;
+  color: white;
+  border: transparent;
+}
+.twi:hover {
+  background-color: #00bfff;
+  color: white;
+  border: transparent;
+}
+.insta:hover {
+  background-color: #f67676;
+  color: white;
+  border: transparent;
+}
+.Yt:hover {
+  background-color: #fe0500;
+  color: white;
+  border: transparent;
+}
+.LdIn:hover {
+  background-color: #4169e1;
+  color: white;
+  border: transparent;
+}
+.midFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 70px;
+}
+
+.download {
+  width: 250px;
+  text-align: left;
+}
+
+.linksToStores > img {
+  height: 50px;
+  cursor: pointer;
+}
+
+.copyright {
+  text-align: left;
+  padding-left: 70px;
+  padding-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+@media only screen and (max-width: 1000px) {
+  .firstFooterDiv {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sendEmailBox {
+    padding: 20px 0px 0px;
+    margin-left: 40px;
+  }
+
+  .footerLinks {
+    width: 420px;
+    margin-left: 60px;
+  }
+
+  .midFooter {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .paymentsImages {
+    margin-bottom: 30px;
+  }
+
+  .linksToStores {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .download {
+    margin-left: 40px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .hideLinks {
+    display: none;
+  }
+
+  .footerLinks {
+    width: 90%;
+    margin-left: 0px;
+  }
+
+  .imageSize {
+    width: 90%;
+    margin-left: 20px;
+  }
+
+  .copyright {
+    width: 90%;
+    margin: auto;
+  }
+
+  .linksToStores {
+    width: 90%;
+    margin: auto;
+  }
+  .mediaLinks {
+    width: 100%;
+  }
+  .mediaLinks > div {
+    width: 7%;
+    gap: 1%;
+  }
+}

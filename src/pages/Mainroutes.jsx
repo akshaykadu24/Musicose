@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Login from "./login/Login";
+
 // import About from "./About";
 // import Contact from "./Contact";
 import Home from "./Home";
@@ -14,7 +14,7 @@ const Mainroute = () => {
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
 
         {/* <Route path="/contact" element={<Contact />}></Route>
         <Route path="/login" element={<Login />}></Route>

@@ -17,6 +17,7 @@ import { Categories } from "./Categories";
 // import { MenuDrop } from "./MenuDrop";
 import LoginPopup from "./LoginPopup";
 // import { CartPopup } from "./CartPopup";
+import "./Navbar.css";
 
 function Navbar() {
   const [login, setLogin] = useState(false);
