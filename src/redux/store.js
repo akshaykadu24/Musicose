@@ -4,6 +4,7 @@ import adminReducer from "./adminReducer/admin.reducer";
 import { productReducer } from "./product/product.reducer";
 
 const rootReducer = combineReducers({
+    productManager:productReducer
     productManager:productReducer,
     adminManager:adminReducer,
     // authManager:authReducer
