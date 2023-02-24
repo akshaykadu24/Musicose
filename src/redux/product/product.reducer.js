@@ -1,11 +1,12 @@
-import {GET_PRODUCTS_SUCCESS,GET_PRODUCTS_LOADING,GET_PRODUCTS_ERROR,GET_EARBUD_PRODUCTS_SUCCESS,GET_FILTERED_PRODUCTS, SORT_projectorES, SORT_projectorESS, SORT_alphabet} from "./product.types"
+import {GET_PRODUCTS_SUCCESS,GET_PRODUCTS_LOADING,GET_PRODUCTS_ERROR,GET_EARBUD_PRODUCTS_SUCCESS,GET_FILTERED_PRODUCTS, SORT_projectorES, SORT_projectorESS, SORT_alphabet, GET_SINGLE_PRODUCT_SUCCESS} from "./product.types"
 
 const initialState = {
     loading : false,
     error : false,
     data : [],
     product : {},
-    filteredBrandData:[]
+    filteredBrandData:[],
+    singleData:[]
 }
 
 export const productReducer = (state=initialState,{type,payload})=>{
@@ -46,7 +47,7 @@ export const productReducer = (state=initialState,{type,payload})=>{
           return { ...state, data: [...sorted] };
         }
       };
-break
+
       case SORT_alphabet: {
         if (payload == "z") {
           let sorted = state.data.sort(
@@ -60,6 +61,12 @@ break
           );
           return { ...state, data: [...sorted] };
         }
+      }
+
+      case GET_SINGLE_PRODUCT_SUCCESS : return  {
+            ...state,
+            loading : false,
+            product :payload
       }
     default:return state
    }
