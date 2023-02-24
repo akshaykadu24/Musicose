@@ -8,8 +8,8 @@ import cartReducer from "./cart/cart.reducer";
 const rootReducer = combineReducers({
     productManager:productReducer,
     adminManager:adminReducer,
-    authManager:authReducer
-     cart:cartReducer,
+    authManager:authReducer,
+    cart:cartReducer,
     
 })
 
