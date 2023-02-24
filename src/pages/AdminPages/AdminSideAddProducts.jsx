@@ -9,7 +9,6 @@ function AdminSideAddProducts() {
   const [val, setVal] = useState({})
 
   const dispatch = useDispatch()
-
   let handleChange = (e)=>{
     const {name,value} = e.target
 

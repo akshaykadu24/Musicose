@@ -3,14 +3,14 @@ import { USER_LOGIN_FAILURE, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT
 
 const initialState = {
     isAuth: false,
-    token: '',
+    token: "",
+    msg:"",
     isAuthLoading: false,
     isAuthError: false
 }
 
 
 export const authReducer = (state = initialState, { type, payload }) => {
-    
 
     switch (type) {
         case USER_LOGIN_REQUEST: {
@@ -24,7 +24,8 @@ export const authReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 isAuthLoading: false, 
                 isAuth:true, 
-                token: payload
+                token: payload.token,
+                msg: payload.msg,
             }
         }
         case USER_LOGIN_FAILURE: {
@@ -37,7 +38,7 @@ export const authReducer = (state = initialState, { type, payload }) => {
         case USER_LOGOUT:{
             return {
                     isAuth: false,
-                    token: undefined,
+                    token: "",
                     isAuthLoading: false,
                     isAuthError: false
                 

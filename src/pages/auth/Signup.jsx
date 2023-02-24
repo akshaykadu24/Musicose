@@ -39,8 +39,8 @@ import { signupAction } from "../../redux/authReducer/auth.action";
 
       e.preventDefault();
       toast({
-        title: "Welcome",
-        description: "You are now logged in.",
+        title: "Congratulations",
+        description: "User Registered sucessfully",
         status: "success",
         duration: 9000,
         isClosable: true,

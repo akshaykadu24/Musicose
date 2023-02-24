@@ -18,9 +18,11 @@ export const loginAction = (payload) => (dispatch) => {
             }
           }).then(res=>{
             console.log(res)
-            
-            localStorage.setItem("token",JSON.stringify(res.data.token))
-            dispatch({type:USER_LOGIN_SUCCESS,payload:res.data.token})
+            if(res.data.token){
+                localStorage.setItem("token",JSON.stringify(res.data.token))
+            }
+
+            dispatch({type:USER_LOGIN_SUCCESS,payload:res.data})
             
           }).catch(err=>{
             dispatch({type:USER_LOGIN_FAILURE})
@@ -49,6 +51,7 @@ export const signupAction = (payload) => (dispatch) => {
    )
 }
 export const logoutAction = (dispatch)=>{
+    localStorage.removeItem("token")
     return (
         dispatch({type:USER_LOGOUT})
     )

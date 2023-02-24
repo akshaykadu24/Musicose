@@ -8,6 +8,7 @@ import Signup from './pages/auth/Signup';
 import { Button } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { logoutAction } from './redux/authReducer/auth.action';
+import PrivateRoute from './pages/auth/privateRoute';
 
 function App() {
 
@@ -28,8 +29,8 @@ function App() {
       <Route path={"/login"} element={<Login/>}></Route>
       <Route path={"/signup"} element={<Signup/>}></Route>
 
-      <Route path={"/earbuds"} element={<EarbudProducts/>}></Route>
-      <Route path={"/adminAddProduct"} element={<AdminSideAddProducts/>}></Route>
+      <Route path={"/earbuds"} element={<PrivateRoute> <EarbudProducts/> </PrivateRoute>}></Route>
+      <Route path={"/adminAddProduct"} element={<PrivateRoute> <AdminSideAddProducts/> </PrivateRoute>}></Route>
 
 
     </Routes>
