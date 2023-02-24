@@ -279,8 +279,15 @@ const SingleProduct = () => {
       </Box>
 
       <Box>
+        <Image
+          w={{ sm: "100%", lg: "100%", xl: "100%" }}
+         src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/AD175-web_718c99fd-75ff-45bb-b448-4166822698c3.png?v=1653473462"/>
+      </Box>
+
+      <Box>
         <TrendingSlider />
       </Box>
+      
     </>
   );
 };

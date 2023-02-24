@@ -4,13 +4,13 @@ import AllRoutes from './all-routes/AllRoutes';
 import './App.css';
 import { TrendingSlider } from './components/Revati_components/slider';
 import EarbudProducts from './pages/earbuds/Earbuds';
-import Login from './pages/login/Login';
+//import Login from './pages/login/Login';
 import SingleProduct from './pages/single-product/SingleProduct';
 import { Link, Route, Routes } from 'react-router-dom';
 import './App.css';
-import AdminSideAddProducts from './pages/AdminPages/AdminSideAddProducts';
-import EarbudProducts from './pages/earbuds/Earbuds';
-import Login from './pages/auth/Login';
+//import AdminSideAddProducts from './pages/AdminPages/AdminSideAddProducts';
+
+
 import Signup from './pages/auth/Signup';
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
     {/* <TrendingSlider/> */}
 
       
-      <div>
+      {/* <div>
         <Link to={"/login"}>Login </Link> &nbsp;
         <Link to={"/signup"}>SignUp </Link> &nbsp;
 
@@ -39,9 +39,9 @@ function App() {
       <Route path={"/earbuds"} element={<EarbudProducts/>}></Route>
       <Route path={"/adminAddProduct"} element={<AdminSideAddProducts/>}></Route>
 
+ */}
 
-
-    </Routes>
+    {/* </Routes> */}
     </div>
   );
 }
