@@ -72,7 +72,7 @@ const EarbudProducts = () => {
 
   // const handleClick=()=>{
 
-  //     dispatch(addCart({...product,size:size}));
+  //     dispatch(addCart({...product}));
   //     toast({
   //       title: 'Add to Cart.',
   //       description: "Item added to Cart Successfully.",
@@ -83,12 +83,12 @@ const EarbudProducts = () => {
   //     })
   // }
 
-  let exist = false;
-  // let mySize;
+ // let exist = false;
+
   // cartItems.forEach((e)=>{
   //   if(e.id==id){
   //  exist=true;
-  //  mySize=e.size;
+  
   //   }
   // })
 

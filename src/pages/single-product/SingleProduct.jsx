@@ -9,6 +9,7 @@ import {
   UnorderedList,
   Badge,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 //import Store from "material-react-icons/Store"
 import { useDispatch, useSelector } from "react-redux";
@@ -26,6 +27,7 @@ const SingleProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [pincode, setPincode] = useState("");
+  const toast = useToast()
 
   const dispatch = useDispatch();
 
@@ -49,14 +51,14 @@ const SingleProduct = () => {
 
   const handleClick = () => {
     //   dispatch(addCart({...product}));
-    //   toast({
-    //     title: 'Add to Cart.',
-    //     description: "Item added to Cart Successfully.",
-    //     status: 'success',
-    //     duration: 3000,
-    //     isClosable: true,
-    //     position:"top"
-    //   })
+      toast({
+        title: 'Add to Cart.',
+        description: "Item added to Cart Successfully.",
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position:"top"
+      })
   };
 
   const handlePincode = (e) => {
@@ -234,7 +236,7 @@ const SingleProduct = () => {
             </Box>
 
             <Badge
-              w={{ base: "90%", sm: "100%", lg: "100%", xl: "100%" }}
+              w={{ base: "90%", sm: "100%", lg: "100%" }}
               borderRadius="full"
               p={2}
               px="2"
