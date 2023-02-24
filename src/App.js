@@ -25,6 +25,8 @@ function App() {
 
         <Link to={"/earbuds"}>Earbuds</Link> &nbsp;
         <Link to={"/adminAddProduct"}>AdminAddProduct</Link> &nbsp;
+        <Link to={"/AdminSideProducts"}>AdminSideProducts</Link> &nbsp;
+        
         <Button onClick={()=>{dispatch(logoutAction)}}>Logout</Button>
 
       </div>
