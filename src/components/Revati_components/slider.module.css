@@ -1,0 +1,44 @@
+.card{
+    color:black;
+    overflow: hidden;
+    padding: 10px;
+    margin: 10px;
+    background-color: white;
+    min-width: 400px;
+}
+.card2{
+    color:black;
+
+    overflow: hidden;
+    /* padding: px; */
+    margin: 10px;
+    background-color: white;
+}
+
+.product_container{
+    display: flex;
+    gap:20px;
+    /* width: 80%; */
+    overflow: hidden;;
+    scroll-behavior: smooth;;
+    /* right:0; */
+    /* margin-left:25% */
+
+}
+.carousel{
+    overflow: hidden;
+    padding: 26px;
+    background-color: #f5f7fa;
+    display: "flex";
+    flex-direction: "column";
+}
+.card{
+    transition: all 0.3s ease-in;
+    z-index: 3;
+    min-width: "400px";
+
+   }
+.card:hover{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+   scale: 1.02;
+}

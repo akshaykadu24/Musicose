@@ -1,9 +1,16 @@
 
+
+import AllRoutes from './all-routes/AllRoutes';
+import './App.css';
+import { TrendingSlider } from './components/Revati_components/slider';
+import EarbudProducts from './pages/earbuds/Earbuds';
+//import Login from './pages/login/Login';
+import SingleProduct from './pages/single-product/SingleProduct';
 import { Link, Route, Routes } from 'react-router-dom';
 import './App.css';
-import AdminSideAddProducts from './pages/AdminPages/AdminSideAddProducts';
-import EarbudProducts from './pages/earbuds/Earbuds';
-import Login from './pages/auth/Login';
+//import AdminSideAddProducts from './pages/AdminPages/AdminSideAddProducts';
+
+
 import Signup from './pages/auth/Signup';
 import { Button } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
@@ -15,6 +22,9 @@ function App() {
   const dispatch = useDispatch()
   return (
     <div className="App">
+
+    
+
       
       <div>
         <Link to={"/login"}>Login </Link> &nbsp;
@@ -25,6 +35,7 @@ function App() {
         <Button onClick={()=>{dispatch(logoutAction)}}>Logout</Button>
 
       </div>
+      
     <Routes>
       <Route path={"/login"} element={<Login/>}></Route>
       <Route path={"/signup"} element={<Signup/>}></Route>
@@ -34,7 +45,6 @@ function App() {
 
 
     </Routes>
-    
     </div>
   );
 }
