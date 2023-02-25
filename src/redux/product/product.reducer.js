@@ -1,4 +1,4 @@
-import {GET_PRODUCTS_SUCCESS,GET_PRODUCTS_LOADING,GET_PRODUCTS_ERROR,GET_EARBUD_PRODUCTS_SUCCESS,GET_FILTERED_PRODUCTS, SORT_projectorES, SORT_projectorESS, SORT_alphabet, GET_SINGLE_PRODUCT_SUCCESS} from "./product.types"
+import {GET_PRODUCTS_SUCCESS,GET_PRODUCTS_LOADING,GET_PRODUCTS_ERROR,GET_EARBUD_PRODUCTS_SUCCESS,GET_FILTERED_PRODUCTS, SORT_projectorES, SORT_projectorESS, SORT_alphabet, GET_SINGLE_PRODUCT_SUCCESS, SORT_BY_ALPHABET} from "./product.types"
 
 const initialState = {
     loading : false,
@@ -48,20 +48,23 @@ export const productReducer = (state=initialState,{type,payload})=>{
         }
       };
 
-      case SORT_alphabet: {
-        if (payload == "z") {
-          let sorted = state.data.sort(
-            (a, b) => (a.title) - (b.title)
-          );
-  
-          return { ...state, data: [...sorted] };
-        } else if (payload == "a") {
-          let sorted = state.data.sort(
-            (a, b) => b.title - a.title
-          );
-          return { ...state, data: [...sorted] };
+
+      case SORT_BY_ALPHABET:{
+        if(payload =="z"){
+          let sortedData = state.data.sort((a,b)=>
+             a.title < b.title ? 1 : a.title > b.title ? -1 : 0
+          )
+          return { ...state, data: [...sortedData]}
         }
+         else if(payload == "a"){
+          let sortedData = state.data.sort((a,b)=>
+          a.title < b.title ? -1 : a.title > b.title ? 1 : 0
+       )
+       return { ...state, data: [...sortedData]}
+         }
       }
+
+      
 
       case GET_SINGLE_PRODUCT_SUCCESS : return  {
             ...state,
