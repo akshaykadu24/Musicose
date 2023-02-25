@@ -8,7 +8,7 @@ import { logoutAction } from '../../redux/authReducer/auth.action';
 const AdminNavbar = ()=>{
     const dispatch = useDispatch()
    return(
-    <div style={{ backgroundColor:"gray"}}>
+    <div style={{ backgroundColor:"black", color:"white"}}>
     <Box style={{display:'flex', justifyContent:"space-around",  fontWeight:"bold" ,width:"60%", margin:"auto" ,paddingTop:'5px'}}>
         <Link to={"/login"}><Heading size={"md"}>Login</Heading> </Link> &nbsp;
         <Link to={"/signup"}><Heading size={"md"}>SignUp</Heading> </Link> &nbsp;
@@ -19,7 +19,6 @@ const AdminNavbar = ()=>{
         <Link to={"/user"}><Heading size={"md"}>User</Heading></Link> &nbsp;
         <Link to={"/users"}><Heading size={"md"}>AllUsers</Heading></Link> &nbsp;
         <Button onClick={()=>{dispatch(logoutAction)}}>Logout</Button>
-
     </Box>
     </div>
    )

@@ -13,7 +13,6 @@ function App() {
 
     <AdminNavbar/>
       
-      <UpdateProduct/>
       
       
       

@@ -12,8 +12,8 @@ const AllUsers = () => {
 
     const dispatch = useDispatch()
     console.log(users)
-    const AdminUser = users.filter((el) => el._id == user)
-    console.log(AdminUser)
+    const AdnUser = users.filter((el) => el._id == user)
+    console.log(AdnUser)
     useEffect(() => {
         showUser()
     }, [])
@@ -26,8 +26,11 @@ const AllUsers = () => {
     }
     return (
         <div>
-            <Heading>AllUsers</Heading>
-            <Box  width={"80%"} border= "1px solid red" margin={"auto"}>
+            <Box  p={["20px","0px","2px","10px"]}  background={"#B2DAF1"} >
+
+                <Heading>AllUsers</Heading>
+            </Box>
+            <Box  width={"80%"}  border= "0px solid red" margin={"auto"} mt="50px">
 
                 <SimpleGrid columns={[1, 2, 3, 4]} gap="5%" width={"80%"}>
                     {
@@ -35,7 +38,7 @@ const AllUsers = () => {
                             return (
 
                                 <div >
-                                    <Box boxShadow= "rgba(0, 0, 0, 0.16) 0px 1px 4px" >
+                                    <Box boxShadow= "rgba(0, 0, 0, 0.16) 0px 1px 4px"  pb={"7px"} >
                                         <div style={{ border: "0px solid red"  }} >
                                             <Image src={admin} alt="pic" />
                                         </div>
