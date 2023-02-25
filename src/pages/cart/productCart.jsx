@@ -80,9 +80,13 @@ const ProductCart = () => {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        res.json()
+        window.location.reload();
+      })
       .then((res) => {
         console.log(res);
+        
       });
     console.log(id, api);
 
@@ -100,7 +104,10 @@ const ProductCart = () => {
           "Content-Type": "application/json",
         },
       })
-        .then((res) => res.json())
+        .then((res) => {
+          res.json()
+          window.location.reload();
+        })
         .then((res) => {
           console.log(res);
         });

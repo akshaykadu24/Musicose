@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Text ,Input,InputGroup,InputLeftElement ,Select} from '@chakra-ui/react';
 import {SearchIcon} from "@chakra-ui/icons"
-import { sortMydata } from '../../redux/product/product.action';
+import { handleSortAlpha, sortMydata } from '../../redux/product/product.action';
 import { sortMydatas } from '../../redux/product/product.action';
 import { useDispatch } from 'react-redux';
 
@@ -31,19 +31,21 @@ const ProductHeader = ({products,search,setSearch,sort,setSort,popularity,setPop
       return;
     }
     dispatch(sortMydata(value));
+    dispatch(handleSortAlpha(value))
   };
 
+  console.log(products.data)
 
 
-  const handleChanged = (e) => {
-    const { value } = e.target;
-    console.log(value);
-    // if (value == "reset") {
-    //   setReset((previous) => !previous);
-    //   return;
-    // }
-    dispatch(sortMydatas(value));
-  };
+  // const handleChanged = (e) => {
+  //   const { value } = e.target;
+  //    console.log(value);
+   
+  //    dispatch(sortMydatas(value));
+  //   dispatch(handleSortAlpha(value))
+
+    
+  // };
   
 
   return (
@@ -71,16 +73,18 @@ const ProductHeader = ({products,search,setSearch,sort,setSort,popularity,setPop
             {/* <option value="reset">Sort-By-Price</option> */}
             <option value="high">Price: Low to High</option>
             <option value="low">Price: High to Low</option>
-     </Select>
-
-     <Select  size={{base:"xs",md:"sm",lg:"sm"}} placeholder='Sort by:' width={{base:"100px",sm:"115px",md:"150px",lg:"175px"}}   focusBorderColor="red.500" value={sort} 
-      onChange={(e) => handleChanged(e)}  id="" name=""
-      
-      >
-            {/* <option value="reset">Sort-By-Price</option> */}
             <option value="a">Alphabet: A to Z</option>
             <option value="z">Alphabet: Z to A</option>
      </Select>
+
+     {/* <Select  size={{base:"xs",md:"sm",lg:"sm"}} placeholder='Sort by:' width={{base:"100px",sm:"115px",md:"150px",lg:"175px"}}   focusBorderColor="red.500" value={sort} 
+      onChange={(e) => handleChanged(e)}  id="" name=""
+      
+      >
+            <option value="reset">Sort-By-Price</option>
+            <option value="a">Alphabet: A to Z</option>
+            <option value="z">Alphabet: Z to A</option>
+     </Select> */}
 
 
      </Box>

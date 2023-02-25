@@ -22,35 +22,7 @@ const Products_box = ({e}) => {
   const dispatch = useDispatch();
     let exist = false;
 
-    // const product = useSelector((store) => {
-    //   return store.productManager.data;
-    // });
-
-    // const cartItems = useSelector((store) => {
-    //   return store.cart.cart;
-    // });
-    //console.log(cartItems);
-  
-    // useEffect(() => {
-     // dispatch(getSingleData(id));
-  
-    //   dispatch(getCartItems());
-    // }, []);
-
-    // const handleClick = () => {
-    //   console.log(product)
-    //   dispatch(addCart({ ...product }));
-      
-    //   toast({
-    //     title: "Add to Cart.",
-    //     description: "Item added to Cart Successfully.",
-    //     status: "success",
-    //     duration: 3000,
-    //     isClosable: true,
-    //     position: "top",
-    //   });
-    // };
-
+    
 
   return (
     <>
