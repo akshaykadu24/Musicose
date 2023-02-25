@@ -34,21 +34,21 @@ import { loginAction } from "../../redux/authReducer/auth.action";
     console.log("1")
     useEffect(()=>{
       if(isAuth){
-        toast({
+        return (toast({
           title: "Welcome",
           description: msg,
           status: "success",
           duration: 9000,
           isClosable: true,
-        });
+        }));
       }else{
-        toast({
+        return(toast({
           title: "Login Failed",
           description: msg,
           status: "error",
           duration: 9000,
           isClosable: true,
-        });
+        }));
       }
       console.log("2")
     },[isAuth])
