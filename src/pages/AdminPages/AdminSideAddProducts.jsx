@@ -37,9 +37,12 @@ function AdminSideAddProducts() {
 
   return (
     <div>
-    <Box backgroundColor={"teal"} width={"50%"} margin={"auto"} paddingBottom={"10px"} borderRadius="5%">
-      <Heading color={"white"} marginBottom={"10px"}>Add Product</Heading>
-      <Box width={"80%"} margin={"auto"} backgroundColor={"white"} padding={"10px"} borderRadius="5%">
+      <Box  p={["20px","0px","2px","10px"]}  background={"#B2DAF1"}  >
+      <Heading  marginBottom={"10px"}>Add Product</Heading>
+
+      </Box>
+    <Box backgroundColor={"teal"} width={"50%"} margin={"auto"} paddingBottom={"30px"} borderRadius="5%" paddingTop={"20px"} marginTop="30px"   >
+      <Box width={"80%"} margin={"auto"} backgroundColor={"white"} padding={"10px"} borderRadius="5%" marginTop={"30px"}>
         <Input type="text"  onChange={(e)=>{handleChange(e)}} margin="7px" name="product_item_meta__title" id="product_item_meta__title" placeholder="Enter Product Title" required /> <br />
         <Input type="text" onChange={(e)=>{handleChange(e)}} margin="7px" name="product_item__primary_image" id="product_item__primary_image" placeholder="Image 1" required/> <br />
         <Input type="text" onChange={(e)=>{handleChange(e)}} margin="7px" name="product_item__secondary_image" id="product_item__secondary_image" placeholder="Image 2" /> <br />

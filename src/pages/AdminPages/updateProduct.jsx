@@ -84,7 +84,7 @@ import { UpdateAction } from "../../redux/authReducer/auth.action";
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Update</ModalHeader>
+            <ModalHeader backgroundColor={"skyblue"}>Update</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
             <form onSubmit={handleUpdate}>

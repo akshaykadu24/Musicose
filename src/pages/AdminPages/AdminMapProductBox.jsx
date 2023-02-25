@@ -13,12 +13,12 @@ const AdminMapProductBox = ({el}) => {
 
     },[])
   return (
-    <Tr key={el._id} width={"100%"}>
+    <Tr key={el._id} width={"100%"} boxShadow="outline">
                 
-            <Td><Image width={["100px", "150px", "200px", "130px"]} src={el.product_item__primary_image}></Image></Td>
+            <Td><Image width={["100px", "100px", "150px", "200px"]} src={el.product_item__primary_image}></Image></Td>
         
         
-            <Td><Text  width={"300px"} fontSize={["xl","xl"]}>{el.product_item_meta__title}</Text></Td>
+            <Td><Text  width={"200px"} fontSize={["xl","xl"]}>{el.product_item_meta__title}</Text></Td>
         
         
             <Td><Text  width={"50px"} fontSize={["xl","xl"]}>{el.price}</Text></Td>

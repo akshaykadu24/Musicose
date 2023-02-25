@@ -121,9 +121,11 @@ const addProduct = (product) => (dispatch) => {
       console.log(res)
       dispatch({ type: ADD_PRODUCT_SUCCESS, payload: res.msg });
       console.log("inside action file:", res);
+      alert(res.data.msg)
     })
     .catch((err) => {
       dispatch({ type: ADD_PRODUCT_FAILURE, payload: err });
+      alert(err.data.msg)
     }));
 };
 
