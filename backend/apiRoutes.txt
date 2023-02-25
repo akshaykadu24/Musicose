@@ -7,6 +7,9 @@ for login              = http://localhost:8080/user/login
 
 for admin 
 
+get all users         =  http://localhost:8080/user
+delete user           =  http://localhost:8080/user/delete/id
+
 get all products      =  http://localhost:8080/adminProduct
 create data in admin  =  http://localhost:8080/adminProduct/create
 for update            =  http://localhost:8080/adminProduct/update/id

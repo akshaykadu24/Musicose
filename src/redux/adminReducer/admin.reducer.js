@@ -11,6 +11,8 @@ const initialState = {
 
 const adminReducer = (state = initialState, {type,payload}) => {
   switch (type) {
+          //////////////////////////////////// get product /////////////////////
+
     case GET_PRODUCTS_REQUEST:
       return {
         ...state,
@@ -30,6 +32,8 @@ const adminReducer = (state = initialState, {type,payload}) => {
         Loading: false,
         Error: true,
       };
+
+      //////////////////////////////////// add product /////////////////////
     case ADD_PRODUCT_REQUEST:{
       return{
         ...state,
@@ -51,6 +55,9 @@ const adminReducer = (state = initialState, {type,payload}) => {
       }
     }
 
+      //////////////////////////////////// get users /////////////////////
+
+
     case GET_USERS_REQUEST:
       return {
         ...state,
@@ -70,6 +77,9 @@ const adminReducer = (state = initialState, {type,payload}) => {
         Loading: false,
         Error: true,
       };
+
+            ////////////////////////////////////  /////////////////////
+
     case GET_PRODUCT_BY_ID_REQUEST:
       return {
         ...state,
