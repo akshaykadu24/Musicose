@@ -2,14 +2,11 @@ const express = require("express")
 const { UserModel } = require("../modules/user.model")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const { auth } = require("../middlewares/authentication.middleware")
 
 const userRoutes = express.Router()
 
-userRoutes.get("/",async(req,res)=>{
 
-    let data = await UserModel.find()
-    res.send(data)
-})
 
 userRoutes.post("/register",async(req,res)=>{
     let {name,email,type,pass} = req.body
@@ -69,5 +66,10 @@ userRoutes.post("/login",async(req,res)=>{
         res.send("error while Login")
     }
 })
+userRoutes.use("/",auth)
+userRoutes.get("/",async(req,res)=>{
 
+    let data = await UserModel.find()
+    res.send(data)
+})
 module.exports = {userRoutes}
