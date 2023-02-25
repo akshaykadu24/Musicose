@@ -647,30 +647,7 @@
       "feature2": "",
       "feature3": ""
     },
-    {
-      "priority": "",
-      "priority 2": "",
-      "priority 3": "",
-      "priority 4": "",
-      "id":"28",
-      "category":"watch",
-      "product-item__aspect-ratio href": "https://www.boat-lifestyle.com/products/wave-play-smartwatch",
-      "product_item_primary_image": "https://cdn.shopify.com/s/files/1/0057/8938/4802/products/removal.ai_tmp-63679b9ab29ed_300x.png?v=1667734467",
-      "product_item_secondary_image": "https://cdn.shopify.com/s/files/1/0057/8938/4802/products/removal.ai_tmp-63679b6ca9745_300x.png?v=1667734468",
-      "product_item_meta__title": "Wave Play",
-      "ml-2": "",
-      "price":  1999,
-      "m-0": "67% off",
-      "price2":  5990,
-      "rating__stars": "4.0",
-      "rating__caption": "1 review",
-      "visually-hidden 3": "ADD",
-      "product-item__quick-buy-button 2": "Add to cart",
-      "visually-hidden 4": "ADD",
-      "feature": "",
-      "feature2": "",
-      "feature3": ""
-    },
+    
     {
       "priority": "AMOLED DISPLAY",
       "priority 2": "",
@@ -695,30 +672,7 @@
       "feature2": "Faster Performance",
       "feature3": "700+ Active Modes"
     },
-    {
-      "priority": "BT Calling",
-      "priority 2": "",
-      "priority 3": "",
-      "priority 4": "",
-      "id":"30",
-      "category":"watch",
-      "product-item__aspect-ratio href": "https://www.boat-lifestyle.com/products/wave-voice-bt-calling-smart-watch",
-      "product_item_primary_image": "https://cdn.shopify.com/s/files/1/0057/8938/4802/products/B1_1-PhotoRoom_300x.png?v=1668117625",
-      "product_item__secondary_image": "https://cdn.shopify.com/s/files/1/0057/8938/4802/products/B1-PhotoRoom_300x.png?v=1668117627",
-      "product_item_meta__title": "Wave Voice",
-      "ml-2": "",
-      "price":  2969,
-      "m-0": "55% off",
-      "price2":  5990,
-      "rating__stars": "5.0",
-      "rating__caption": "1 review",
-      "visually-hidden 3": "ADD",
-      "product-item__quick-buy-button 2": "Add to cart",
-      "visually-hidden 4": "ADD",
-      "feature": "",
-      "feature2": "",
-      "feature3": ""
-    },
+    
     {
       "priority": "BT Calling",
       "priority 2": "",
@@ -2742,28 +2696,7 @@
         "BIS_trigger": "",
         "BIS_trigger href": ""
       },
-      {
-        "priority": "lowest-price",
-        "id":"124",
-        "category":"speaker",
-        "product-item__aspect-ratio href": "https://www.boat-lifestyle.com/products/party-pal-20",
-        "product_item_primary_image": "https://cdn.shopify.com/s/files/1/0057/8938/4802/products/81mSVnYiRCL._SL1500-PhotoRoom.png-PhotoRoom_300x.png?v=1676920871",
-        "product_item__secondary_image": "",
-        "product_item_meta__title": "Party Pal 20",
-        "price":  2999
-  ,
-        "m-0": "45% off",
-        "price2":  5490,
-        "rating__stars": "4.9",
-        "rating__caption": "20 reviews",
-        "loader-button__text": "Add to cart",
-        "visually-hidden 3": "+ Add to cart",
-        "product-item__quick-buy-button 2": "",
-        "visually-hidden 4": "",
-        "label": "",
-        "BIS_trigger": "",
-        "BIS_trigger href": ""
-      },
+      
       {
         "priority": "lowest-price",
         "id":"125",
@@ -2940,28 +2873,7 @@
         "BIS_trigger": "",
         "BIS_trigger href": ""
       },
-      {
-        "priority": "",
-        "id":"133",
-        "category":"speaker",
-        "product-item__aspect-ratio href": "https://www.boat-lifestyle.com/products/party-pal-23",
-        "product_item_primary_image": "https://cdn.shopify.com/s/files/1/0057/8938/4802/products/81mSVnYiRCL._SL1500-PhotoRoom.png-PhotoRoom_951b47d0-093f-4244-9b1b-cc641ca7fac6_300x.png?v=1676920899",
-        "product_item__secondary_image": "https://cdn.shopify.com/s/files/1/0057/8938/4802/products/BAttery_426022d3-9676-405c-bc36-c4892c90b60b_300x.jpg?v=1676920899",
-        "product_item_meta__title": "Party Pal 23",
-        "price":  3900
-  ,
-        "m-0": "44% off",
-        "price2":  5490,
-        "rating__stars": "Be the first to review",
-        "rating__caption": "",
-        "loader-button__text": "Add to cart",
-        "visually-hidden 3": "+ Add to cart",
-        "product-item__quick-buy-button 2": "",
-        "visually-hidden 4": "",
-        "label": "",
-        "BIS_trigger": "",
-        "BIS_trigger href": ""
-      },
+      
       {
         "priority": "",
         "id":"134",
