@@ -13,8 +13,8 @@ import {
     ModalFooter,
     ModalCloseButton
   } from "@chakra-ui/react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../../redux/authReducer/auth.action";
   
 
@@ -24,31 +24,52 @@ import { loginAction } from "../../redux/authReducer/auth.action";
     const [val,setVal] = useState({})
     const dispatch = useDispatch()
     const { isOpen, onOpen, onClose } = useDisclosure();
-
+    const {isAuth,msg} = useSelector((store)=>store.authManager)
     const handleChange = (e)=>{
       const {name,value} = e.target
 
       setVal({...val,[name]:value})
     }
     console.log(val)
+    console.log("1")
+    useEffect(()=>{
+      if(isAuth){
+        toast({
+          title: "Welcome",
+          description: msg,
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      }else{
+        toast({
+          title: "Login Failed",
+          description: msg,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+      console.log("2")
+    },[isAuth])
+
+    useEffect(()=>{
+      
+    })
+
+    console.log("3")
     const handlelLogin = (e) => {
       dispatch(loginAction(val))
       
 
       e.preventDefault();
-      toast({
-        title: "Welcome",
-        description: "You are now logged in.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
+      
       onClose();
     };
   
     return (
       <>
-        <Button variantColor="teal" onClick={onOpen}>
+        <Button variantcolor="teal" onClick={onOpen}>
           Login
         </Button>
   
@@ -86,7 +107,7 @@ import { loginAction } from "../../redux/authReducer/auth.action";
             </ModalBody>
   
             <ModalFooter>
-              <Button variantColor="teal" backgroundColor={"Black"} color={"white"} mr={3} onClick={handlelLogin}>
+              <Button variantcolor="teal" backgroundColor={"Black"} color={"white"} mr={3} onClick={handlelLogin}>
                 Login
               </Button>
               

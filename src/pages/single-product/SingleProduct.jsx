@@ -3,21 +3,17 @@ import {
   Button,
   Flex,
   Image,
-  ListItem,
   Tag,
   Text,
-  UnorderedList,
   Badge,
   Stack,
   useToast,
 } from "@chakra-ui/react";
-//import Store from "material-react-icons/Store"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import DetailHeader from "../../components/Revati_components/DetailHeader";
-import { AiFillCaretRight, AiFillTablet, AiFillTag } from "react-icons/ai";
+import {  AiFillTag } from "react-icons/ai";
 import { useEffect, useState } from "react";
-import { Input } from "material-react-icons";
 import { getSingleData } from "../../redux/product/product.action";
 import { TrendingSlider } from "../../components/Revati_components/slider";
 import { BsBag } from "react-icons/bs";
