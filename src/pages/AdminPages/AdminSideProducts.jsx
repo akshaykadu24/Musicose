@@ -1,16 +1,16 @@
 import { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
 import "../AdminStyles/AdminSideProducts.css";
-import { getProducts } from "../../redux/adminReducer/action";
-import { AdminSideNavbar } from "../AdminPages/AdminSideNavbar";
-import { AdminSideSingleProductPage } from "./AdminSideSingleProductPage";
-import error from "../AdminAssets/serverError.gif";
+
+import loadingImg from "../AdminAssets/adminloading.gif"
+import errorImg from "../AdminAssets/serverError.gif";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../../redux/adminReducer/admin.action";
+import { Heading, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
+import AdminMapProductBox from "./AdminMapProductBox";
 
 const AdminSideProducts = () => {
-//   const dispatch = useDispatch();
-//   const products = useSelector((store) => store.adminReducer.products);
-//   const Loading = useSelector((store) => store.adminReducer.isLoading);
-//   const IsError = useSelector((store) => store.adminReducer.isError);
+  const dispatch = useDispatch();
+  const {products,Loading,Error} = useSelector((store) => store.adminManager);
 
 //   useEffect(() => {
 //     if (products.length === 0) {
@@ -18,14 +18,20 @@ const AdminSideProducts = () => {
 //     }
 //   }, [products.length, dispatch]);
 
+  useEffect(()=>{
+    dispatch(getProducts())
+
+  },[])
+  console.log(products)
+
   return (
     <div>
       <div>
         <div className="product_heading">Musicose Product Items</div>
       </div>
-      <div className="adminProductContainer">
+      <div >
         <div>
-          <AdminSideNavbar />
+          {/* <AdminSideNavbar /> */}
         </div>
         {Loading ? (
           <div
@@ -43,7 +49,7 @@ const AdminSideProducts = () => {
                   width: "50%",
                   margin: "auto",
                 }}
-                // src={loading}
+                src={loadingImg}
                 alt="loading..."
               />
               <h1
@@ -64,7 +70,7 @@ const AdminSideProducts = () => {
           <></>
         )}
 
-        {IsError ? (
+        {Error ? (
           <div
             style={{
               display: "flex",
@@ -81,7 +87,7 @@ const AdminSideProducts = () => {
                   width: "50%",
                   margin: "auto",
                 }}
-                src={error}
+                src={errorImg}
                 alt="Server error...!"
               />
               <h1
@@ -101,33 +107,36 @@ const AdminSideProducts = () => {
         ) : (
           <></>
         )}
-        <div className="admin_products_grid_container">
-          {products.length ? (
-            products.map((item) => {
-              return (
-                <AdminSideSingleProductPage
-                  id={item._id}
-                  title={item.product_item_meta__title}
-                  Image={item.product_item__primary_image}
-                  Image2={item.product_item__secondary_image}
-                  price={item.price}
-                  price2={item.price2}
-                  category={item.category}
-                  offers={item.offers}
-                  mrp={item.mrp}
-                  feature={item.feature}
-                  feature2={item.feature2}
-                  feature3={item.feature3}
-                />
-              );
-            })
-          ) : (
-            <></>
-          )}
+        <div >
+                <Table  >
+                  <Thead>
+                    <Tr>
+                      <Th><Heading size={["xs","md"]}>Image</Heading></Th>
+                      <Th><Heading size={["xs","md"]}>Title</Heading></Th>
+                      <Th><Heading size={["xs","md"]}>Offer Price</Heading></Th>
+                      <Th><Heading size={["xs","md"]}>MRP Price</Heading></Th>
+                      <Th><Heading size={["xs","md"]}>Category</Heading></Th>
+                      <Th><Heading size={["xs","md"]}>Feature</Heading></Th>
+                      <Th><Heading size={["xs","md"]}  >UPDATE</Heading></Th>
+                      <Th><Heading size={["xs","md"]}  >DELETE</Heading></Th>
+
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                      {products.length ? (
+                        products.map((el) => {
+                          return (
+                                  <AdminMapProductBox  key={el._id}  el={el}  />
+                          );
+                        })) : (
+                            <>No Data available</>
+                        )}
+                  </Tbody>
+                  </Table>  
         </div>
       </div>
     </div>
   );
 };
 
-export { AdminSideProducts };
+export  default AdminSideProducts ;
