@@ -33,6 +33,7 @@ const cartReducer = (state=initialState,{type,payload})=>{
         case GET_CART : {
             return {
                 ...state,
+                loading:false,
                 cart : payload
             }
         }

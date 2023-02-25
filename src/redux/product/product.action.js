@@ -41,7 +41,7 @@ export const sortMydata = (how) => (dispatch) => {
     dispatch({ type : GET_PRODUCTS_LOADING });
     try{
         let res = await axios.get(`https://crowded-plum-horse.cyclic.app/allProducts/${id}`)
-        console.log(res.data)
+        //console.log(res.data)
         dispatch({type:GET_SINGLE_PRODUCT_SUCCESS,payload:res.data})
 
     }catch(error){

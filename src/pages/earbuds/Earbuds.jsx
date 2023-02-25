@@ -17,17 +17,20 @@ import {
   Center,
   Wrap,
   Heading,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { StarIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { getearbudproduct } from "../../redux/product/product.action";
+import { getearbudproduct, getSingleData } from "../../redux/product/product.action";
 import { BsFillFilterSquareFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import ProductHeader from "../../components/Revati_components/ProductHeader";
 import SideBar from "../../components/Revati_components/SideBar";
 import axios from "axios";
 import Products_box from "../../components/Revati_components/Products_box";
+import { addCart, getCartItems } from "../../redux/cart/cart.action";
+//import { store } from "../../redux/store";
 
 const EarbudProducts = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -43,6 +46,7 @@ const EarbudProducts = () => {
   const [descending, setDescending] = useState("");
   const [alphasort, setAlphasort] = useState([]);
   const navigate = useNavigate()
+  
 
   if (sort == "pop-desc") {
     setSort("");
@@ -50,68 +54,31 @@ const EarbudProducts = () => {
   }
 
   const dispatch = useDispatch();
+
   const products = useSelector((store) => {
     return store.productManager
   });
   console.log(products.data);
+  console.log("revati")
+
+  
 
   useEffect(() => {
-    dispatch(
-      getearbudproduct(
-        search,
-        low,
-        high,
-        sort,
-        popularity,
-        alphabet,
-        ascending,
-        descending
-      )
-    );
+    dispatch(getearbudproduct( search,low,high,sort,popularity,alphabet,ascending,descending));
+    
   }, [search, low, high, sort, popularity, alphabet, ascending, descending]);
 
-  // const handleClick=()=>{
-
-  //     dispatch(addCart({...product}));
-  //     toast({
-  //       title: 'Add to Cart.',
-  //       description: "Item added to Cart Successfully.",
-  //       status: 'success',
-  //       duration: 3000,
-  //       isClosable: true,
-  //       position:"top"
-  //     })
-  // }
-
- // let exist = false;
-
-  // cartItems.forEach((e)=>{
-  //   if(e.id==id){
-  //  exist=true;
   
-  //   }
-  // })
-
 
   
 
   return (
+
+    
     <>
-     
-      
-       
-      <Center py={12} backgroundColor={"rgb(245,245,245)"} >
-
-      
-
-      <Wrap spacing={"80px"} width={"90%"} justify="center">
-
-      <ProductHeader
-            products={products}
-            search={search}
-            setSearch={setSearch}
-            sort={sort}
-            setSort={setSort}
+     <Center py={12} backgroundColor={"rgb(245,245,245)"} >
+       <Wrap spacing={"80px"} width={"90%"} justify="center">
+         <ProductHeader products={products} search={search} setSearch={setSearch} sort={sort}setSort={setSort}
             popularity={popularity}
             setPopularity={setPopularity}
             ascending={ascending}
@@ -136,9 +103,9 @@ const EarbudProducts = () => {
 
             {products.data.length > 0 &&
               products.data?.map((e, i) => ( 
-              <Link to={`/products/${e.id}`} >
+              //  <Link to={`/products/${e.id}`} >
                 <Products_box e={e}/>
-                </Link>
+                //  </Link>
               ))}
           </Box>
         </Wrap>
