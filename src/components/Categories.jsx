@@ -12,13 +12,14 @@ export function Categories() {
         boxSize="border-box"
         border={"1px solid lightgrey"}
         position="absolute"
-        top="100px"
+        top="58px"
+        left={"20px"}
         p="40px"
         alignItems={"center"}
         listStyleType={"none"}
         bg="white"
       >
-        <Grid templateColumns="repeat(2, 1fr)" alignItems={"center"} gap={6}>
+        <Grid templateColumns="repeat(2, 1fr)" alignItems={"center"} gap={5}>
           <GridItem>
             <Link to={"#"}>
               <Image

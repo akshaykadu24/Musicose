@@ -36,7 +36,7 @@ export default function Gifcarousel() {
             allowFullScreen
           />
         </SwiperSlide>
-        <SwiperSlide>
+        {/* <SwiperSlide>
           <Iframe
             src="https://giphy.com/embed/gnbMNq43THFAXsukem"
             width="840"
@@ -55,7 +55,7 @@ export default function Gifcarousel() {
             class="giphy-embed"
             allowFullScreen
           />
-        </SwiperSlide>
+        </SwiperSlide> */}
       </Swiper>
     </>
   );

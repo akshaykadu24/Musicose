@@ -36,7 +36,7 @@ export function Dailydeals() {
                 textAlign={"center"}
                 cursor={"pointer"}
               >
-                SAIL WITH boAt
+                Daily Deals
               </Text>
             </Stack>
             <Spacer />
