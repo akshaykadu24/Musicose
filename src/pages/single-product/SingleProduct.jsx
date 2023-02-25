@@ -7,6 +7,7 @@ import {
   Text,
   Badge,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,22 +18,30 @@ import { getSingleData } from "../../redux/product/product.action";
 import { TrendingSlider } from "../../components/Revati_components/slider";
 import { BsBag } from "react-icons/bs";
 import { MdLocalShipping } from "react-icons/md";
+import { addCart, getCartItems } from "../../redux/cart/cart.action";
 
 const SingleProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [pincode, setPincode] = useState("");
+  const toast = useToast();
 
   const dispatch = useDispatch();
 
   const product = useSelector((store) => {
     return store.productManager.product;
   });
+  //console.log(product)
+
+  const cartItems = useSelector((store) => {
+    return store.cart.cart;
+  });
+  console.log(cartItems);
 
   useEffect(() => {
     dispatch(getSingleData(id));
 
-    // dispatch(getCartItems());
+    dispatch(getCartItems());
   }, []);
 
   let exist = false;
@@ -44,21 +53,16 @@ const SingleProduct = () => {
   //    })
 
   const handleClick = () => {
-    //   dispatch(addCart({...product}));
-    //   toast({
-    //     title: 'Add to Cart.',
-    //     description: "Item added to Cart Successfully.",
-    //     status: 'success',
-    //     duration: 3000,
-    //     isClosable: true,
-    //     position:"top"
-    //   })
+    dispatch(addCart({ ...product }));
+    toast({
+      title: "Add to Cart.",
+      description: "Item added to Cart Successfully.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+      position: "top",
+    });
   };
-
-  const handlePincode = (e) => {
-    setPincode(e.target.value);
-  };
-  //console.log(pincode)
 
   return (
     <>
@@ -72,7 +76,7 @@ const SingleProduct = () => {
           flex={{ xl: "0.5", lg: "0.6" }}
           p={{ xl: "25px", lg: "25px 10px", md: "25px", base: "25px" }}>
           <Image
-            fallbackSrc="https://www.shutterstock.com/image-vector/not-available-grunge-rubber-stamp-260nw-549465931.jpg"
+            fallbackSrc="https://static.vecteezy.com/system/resources/thumbnails/008/034/405/small/loading-bar-doodle-element-hand-drawn-vector.jpg"
             m={{ lg: "0px", base: "auto" }}
             w="100%"
             maxW={{ lg: "100%", base: "350px" }}
@@ -115,7 +119,7 @@ const SingleProduct = () => {
                   </Text>
                 </Box>
                 <Box display="flex" alignItems="center">
-                  <Tag >{product.discount}</Tag>
+                  <Tag>{product.discount}</Tag>
                 </Box>
               </Box>
             </Box>
@@ -230,7 +234,7 @@ const SingleProduct = () => {
             </Box>
 
             <Badge
-              w={{ base: "90%", sm: "100%", lg: "100%", xl: "100%" }}
+              w={{ base: "90%", sm: "100%", lg: "100%" }}
               borderRadius="full"
               p={2}
               px="2"
@@ -256,20 +260,6 @@ const SingleProduct = () => {
                 flex={{ md: "0.2", base: "0.3" }}
                 display={{ md: "flex", base: "none" }}></Box>
             </Box>
-
-            {/* <Box display="flex"   >
-        <Box flex={{xl:"0.15",lg:"0.2",md:"0.2",base:"0.25"}}></Box>
-        <Box flex="1" >
-        <Box>
-         <UnorderedList>
-          <ListItem fontSize={{md:"16px",base:"13px"}}>Delivery in 4-6 days</ListItem>
-          <ListItem fontSize={{md:"16px",base:"13px"}} >Cash on Delivery also available for this location</ListItem>
-         </UnorderedList>
-        </Box>
-        </Box>
-        
-        <Box flex={{md:"0.2",base:"0.3"}} display={{md:"flex",base:"none"}} ></Box>
-       </Box> */}
           </Box>
         </Box>
       </Box>
@@ -277,13 +267,13 @@ const SingleProduct = () => {
       <Box>
         <Image
           w={{ sm: "100%", lg: "100%", xl: "100%" }}
-         src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/AD175-web_718c99fd-75ff-45bb-b448-4166822698c3.png?v=1653473462"/>
+          src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/AD175-web_718c99fd-75ff-45bb-b448-4166822698c3.png?v=1653473462"
+        />
       </Box>
 
       <Box>
         <TrendingSlider />
       </Box>
-      
     </>
   );
 };
