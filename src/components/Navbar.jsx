@@ -91,8 +91,8 @@ function Navbar() {
                 padding={"15px"}
                 width={"200px"}
                 marginLeft={"20px"}
-                marginTop={"-10px"}
-                marginBottom={"-10px"}
+                // marginTop={"-10px"}
+                // marginBottom={"-10px"}
                 src={"logo.png"}
                 alt="musicose"
               />
@@ -118,7 +118,7 @@ function Navbar() {
                 {show && <Categories />}
               </ListItem>
 
-              <Link to={"/sailwithboAt"}>
+              <Link to={"/Watch"}>
                 <ListItem
                   cursor="pointer"
                   p={"10px 5px"}
@@ -143,7 +143,8 @@ function Navbar() {
                 _hover={{ textDecoration: "underline" }}
                 fontSize={{ base: "13px", sm: "14px", md: "14px", lg: "15px" }}
               >
-                More <ChevronDownIcon />
+                About 
+                {/* <ChevronDownIcon /> */}
                 {/* {menu && <MenuDrop />} */}
               </ListItem>
             </HStack>

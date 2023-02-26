@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, useToast } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../Styles/payment.css";
 import { useState } from "react";
 
@@ -90,10 +90,12 @@ const Checkout = () => {
           required
           onChange={(e) => setPincode(e.target.value)}
         />
-
+        <Link to='/payment'>
         <button className="checkoutBtn" onClick={handleCheckOut}>
+          
           Submit
         </button>
+          </Link>
       </Box>
     </Box>
   );

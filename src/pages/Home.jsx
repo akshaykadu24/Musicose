@@ -3,6 +3,7 @@ import Carousel from "../components/Carousel";
 import { Dailydeals } from "../components/Dailydeals";
 import Footer from "../components/Footer";
 import Gifcarousel from "../components/Gifcarousel";
+import Gifs from "../components/Gifs";
 import Landingcarousel from "../components/Landingcarousel";
 // import { Dailydeals } from "../components/Dailydeals";
 // import Header from "../components/Header";
@@ -16,7 +17,8 @@ const Home = () => {
       <Dailydeals />
       <Landingcarousel />
       <Gifcarousel />
-      <Footer />
+      <Gifs/>
+      <Dailydeals />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AllRoutes from './all-routes/AllRoutes';
 import './App.css'
 import './App.css';
+import Footer from './components/Footer';
 
 import Navbar from './components/Navbar';
 import NavbarLoggedIn from './components/NavbarLoggedIn';
@@ -35,7 +36,7 @@ function App() {
  
       
       <AllRoutes/>
-      
+      <Footer />
     </div>
   );
 }

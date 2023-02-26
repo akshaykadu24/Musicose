@@ -24,10 +24,10 @@ const Footer = () => {
           <div className="sendEmailBox">
             <div className="footerLogo">
               <img
-                w="90px"
-                // height="70px"
-                // src={logo}
-                alt="boAt"
+                w="200px"
+                height="70px"
+                src={"musicose.png"}
+                alt="musicose"
                 borderRadius={10}
               />
             </div>

@@ -184,7 +184,7 @@ const ProductCart = () => {
                   return (
                     <Tr
                       boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
-                      key={ele.id}>
+                      key={ele._id}>
                       <Td fontSize={"xs"} fontWeight="bold" w="15%" p="5px">
                         <Image src={ele.product_item__primary_image} w="100%" />
                       </Td>
@@ -315,7 +315,7 @@ const ProductCart = () => {
                 bgColor="#004d3d"
                 color="white"
                 onClick={() => {
-                  navigate("/payment");
+                  navigate("/checkout");
                 }}>
                 Checkout
               </Button>

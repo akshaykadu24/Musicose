@@ -18,6 +18,9 @@ import Speaker from '../pages/earbuds/Speaker';
 import Watch from '../pages/earbuds/Watch';
 import BluetoothHeadphone from '../pages/earbuds/BluetoothHeadphone';
 import SingleProduct from '../pages/single-product/SingleProduct';
+import Checkout from '../pages/Payment/Checkout';
+import OTPGenerator from '../pages/Payment/OTPGenerator';
+import Payments from '../pages/Payment/payments';
 
 const AllRoutes = ()=>{
    return(
@@ -35,6 +38,11 @@ const AllRoutes = ()=>{
             <Route path={"/bluetoothHeadphone"} element={ <BluetoothHeadphone/> }></Route>
             <Route path={"/watch"} element={ <Watch/> }></Route>
             <Route path='/products/:id' element={<SingleProduct/>}></Route>
+            <Route path='/checkout' element={<Checkout/>}></Route>
+            <Route path='/payment' element={<Payments/>}></Route>
+            <Route path='/OTPGenerator' element={<OTPGenerator/>}></Route>
+
+
 
             {/*///////////////////////  private routes  /////////////////////////////  */}
 
