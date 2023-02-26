@@ -10,7 +10,7 @@ const DetailHeader = ({product}) => {
      <Box display="flex"  >
        <Box flex="1"   display="flex" alignItems="center" 
             mt={{xl:"30px",lg:"30px"}} >
-          <Heading size={{md:"md",base:"xs"}} >{product.title} </Heading>
+          <Heading size={{md:"md",base:"xs"}} >{product.product_item_meta__title} </Heading>
        </Box>
        <Box flex={{xl:"0.3",lg:"0",md:"0.2",base:"0"}} ></Box>
 
@@ -25,12 +25,12 @@ const DetailHeader = ({product}) => {
                         boxSize={4}
                         key={i}
                         color={
-                          i < Math.floor(product.rating) ? "yellow.400" : "gray.300"
+                          i < Math.floor(product.rating__stars) ? "yellow.400" : "gray.300"
                         }
                       />
                     ))}
                   <Box as="span"  ml="2" color="#9FAECA" fontSize="md">
-                    ({product.rating})
+                    ({product.rating__stars})
                   </Box>
         </Box>
     </Box>
