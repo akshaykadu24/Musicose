@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, useToast } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Payments = () => {
   const [userName, setUserName] = useState("");
@@ -73,9 +73,12 @@ const Payments = () => {
           onChange={(e) => setExpiry(e.target.value)}
           required
         />
+        <Link to={"/OTPGenerator"}>
+
         <button className="checkoutBtn" onClick={otpSend}>
           Submit
         </button>
+        </Link>
       </Box>
     </Box>
   );

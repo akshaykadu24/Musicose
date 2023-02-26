@@ -220,12 +220,13 @@ function NavbarLoggedIn({setAdminBar}) {
             </Box>
 
             <Box fontSize={"20px"}  >
-              
+              <Link to={"/productCart"}>
               <IoMdCart 
               fontSize="30px"
                 cursor={"pointer"}
                 onClick={() => setCartShow(!cartShow)}
               />
+              </Link>
             </Box>
           </HStack>
 

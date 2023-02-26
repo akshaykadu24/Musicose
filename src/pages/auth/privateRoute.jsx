@@ -7,10 +7,10 @@ const PrivateRoute = ({children}) => {
     let token = JSON.parse(localStorage.getItem("token"))
     console.log(token)
     if(token){
-      console.log("akl")
+      console.log("auth checking")
     }
     if(!isAuth && !token){
-        return <Navigate to={"/login"}/>
+        return <Navigate to={"/"}/>
     }
   return (children)
 }

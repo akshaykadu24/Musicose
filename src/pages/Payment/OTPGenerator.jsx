@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Box, useToast } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../Styles/payment.css";
 import { useState } from "react";
 
@@ -58,9 +58,11 @@ const OTPGenerator = () => {
           onChange={(e) => setOtp(e.target.value)}
           required
         />
+        <Link to={"/"}>
         <button onClick={handleOtp} className="checkoutBtn">
           Submit
         </button>
+        </Link>
       </Box>
     </Box>
   );

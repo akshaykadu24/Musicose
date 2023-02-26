@@ -315,7 +315,7 @@ const ProductCart = () => {
                 bgColor="#004d3d"
                 color="white"
                 onClick={() => {
-                  navigate("/payment");
+                  navigate("/checkout");
                 }}>
                 Checkout
               </Button>
