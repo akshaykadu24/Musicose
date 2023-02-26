@@ -17,8 +17,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteCart, getCartItems } from "../../redux/cart/cart.action";
-let api = "https://crowded-plum-horse.cyclic.app/cart";
+import { deleteCart, getCartItems, updateCart } from "../../redux/cart/cart.action";
+let api = "http://localhost:8080/cart";
 
 const ProductCart = () => {
   const [quant, setQuant] = useState(0);
@@ -63,31 +63,38 @@ const ProductCart = () => {
 
 
   const removeProduct = (id) => {
+    console.log("ok")
+    console.log(id)
     dispatch(deleteCart(id));
+    
     setCount((prev) => prev + 1);
 
-    setTimeout(() => {
-      dispatch(getCartItems);
-      window.location.reload();
-    }, 500);
+   // setTimeout(() => {
+     // dispatch(getCartItems);
+     // window.location.reload();
+   // }, 500);
   };
 
   let handleInc = async (id, price, quantity) => {
-    let res = await fetch(`${api}/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify({ quantity: quantity + 1 }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        res.json()
-        window.location.reload();
-      })
-      .then((res) => {
-        console.log(res);
+    // let res = await fetch(`${api}/${id}`
+    // , {
+    //   method: "PATCH",
+    //   body: JSON.stringify({ quantity: quantity + 1 }),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // }
+    // )
+    //   .then((res) => {
+    //     res.json()
+    //    window.location.reload();
+    //  })
+    //  .then((res) => {
+    //    console.log(res);
         
-      });
+    //  });
+
+     dispatch(updateCart(id,quantity))
     console.log(id, api);
 
     //setRefresh(refresh)
@@ -97,16 +104,18 @@ const ProductCart = () => {
     if (quantity == 1) {
       removeProduct(id);
     } else {
-      let res = await fetch(`${api}/${id}`, {
-        method: "PATCH",
-        body: JSON.stringify({ quantity: quantity - 1 }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      let res = await fetch(`${api}/${id}`
+      // , {
+      //   method: "PATCH",
+      //   body: JSON.stringify({ quantity: quantity - 1 }),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // }
+      )
         .then((res) => {
           res.json()
-          window.location.reload();
+         // window.location.reload();
         })
         .then((res) => {
           console.log(res);
@@ -170,14 +179,14 @@ const ProductCart = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {cartItems &&
-                cartItems.map((ele) => {
+              {
+                cartItems.products?.map((ele) => {
                   return (
                     <Tr
                       boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
                       key={ele.id}>
                       <Td fontSize={"xs"} fontWeight="bold" w="15%" p="5px">
-                        <Image src={ele.images} w="100%" />
+                        <Image src={ele.product_item__primary_image} w="100%" />
                       </Td>
                       <Td
                         fontSize={"xs"}
@@ -189,7 +198,7 @@ const ProductCart = () => {
                           flexDirection="column"
                           justifyContent={"space-between"}>
                           <Box mb="20px">
-                            <Text>{ele.title}</Text>
+                            <Text>{ele.product_item_meta__title}</Text>
                           </Box>
                         </Box>
                       </Td>
@@ -204,7 +213,7 @@ const ProductCart = () => {
                           justifyContent={"flex-start"}>
                           <Text>₹{ele.price * ele.quantity}.00</Text>
                           <Text color={"gray"} textDecoration={"line-through"}>
-                            ₹{ele.strike_price * ele.quantity}.00
+                            ₹{ele.price2 * ele.quantity}.00
                           </Text>
                         </Box>
                       </Td>
@@ -220,7 +229,7 @@ const ProductCart = () => {
                           <span
                             style={{ cursor: "pointer" }}
                             onClick={() =>
-                              handleDec(ele.id, ele.price, ele.quantity)
+                              handleDec(ele._id, ele.price, ele.quantity)
                             }>
                             -
                           </span>
@@ -230,7 +239,7 @@ const ProductCart = () => {
                           <span
                             style={{ cursor: "pointer" }}
                             onClick={() =>
-                              handleInc(ele.id, ele.price, ele.quantity)
+                              handleInc(ele._id, ele.price, ele.quantity)
                             }>
                             +
                           </span>
@@ -240,7 +249,7 @@ const ProductCart = () => {
                           <Button
                             color={"white"}
                             bgColor="#004d3d"
-                            onClick={() => removeProduct(ele.id)}
+                            onClick={() => removeProduct(ele._id)}
                             w={{ lg: "100%", md: "100%", sm: "100%" }}
                             size="xs"
                             mt={{ lg: "70px" }}

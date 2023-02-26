@@ -25,26 +25,28 @@ const SingleProduct = () => {
   const navigate = useNavigate();
   const [pincode, setPincode] = useState("");
   const toast = useToast();
+  //console.log(id)
 
   const dispatch = useDispatch();
 
   const product = useSelector((store) => {
     return store.productManager.product;
   });
-  //console.log(product)
+  console.log(product)
 
   const cartItems = useSelector((store) => {
     return store.cart.cart;
   });
-  console.log(cartItems);
+  //console.log(cartItems);
 
   useEffect(() => {
     dispatch(getSingleData(id));
+    console.log(id)
 
     dispatch(getCartItems());
   }, []);
 
-  let exist = false;
+  //let exist = false;
   //      cartItems.forEach((e)=>{
   //     if(e.id==id){
   //      exist=true;
@@ -80,7 +82,7 @@ const SingleProduct = () => {
             m={{ lg: "0px", base: "auto" }}
             w="100%"
             maxW={{ lg: "100%", base: "350px" }}
-            src={product.images}
+            src={product.product_item__primary_image}
           />
         </Box>
 
@@ -100,7 +102,7 @@ const SingleProduct = () => {
                 </span>
                 <span style={{ textDecoration: "line-through" }} color="teal">
                   {" "}
-                  {product.strike_price}
+                  {product.price2}
                 </span>
                 <span
                   className="taxes"
@@ -118,9 +120,9 @@ const SingleProduct = () => {
                     RS. {product.price}
                   </Text>
                 </Box>
-                <Box display="flex" alignItems="center">
+                {/* <Box display="flex" alignItems="center">
                   <Tag>{product.discount}</Tag>
-                </Box>
+                </Box> */}
               </Box>
             </Box>
 

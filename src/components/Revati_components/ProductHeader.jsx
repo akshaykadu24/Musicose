@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
  // console.log(alphasort)
 
 
-const ProductHeader = ({products,search,setSearch,sort,setSort,popularity,setPopularity}) => {
+const ProductHeader = ({products,search,setSearch,sort,setSort,category}) => {
 
     const [reset, setReset] = useState(false);
     const dispatch = useDispatch();
@@ -26,26 +26,15 @@ const ProductHeader = ({products,search,setSearch,sort,setSort,popularity,setPop
   const handleChange = (e) => {
     const { value } = e.target;
     console.log(value);
-    if (value == "reset") {
-      setReset((previous) => !previous);
-      return;
-    }
+    // if (value == "reset") {
+    //   setReset((previous) => !previous);
+    //   return;
+    // }
     dispatch(sortMydata(value));
-    dispatch(handleSortAlpha(value))
+    dispatch(handleSortAlpha(value,category))
   };
 
-  console.log(products.data)
-
-
-  // const handleChanged = (e) => {
-  //   const { value } = e.target;
-  //    console.log(value);
-   
-  //    dispatch(sortMydatas(value));
-  //   dispatch(handleSortAlpha(value))
-
-    
-  // };
+  
   
 
   return (
