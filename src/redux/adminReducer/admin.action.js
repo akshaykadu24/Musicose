@@ -21,7 +21,7 @@ const getUsers = () => (dispatch) => {
       }
     }).then((res=>{
       console.log(res)
-      dispatch({type:GET_USERS_SUCCESS,payload:res.data})
+      
       res.data.msg==undefined? console.log(res) :alert(res.data.msg)
     })).catch(err=>{
       dispatch({type:GET_USERS_FAILURE,payload:err})
@@ -67,13 +67,23 @@ const getProducts = () => (dispatch) => {
       }
     })).then(res=>{
       console.log(res)
-      // let filt =
-      dispatch({type:GET_PRODUCTS_SUCCESS,payload:res.data.products   })
+      let use = JSON.parse(localStorage.getItem("user"))
+      console.log(use)
+      let filt
+      if(use=="63f62622ef17e26786936ac3"){
+        filt = res.data.products.filter((el)=>el.user==use)
+        
+      }else{
+        filt = res.data.products
+      }
+      console.log(filt)
+      dispatch({type:GET_PRODUCTS_SUCCESS,payload:filt })
       res.data.msg==undefined? console.log(res) :alert(res.data.msg)
       
     }).catch(err=>{
       console.log(err)
-      alert(err.data.msg)
+      dispatch({type:GET_PRODUCTS_FAILURE,payload:err})
+      alert(err)
     })
 };
 

@@ -9,7 +9,7 @@ const cartCreateMiddleware = async(req,res,next)=>{
         product_item_meta__title:  data.product_item_meta__title,
         product_item__primary_image:  data.product_item__primary_image,
         product_item__secondary_image:  data.product_item__secondary_image,
-        caterogy:  data.caterogy,
+        category:  data.category,
         price:  data.price,
         price2:  data.price2,
         feature:  data.feature,
