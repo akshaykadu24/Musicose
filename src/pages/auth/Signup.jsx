@@ -13,7 +13,8 @@
     ModalBody,
     ModalFooter,
     ModalCloseButton,
-    Select
+    Select,
+    Text
   } from "@chakra-ui/react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -50,9 +51,9 @@ import { signupAction } from "../../redux/authReducer/auth.action";
   
     return (
       <>
-        <Button variantcolor="teal" onClick={onOpen}>
+        <Text fontSize={"18px"} variantcolor="teal" onClick={onOpen}>
           Signup
-        </Button>
+        </Text>
   
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />

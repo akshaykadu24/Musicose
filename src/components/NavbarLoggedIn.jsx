@@ -7,6 +7,10 @@ import {
   Image,
   Input,
   ListItem,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Stack,
   Text,
   UnorderedList,
@@ -21,14 +25,19 @@ import LoginPopup from "./LoginPopup";
 // import { CartPopup } from "./CartPopup";
 import "./Navbar.css";
 import { NavSlider } from "./NavSlider";
-import Login from "../pages/auth/Login";
-import Signup from "../pages/auth/Signup";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAction } from "../redux/authReducer/auth.action";
 
-function Navbar() {
+function NavbarLoggedIn({setAdminBar}) {
   const [login, setLogin] = useState(false);
   const [cartShow, setCartShow] = useState(false);
   const [show, setShow] = useState(false);
   const [menu, setMenu] = useState(false);
+  const {type} = useSelector((store=>store.authManager))
+  const localType = localStorage.getItem('token')
+    const dispatch = useDispatch()
+
+
 
   const cartCount = {
     height: "20px",
@@ -94,7 +103,7 @@ function Navbar() {
                 marginTop={"-10px"}
                 marginBottom={"-10px"}
                 src={"logo.png"}
-                alt="musicose"
+                alt="boAt"
               />
             </Link>
           </Box>
@@ -134,21 +143,6 @@ function Navbar() {
                 </ListItem>
               </Link>
 
-              {/* <Link to={"/offerZone"}>
-                <ListItem
-                  _hover={{ textDecoration: "underline" }}
-                  cursor="pointer"
-                  p={"10px 5px"}
-                  fontSize={{
-                    base: "13px",
-                    sm: "14px",
-                    md: "14px",
-                    lg: "15px",
-                  }}
-                >
-                  Offer Zone
-                </ListItem>
-              </Link> */}
 
               <ListItem
                 onMouseEnter={handleMenu}
@@ -205,26 +199,33 @@ function Navbar() {
             justify={"space-between"}
             align={"center"}
           >
-            {/* <Box>
-              <FaUser cursor={"pointer"} onClick={() => setLogin(!login)} />
-              {login ? <LoginPopup setLogin={setLogin} login={login} /> : null}
-            </Box> */}
             <Box>
-              <Login/>
+            {/* onClick={() => setLogin(!login)} */}
+              {/* {login ? <LoginPopup setLogin={setLogin} login={login} /> : null} */}
+
+              <Menu>
+                <MenuButton as={Text} rightIcon={<ChevronDownIcon />}>
+                    <FaUser cursor={"pointer"} fontSize="30px" />
+                </MenuButton>
+                <MenuList >
+                    {
+                                    type||localType=="admin"? <MenuItem onClick={()=>setAdminBar(true)}>Admin</MenuItem>: ""
+
+                    }
+                    
+                    <MenuItem onClick={()=>{dispatch(logoutAction)}}>Logout</MenuItem>
+                    
+                </MenuList>
+                </Menu>
             </Box>
 
-            <Box  >
-              <Signup/>
-            </Box>
-
-            <Box fontSize={"20px"}>
-            <Link to={"/productCart"}>
-              <IoMdCart
-              fontSize={"30px"}
+            <Box fontSize={"20px"}  >
+              
+              <IoMdCart 
+              fontSize="30px"
                 cursor={"pointer"}
                 onClick={() => setCartShow(!cartShow)}
               />
-              </Link>
             </Box>
           </HStack>
 
@@ -238,4 +239,4 @@ function Navbar() {
     </>
   );
 }
-export default Navbar;
+export default NavbarLoggedIn;

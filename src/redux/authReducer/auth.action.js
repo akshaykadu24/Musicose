@@ -21,6 +21,7 @@ export const loginAction = (payload) => (dispatch) => {
             if(res.data.token){
                 localStorage.setItem("token",JSON.stringify(res.data.token))
                 localStorage.setItem("user",JSON.stringify(res.data.user))
+                localStorage.setItem("user",JSON.stringify(res.data.type))
 
 
             }

@@ -11,7 +11,8 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-    ModalCloseButton
+    ModalCloseButton,
+    Text
   } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,9 +69,9 @@ import { loginAction } from "../../redux/authReducer/auth.action";
   
     return (
       <>
-        <Button variantcolor="teal" onClick={onOpen}>
+        <Text fontSize={"18px"} variantcolor="teal" onClick={onOpen}>
           Login
-        </Button>
+        </Text >
   
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
