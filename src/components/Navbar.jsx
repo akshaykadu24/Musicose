@@ -134,21 +134,6 @@ function Navbar() {
                 </ListItem>
               </Link>
 
-              {/* <Link to={"/offerZone"}>
-                <ListItem
-                  _hover={{ textDecoration: "underline" }}
-                  cursor="pointer"
-                  p={"10px 5px"}
-                  fontSize={{
-                    base: "13px",
-                    sm: "14px",
-                    md: "14px",
-                    lg: "15px",
-                  }}
-                >
-                  Offer Zone
-                </ListItem>
-              </Link> */}
 
               <ListItem
                 onMouseEnter={handleMenu}

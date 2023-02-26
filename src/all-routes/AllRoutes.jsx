@@ -13,21 +13,33 @@ import Signup from '../pages/auth/Signup';
 
 import EarbudProducts from '../pages/earbuds/Earbuds';
 import Home from '../pages/Home';
+import Headphone from '../pages/earbuds/Headphone';
+import Speaker from '../pages/earbuds/Speaker';
+import Watch from '../pages/earbuds/Watch';
+import BluetoothHeadphone from '../pages/earbuds/BluetoothHeadphone';
+import SingleProduct from '../pages/single-product/SingleProduct';
 
 const AllRoutes = ()=>{
    return(
     <div>
         <Routes>
 
-        <Route path="/" element={<Home />} />
-        <Route path='/earbudproduct' element={<EarbudProducts/>} ></Route>
-        {/* <Route path='/products/:id' element={<SingleProduct/>}></Route> */}
-        <Route path='/productCart' element={<PrivateRoute> <ProductCart/> </PrivateRoute>} ></Route>
+        <   Route path="/" element={<Home />} />
 
             <Route path={"/login"} element={<Login/>}></Route>
             <Route path={"/signup"} element={<Signup/>}></Route>
 
             <Route path={"/earbuds"} element={ <EarbudProducts/> }></Route>
+            <Route path={"/speaker"} element={ <Speaker/> }></Route>
+            <Route path={"/headphone"} element={ <Headphone/> }></Route>
+            <Route path={"/bluetoothHeadphone"} element={ <BluetoothHeadphone/> }></Route>
+            <Route path={"/watch"} element={ <Watch/> }></Route>
+            <Route path='/products/:id' element={<SingleProduct/>}></Route>
+
+            {/*///////////////////////  private routes  /////////////////////////////  */}
+
+            <Route path='/productCart' element={<PrivateRoute> <ProductCart/> </PrivateRoute>} ></Route>
+
             <Route path={"/adminAddProduct"} element={<PrivateRoute> <AdminSideAddProducts/> </PrivateRoute>}></Route>
             <Route path='/adminSideProducts' element={<PrivateRoute> <AdminSideProducts/> </PrivateRoute>}></Route>
             <Route path='/user' element={<PrivateRoute> <AdminUser/> </PrivateRoute> }></Route>
