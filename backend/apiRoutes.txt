@@ -7,6 +7,9 @@ for login              = http://localhost:8080/user/login
 
 for admin 
 
+get all users         =  http://localhost:8080/user
+delete user           =  http://localhost:8080/user/delete/id
+
 get all products      =  http://localhost:8080/adminProduct
 create data in admin  =  http://localhost:8080/adminProduct/create
 for update            =  http://localhost:8080/adminProduct/update/id
@@ -14,7 +17,8 @@ for delete            =  http://localhost:8080/adminProduct/delete/id
 
 for FrontEnd
 
-get all products      = http://localhost:8080/products
+get all products      =  http://localhost:8080/products
+get cart data         =  http://localhost:8080/cart
 add data in cart      =  http://localhost:8080/cart/create/id
 for update            =  http://localhost:8080/cart/update/id
 for delete            =  http://localhost:8080/cart/delete/id
