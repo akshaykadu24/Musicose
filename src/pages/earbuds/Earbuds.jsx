@@ -58,15 +58,16 @@ const EarbudProducts = () => {
   const products = useSelector((store) => {
     return store.productManager
   });
-  console.log(products.data);
-  console.log("revati")
+  // console.log(products.data.products);
+  // console.log("revati")
+
 
   
 
   useEffect(() => {
-    dispatch(getearbudproduct( search,low,high,sort,popularity,alphabet,ascending,descending));
+    dispatch(getearbudproduct( low,high,sort));
     
-  }, [search, low, high, sort, popularity, alphabet, ascending, descending]);
+  }, [ low, high, sort]);
 
   
 
@@ -78,15 +79,10 @@ const EarbudProducts = () => {
     <>
      <Center py={12} backgroundColor={"rgb(245,245,245)"} >
        <Wrap spacing={"80px"} width={"90%"} justify="center">
-         <ProductHeader products={products} search={search} setSearch={setSearch} sort={sort}setSort={setSort}
-            popularity={popularity}
-            setPopularity={setPopularity}
-            ascending={ascending}
-            setAscending={setAscending}
-            descending={descending}
-            setDescending={setDescending}
+         <ProductHeader products={products}  sort={sort}setSort={setSort} category={"earbuds"}
+            
           />
-      
+     
           <Box w={{ base: "75%", md: "85%", lg: "95%" }} display={"grid"}
             gridTemplateColumns={{
               base: "repeat(1,1fr)",
@@ -101,11 +97,12 @@ const EarbudProducts = () => {
           >
            
 
-            {products.data.length > 0 &&
-              products.data?.map((e, i) => ( 
-              //  <Link to={`/products/${e.id}`} >
+            {
+            // products.data.products.length > 0 &&
+              products.data.products?.map((e, i) => ( 
+              
                 <Products_box e={e}/>
-                //  </Link>
+                
               ))}
           </Box>
         </Wrap>

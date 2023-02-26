@@ -17,28 +17,31 @@ import { getSingleData } from '../../redux/product/product.action';
 
 
 const Products_box = ({e}) => {
-  //console.log(e)
+ // console.log(e)
   const toast = useToast();
   const dispatch = useDispatch();
-    let exist = false;
+    
+    
 
     
 
   return (
     <>
-    <Box key={e.id} display={{ lg: "flex", base: "block" }}
+    <Box key={e._id} display={{ lg: "flex", base: "block" }}
                 w="100%"
+               // w={{lg:""}}
                 m="auto"
                 mt="40px"
                 boxShadow="rgba(149, 157, 165, 0.2) 0px 8px 24px"
                 h="auto"
+                //border="1px solid red"
                
                 >
                  
                   <Box flex={{ xl: "0.5", lg: "0.6" }}
                         borderRadius="20px">
-                           <Link to={`/products/${e.id}`} >
-                    <Image src={e.images}  m="auto" width="200px" height="200px" alt="image"   />
+                           <Link to={`/products/${e._id}`} >
+                    <Image src={e.product_item__primary_image}  m="auto" width="200px" height="200px" alt="image"   />
                     </Link>
                   </Box>
                 
@@ -54,11 +57,11 @@ const Products_box = ({e}) => {
                    w={{lg:"170px",xl:"270px"}}
                   // ml={{base:"20px",md:"0px",lg:"10px",xl:"10px"}}
                    alignItems="center">
-                    <Link to={`/products/${e.id}`} >
-                    {e.title}
+                    <Link to={`/products/${e._id}`} >
+                    {e.product_item_meta__title}
                     </Link>
                   </Heading>
-                  <Link to={`/products/${e.id}`} >
+                  <Link to={`/products/${e._id}`} >
                   <HStack 
                   display="flex"
                    h="30px" 
@@ -72,13 +75,13 @@ const Products_box = ({e}) => {
                           <b fontSize="13px">Rs. {e.price}</b>
                         
                           <Text fontSize="13px" color="#D6D0DB" textDecoration="line-through">
-                             {e.strike_price}
+                             {e.price2}
                           </Text>
                           
 
-                          <Tag size="xs" fontSize="12px" colorScheme="gray">
+                          {/* <Tag size="xs" fontSize="12px" colorScheme="gray">
                             {e.discount}
-                          </Tag>
+                          </Tag> */}
                         </HStack>
 
                         </Link>
@@ -113,7 +116,7 @@ const Products_box = ({e}) => {
                       />
                     ))}
                   <Box as="span"  ml="2" color="dark blue" fontSize="sm">
-                    ({e.rating})           |
+                    ({e.rating__stars})           |
                   </Box>
                   <Box as="span"  ml="2" color="dark blue" fontSize="sm">
                     {/* ({"45"}) */}
@@ -166,7 +169,7 @@ const Products_box = ({e}) => {
                             w={{base:"190px",md:"180px",lg:"180px",xl:"280px"}}
                             px={2}
                             alignItems="center" >
-                              <Link to={`/products/${e.id}`} >
+                              <Link to={`/products/${e._id}`} >
                             View Details
                             </Link>
                           </Button>

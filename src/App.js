@@ -5,10 +5,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import AllRoutes from './all-routes/AllRoutes';
 import './App.css'
 import './App.css';
+
 import Navbar from './components/Navbar';
 import NavbarLoggedIn from './components/NavbarLoggedIn';
 import AdminNavbar from './pages/AdminPages/adminNavbar';
-import UpdateProduct from './pages/AdminPages/updateProduct';
+
+
+
+
+
+import { Button } from '@chakra-ui/react';
+import { useDispatch } from 'react-redux';
+import { logoutAction } from './redux/authReducer/auth.action';
+
+
+
 
 function App() {
   const {isAuth} = useSelector((store=>store.authManager))
@@ -25,7 +36,12 @@ function App() {
             isAuth||token? adminBar?<AdminNavbar/>: <NavbarLoggedIn setAdminBar={setAdminBar}/> : <Navbar />
     
 
+
         }
+
+    
+      
+
       
       
       
