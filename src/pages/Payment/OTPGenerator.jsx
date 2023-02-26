@@ -6,8 +6,6 @@ import { useState } from "react";
 
 const OTPGenerator = () => {
   const [otp, setOtp] = useState("");
-
- ;
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -35,8 +33,10 @@ const OTPGenerator = () => {
   };
 
   useEffect(() => {
+    const randomOtp = Math.floor(Math.random() * 90000) + 10000;
+    setOtp(randomOtp.toString());
     toast({
-      title: `Your OTP is 21092`,
+      title: `Your OTP is ${randomOtp}`,
       status: "success",
       duration: 3000,
       position: "top",
@@ -65,4 +65,5 @@ const OTPGenerator = () => {
     </Box>
   );
 };
+
 export default OTPGenerator;
