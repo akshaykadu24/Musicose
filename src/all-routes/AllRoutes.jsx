@@ -12,24 +12,26 @@ import PrivateRoute from '../pages/auth/privateRoute';
 import Signup from '../pages/auth/Signup';
 
 import EarbudProducts from '../pages/earbuds/Earbuds';
+import Home from '../pages/Home';
 
 const AllRoutes = ()=>{
    return(
     <div>
         <Routes>
 
+        <Route path="/" element={<Home />} />
         <Route path='/earbudproduct' element={<EarbudProducts/>} ></Route>
         {/* <Route path='/products/:id' element={<SingleProduct/>}></Route> */}
-        <Route path='/productCart' element={<ProductCart/>} ></Route>
+        <Route path='/productCart' element={<PrivateRoute> <ProductCart/> </PrivateRoute>} ></Route>
 
             <Route path={"/login"} element={<Login/>}></Route>
             <Route path={"/signup"} element={<Signup/>}></Route>
 
             <Route path={"/earbuds"} element={ <EarbudProducts/> }></Route>
             <Route path={"/adminAddProduct"} element={<PrivateRoute> <AdminSideAddProducts/> </PrivateRoute>}></Route>
-            <Route path='/adminSideProducts' element={<AdminSideProducts/>}></Route>
-            <Route path='/user' element={<AdminUser/>}></Route>
-            <Route path='/users' element={<AllUsers/>}></Route>
+            <Route path='/adminSideProducts' element={<PrivateRoute> <AdminSideProducts/> </PrivateRoute>}></Route>
+            <Route path='/user' element={<PrivateRoute> <AdminUser/> </PrivateRoute> }></Route>
+            <Route path='/users' element={<PrivateRoute> <AllUsers/> </PrivateRoute>}></Route>
 
 
 

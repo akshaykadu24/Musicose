@@ -1,0 +1,10 @@
+.upper_side {
+  display: flex;
+
+  width: 80rem;
+  margin: auto;
+  border: 1px solid red;
+}
+img {
+  width: 2rem;
+}

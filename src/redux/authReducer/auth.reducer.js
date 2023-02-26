@@ -5,6 +5,7 @@ const initialState = {
     isAuth: false,
     user: "",
     token: "",
+    type:"user",
     msg:"",
     isAuthLoading: false,
     isAuthError: false
@@ -28,7 +29,8 @@ export const authReducer = (state = initialState, { type, payload }) => {
                 isAuth:true, 
                 token: payload.token,
                 msg: payload.msg,
-                user: payload.user
+                user: payload.user,
+                type:payload.type
             }
         }
         case USER_LOGIN_FAILURE: {
