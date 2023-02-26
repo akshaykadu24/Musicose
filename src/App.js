@@ -30,7 +30,7 @@ function App() {
 
       </div>
       
-      <Speaker/>
+      
       <AllRoutes/>
       
     </div>
