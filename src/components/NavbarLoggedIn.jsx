@@ -102,8 +102,8 @@ function NavbarLoggedIn({setAdminBar}) {
                 marginLeft={"20px"}
                 // marginTop={"-10px"}
                 // marginBottom={"-10px"}
-                src={"logo.png"}
-                alt="boAt"
+                src={"musicose.png"}
+                alt="musicose"
               />
             </Link>
           </Box>
