@@ -29,17 +29,17 @@ export default function Gifcarousel() {
         <SwiperSlide>
           <Iframe
             src="https://giphy.com/embed/26tPjZyjJQH8t3xsY"
-            width="440"
-            height="480"
+            width="450"
+            height="880"
             frameBorder="0"
             class="giphy-embed"
             allowFullScreen
           />
         </SwiperSlide>
-        {/* <SwiperSlide>
+        <SwiperSlide>
           <Iframe
             src="https://giphy.com/embed/gnbMNq43THFAXsukem"
-            width="840"
+            width="450"
             height="880"
             frameBorder="0"
             class="giphy-embed"
@@ -49,13 +49,13 @@ export default function Gifcarousel() {
         <SwiperSlide>
           <Iframe
             src="https://giphy.com/embed/mCbhenyAxo3oytYHan"
-            width="840"
+            width="450"
             height="880"
             frameBorder="0"
             class="giphy-embed"
             allowFullScreen
           />
-        </SwiperSlide> */}
+        </SwiperSlide>
       </Swiper>
     </>
   );

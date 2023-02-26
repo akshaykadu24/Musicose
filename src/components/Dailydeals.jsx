@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer, Stack, Text } from "@chakra-ui/react";
+import { Box, Card, Flex, Heading, Spacer, Stack, Text } from "@chakra-ui/react";
 // import { SingleProductBox } from "../SingleItemBox/SingleProductBox";
 import { Daily_deals } from "./HomeData/Data";
 import { Timer } from "./Timer";
@@ -62,7 +62,7 @@ export function Dailydeals() {
 
         <br />
         <Box margin={"auto"}>
-          <Stack marginLeft="50px">
+          <Stack margin="auto">
             <Carousel
               swipeable={false}
               draggable={false}
@@ -81,16 +81,17 @@ export function Dailydeals() {
             >
               {Daily_deals.map((item) => {
                 return (
-                  <div key={item.id}>
-                    <h2>{item.pname}</h2>
-                    {item.price}
-                    {item.rating}
+                  <Card key={item.id} backgroundColor="none"  width={"330px"}  >
+                    
                     <img src={item.image} alt="" />
+                    <Heading size="xs" >{item.pname}</Heading >
+                    <p style={{fontWeight:"bold"}} >{item.price}</p>
+                    <p style={{fontWeight:"bold"}}>{item.strprice}</p>
+                    {item.rating}
                     {/* id={item.id} */}
-                    {item.strprice}
-                    {item.dec}
+                    {/* {item.dec} */}
                     {/* item={item} */}
-                  </div>
+                  </Card>
                 );
               })}
             </Carousel>

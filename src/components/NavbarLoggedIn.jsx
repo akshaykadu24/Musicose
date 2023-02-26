@@ -100,8 +100,8 @@ function NavbarLoggedIn({setAdminBar}) {
                 padding={"15px"}
                 width={"200px"}
                 marginLeft={"20px"}
-                marginTop={"-10px"}
-                marginBottom={"-10px"}
+                // marginTop={"-10px"}
+                // marginBottom={"-10px"}
                 src={"logo.png"}
                 alt="boAt"
               />

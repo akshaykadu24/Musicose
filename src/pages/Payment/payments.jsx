@@ -72,7 +72,7 @@ const Payments = () => {
           value={expiry}
           onChange={(e) => setExpiry(e.target.value)}
           required
-        />
+        />  
         <Link to={"/OTPGenerator"}>
 
         <button className="checkoutBtn" onClick={otpSend}>
