@@ -41,6 +41,7 @@ export function Timer() {
           fontSize: "1.1rem",
           margin: "auto",
           marginTop: "5px",
+          marginLeft:"3%",
           marginBottom: "10px",
         }}
       >
