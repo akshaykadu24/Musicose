@@ -17,6 +17,7 @@ import Headphone from '../pages/earbuds/Headphone';
 import Speaker from '../pages/earbuds/Speaker';
 import Watch from '../pages/earbuds/Watch';
 import BluetoothHeadphone from '../pages/earbuds/BluetoothHeadphone';
+import SingleProduct from '../pages/single-product/SingleProduct';
 
 const AllRoutes = ()=>{
    return(
