@@ -26,9 +26,11 @@ export const loginAction = (payload) => (dispatch) => {
             }
 
             dispatch({type:USER_LOGIN_SUCCESS,payload:res.data})
+            alert(res.data.msg)
             
           }).catch(err=>{
             dispatch({type:USER_LOGIN_FAILURE})
+             alert(err.data.msg)
           })
     )
 
@@ -48,15 +50,18 @@ export const signupAction = (payload) => (dispatch) => {
     }).then(res=>{
         console.log(res)
         dispatch({type:USER_SIGNUP_SUCCESS,payload:res})
+        alert(res.data.msg)
     }).catch(err=>{
         dispatch({type:USER_SIGNUP_FAILURE})
+        alert(err.data.msg)
     })
    )
 }
 export const logoutAction = (dispatch)=>{
     localStorage.removeItem("token")
     localStorage.removeItem("user")
+    alert("logged out successfully")
     return (
         dispatch({type:USER_LOGOUT})
-    )
+        )
 }

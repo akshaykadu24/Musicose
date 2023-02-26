@@ -25,6 +25,7 @@ import { loginAction } from "../../redux/authReducer/auth.action";
     const dispatch = useDispatch()
     const { isOpen, onOpen, onClose } = useDisclosure();
     const {isAuth,msg} = useSelector((store)=>store.authManager)
+   
     const handleChange = (e)=>{
       const {name,value} = e.target
 
@@ -32,30 +33,28 @@ import { loginAction } from "../../redux/authReducer/auth.action";
     }
     console.log(val)
     console.log("1")
-    useEffect(()=>{
-      if(isAuth){
-        toast({
-          title: "Welcome",
-          description: msg,
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
-      }else{
-        toast({
-          title: "Login Failed",
-          description: msg,
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      }
-      console.log("2")
-    },[isAuth])
+    // useEffect(()=>{
+    //   if(isAuth){
+    //     toast({
+    //       title: "Welcome",
+    //       description: msg,
+    //       status: "success",
+    //       duration: 9000,
+    //       isClosable: true,
+    //     });
+    //   }else{
+    //     toast({
+    //       title: "Login Failed",
+    //       description: msg,
+    //       status: "error",
+    //       duration: 9000,
+    //       isClosable: true,
+    //     });
+    //   }
+    //   console.log("2")
+    // },[isAuth])
 
-    useEffect(()=>{
-      
-    })
+    
 
     console.log("3")
     const handlelLogin = (e) => {

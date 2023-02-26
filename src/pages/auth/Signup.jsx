@@ -33,7 +33,7 @@ import { signupAction } from "../../redux/authReducer/auth.action";
       setVal({...val,[name]:value})
     }
     console.log(val)
-    const handlelSignup = async(e) => {
+    const handleSignup = async(e) => {
       let data = await dispatch(signupAction(val))
       console.log(data)
 
@@ -60,7 +60,7 @@ import { signupAction } from "../../redux/authReducer/auth.action";
             <ModalHeader>Signup</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-            <form onSubmit={handlelSignup}>
+            <form onSubmit={handleSignup}>
 
                 <FormControl mt={4}>
                   <FormLabel htmlFor="name">Name</FormLabel>
@@ -110,7 +110,7 @@ import { signupAction } from "../../redux/authReducer/auth.action";
             </ModalBody>
   
             <ModalFooter>
-              <Button variantcolor="teal" backgroundColor={"Black"} color={"white"} mr={3} onClick={handlelSignup}>
+              <Button variantcolor="teal" backgroundColor={"Black"} color={"white"} mr={3} onClick={()=>handleSignup()}>
                 Signup
               </Button>
               

@@ -9,11 +9,14 @@ import admin from "../AdminAssets/admin.jpg";
 const AdminUser = () => {
   const {users} = useSelector((store)=>store.adminManager)
   const {user} = useSelector((store)=>store.authManager)
+  let loalUserId = JSON.parse(localStorage.getItem("user"))
 
   const dispatch = useDispatch()
+console.log(users,loalUserId,"llllllllll")
 
-  const AdminUser = users.filter((el)=>el._id==user)
+  const AdminUser = users.filter((el)=>{return el._id== (user?user:loalUserId)})
   console.log(AdminUser)
+
   useEffect(()=>{
     showUser()
   },[])
@@ -23,7 +26,9 @@ const AdminUser = () => {
   }
   return (
     <div>
+      <Box  p={["20px","0px","2px","10px"]}  background={"#B2DAF1"} >
         <Heading>AdminUser</Heading>
+      </Box>
         <div>
             <div  >
           <Box display={"flex"} justifyContent="space-around" width='80%' margin={"auto"} marginTop={"50px"}  border={"1px solid black"} shadow="dark-lg" >

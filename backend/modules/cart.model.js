@@ -5,13 +5,14 @@ const cartSchema = mongoose.Schema({
         product_item_meta__title: {type:String},
         product_item__primary_image: {type:String},
         product_item__secondary_image: {type:String},
-        caterogy:{type:String},
+        category:{type:String},
         price: {type:String},
         price2: {type:String},
         feature: {type:String},
         feature2: {type:String},
         feature3: {type:String},
-        quantity:{type:Number}
+        quantity:{type:Number},
+        user:{type:String}
 })
 
 

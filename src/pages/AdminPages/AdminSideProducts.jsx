@@ -5,7 +5,7 @@ import loadingImg from "../AdminAssets/adminloading.gif"
 import errorImg from "../AdminAssets/serverError.gif";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../redux/adminReducer/admin.action";
-import { Heading, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Heading, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
 import AdminMapProductBox from "./AdminMapProductBox";
 
 const AdminSideProducts = () => {
@@ -24,17 +24,9 @@ const AdminSideProducts = () => {
   },[])
   console.log(products)
 
-  return (
-    <div>
-      <div>
-        <div className="product_heading">Musicose Product Items</div>
-      </div>
-      <div >
-        <div>
-          {/* <AdminSideNavbar /> */}
-        </div>
-        {Loading ? (
-          <div
+  if(Loading){
+    return(
+      <div
             style={{
               display: "flex",
               justifyContent: "center",
@@ -43,7 +35,9 @@ const AdminSideProducts = () => {
               width: "100%",
             }}
           >
-            <div>
+        
+      <div>
+         <div style={{marginTop:"70px"}}>
               <img
                 style={{
                   width: "50%",
@@ -65,13 +59,13 @@ const AdminSideProducts = () => {
                 Please wait products are loading...
               </h1>
             </div>
-          </div>
-        ) : (
-          <></>
-        )}
-
-        {Error ? (
-          <div
+      </div>
+      </div>
+    )
+  }
+  if(Error){
+    return(
+      <div
             style={{
               display: "flex",
               justifyContent: "center",
@@ -104,9 +98,17 @@ const AdminSideProducts = () => {
               </h1>
             </div>
           </div>
-        ) : (
-          <></>
-        )}
+    )
+  }
+
+
+  return (
+    <div>
+      <Box  p={["20px","0px","2px","10px"]}  background={"#B2DAF1"} >
+        <Heading >Musicose Product Items</Heading>
+      </Box>
+      <div >
+
         <div >
                 <Table  >
                   <Thead>

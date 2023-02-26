@@ -12,7 +12,6 @@ import PrivateRoute from '../pages/auth/privateRoute';
 import Signup from '../pages/auth/Signup';
 
 import EarbudProducts from '../pages/earbuds/Earbuds';
-import SingleProduct from '../pages/single-product/SingleProduct';
 
 const AllRoutes = ()=>{
    return(
@@ -20,7 +19,7 @@ const AllRoutes = ()=>{
         <Routes>
 
         <Route path='/earbudproduct' element={<EarbudProducts/>} ></Route>
-        <Route path='/products/:id' element={<SingleProduct/>}></Route>
+        {/* <Route path='/products/:id' element={<SingleProduct/>}></Route> */}
         <Route path='/productCart' element={<ProductCart/>} ></Route>
 
             <Route path={"/login"} element={<Login/>}></Route>
@@ -34,8 +33,7 @@ const AllRoutes = ()=>{
 
 
 
-            <Route path='/earbudproduct' element={<EarbudProducts/>} ></Route>
-            <Route path='/products/:id' element={<SingleProduct/>}></Route>
+            
 
 
         
