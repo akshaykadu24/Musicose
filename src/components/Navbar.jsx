@@ -134,7 +134,7 @@ function Navbar() {
                 </ListItem>
               </Link>
 
-
+              <Link to={"/about"}>
               <ListItem
                 onMouseEnter={handleMenu}
                 onMouseLeave={removeMenu}
@@ -142,11 +142,12 @@ function Navbar() {
                 p={"10px 5px"}
                 _hover={{ textDecoration: "underline" }}
                 fontSize={{ base: "13px", sm: "14px", md: "14px", lg: "15px" }}
-              >
+                >
                 About 
                 {/* <ChevronDownIcon /> */}
                 {/* {menu && <MenuDrop />} */}
               </ListItem>
+                </Link>
             </HStack>
           </UnorderedList>
         </HStack>

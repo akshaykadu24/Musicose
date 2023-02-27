@@ -21,6 +21,8 @@ import SingleProduct from '../pages/single-product/SingleProduct';
 import Checkout from '../pages/Payment/Checkout';
 import OTPGenerator from '../pages/Payment/OTPGenerator';
 import Payments from '../pages/Payment/payments';
+import Thanking from '../pages/thanku';
+import About from '../pages/about';
 
 const AllRoutes = ()=>{
    return(
@@ -31,16 +33,24 @@ const AllRoutes = ()=>{
 
             <Route path={"/login"} element={<Login/>}></Route>
             <Route path={"/signup"} element={<Signup/>}></Route>
+            <Route path={"/user"} element={<AdminUser/>}></Route>
+            <Route path={"/alluser"} element={<AllUsers/>}></Route>
+
+
 
             <Route path={"/earbuds"} element={ <EarbudProducts/> }></Route>
             <Route path={"/speaker"} element={ <Speaker/> }></Route>
             <Route path={"/headphone"} element={ <Headphone/> }></Route>
             <Route path={"/bluetoothHeadphone"} element={ <BluetoothHeadphone/> }></Route>
+            <Route path='/about' element={<About/>}></Route>
+
             <Route path={"/watch"} element={ <Watch/> }></Route>
             <Route path='/products/:id' element={<SingleProduct/>}></Route>
             <Route path='/checkout' element={<Checkout/>}></Route>
             <Route path='/payment' element={<Payments/>}></Route>
             <Route path='/OTPGenerator' element={<OTPGenerator/>}></Route>
+            <Route path='/thanku' element={<Thanking/>}></Route>
+
 
 
 

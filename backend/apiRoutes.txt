@@ -1,25 +1,25 @@
 
 for sighup and login
 
-for register           = https://blue-crocodile-robe.cyclic.app/user/register
-for login              = https://blue-crocodile-robe.cyclic.app/user/login
+for register           = http://localhost:8080/user/register
+for login              = http://localhost:8080/user/login
 
 
 for admin 
 
-get all users         =  https://blue-crocodile-robe.cyclic.app/user
-delete user           =  https://blue-crocodile-robe.cyclic.app/user/delete/id
+get all users         =  http://localhost:8080/user
+delete user           =  http://localhost:8080/user/delete/id
 
-get all products      =  https://blue-crocodile-robe.cyclic.app/adminProduct
-create data in admin  =  https://blue-crocodile-robe.cyclic.app/adminProduct/create
-for update            =  https://blue-crocodile-robe.cyclic.app/adminProduct/update/id
-for delete            =  https://blue-crocodile-robe.cyclic.app/adminProduct/delete/id
+get all products      =  http://localhost:8080/adminProduct
+create data in admin  =  http://localhost:8080/adminProduct/create
+for update            =  http://localhost:8080/adminProduct/update/id
+for delete            =  http://localhost:8080/adminProduct/delete/id
 
 for FrontEnd
 
-get all products      =  https://blue-crocodile-robe.cyclic.app/products
-get cart data         =  https://blue-crocodile-robe.cyclic.app/cart
-add data in cart      =  https://blue-crocodile-robe.cyclic.app/cart/create/id
-for update            =  https://blue-crocodile-robe.cyclic.app/cart/update/id
-for delete            =  https://blue-crocodile-robe.cyclic.app/cart/delete/id
+get all products      =  http://localhost:8080/products
+get cart data         =  http://localhost:8080/cart
+add data in cart      =  http://localhost:8080/cart/create/id
+for update            =  http://localhost:8080/cart/update/id
+for delete            =  http://localhost:8080/cart/delete/id
 

@@ -42,7 +42,7 @@ const Checkout = () => {
   };
   return (
     <Box className="backgroundColor">
-      <Box className="checkoutDiv">
+      <Box className="checkoutDiv" >
         <Box className="checkoutHeadDiv">
           <h2 className="checkoutHead">Delivery Address</h2>
         </Box>

@@ -15,7 +15,7 @@ import {
   Text,
   UnorderedList,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { FaUser } from "react-icons/fa";
 import { IoMdCart } from "react-icons/io";
@@ -33,10 +33,20 @@ function NavbarLoggedIn({setAdminBar}) {
   const [cartShow, setCartShow] = useState(false);
   const [show, setShow] = useState(false);
   const [menu, setMenu] = useState(false);
+  const Navigate = useNavigate()
   const {type} = useSelector((store=>store.authManager))
-  const localType = localStorage.getItem('token')
+  const localType = JSON.parse(localStorage.getItem('type'))
+const name = useSelector((store)=>store.authManager.name)
+let localName = JSON.parse(localStorage.getItem("name"))
+console.log(name,localName)
+
+  console.log(type,localType,"zzz")
     const dispatch = useDispatch()
 
+    const handleClickAdmin =()=>{
+      setAdminBar(true)
+      Navigate("/adminSideProducts")
+    }
 
 
   const cartCount = {
@@ -102,7 +112,7 @@ function NavbarLoggedIn({setAdminBar}) {
                 marginLeft={"20px"}
                 // marginTop={"-10px"}
                 // marginBottom={"-10px"}
-                src={"musicose.png"}
+                src={"logo.png"}
                 alt="musicose"
               />
             </Link>
@@ -143,6 +153,7 @@ function NavbarLoggedIn({setAdminBar}) {
                 </ListItem>
               </Link>
 
+              <Link to={"/about"}>
 
               <ListItem
                 onMouseEnter={handleMenu}
@@ -152,9 +163,11 @@ function NavbarLoggedIn({setAdminBar}) {
                 _hover={{ textDecoration: "underline" }}
                 fontSize={{ base: "13px", sm: "14px", md: "14px", lg: "15px" }}
               >
-                More <ChevronDownIcon />
+                About
+                 {/* <ChevronDownIcon /> */}
                 {/* {menu && <MenuDrop />} */}
               </ListItem>
+              </Link>
             </HStack>
           </UnorderedList>
         </HStack>
@@ -206,10 +219,16 @@ function NavbarLoggedIn({setAdminBar}) {
               <Menu>
                 <MenuButton as={Text} rightIcon={<ChevronDownIcon />}>
                     <FaUser cursor={"pointer"} fontSize="30px" />
+
                 </MenuButton>
                 <MenuList >
+                    <MenuItem justifyContent={"space-between"} >
+                      {
+                        name? name :localName? localName:"" 
+                      }<FaUser cursor={"pointer"} fontSize="20px" />
+                    </MenuItem>
                     {
-                                    type||localType=="admin"? <MenuItem onClick={()=>setAdminBar(true)}>Admin</MenuItem>: ""
+                                    (type||localType)=="admin"? <MenuItem onClick={()=>handleClickAdmin()}>Admin</MenuItem>: ""
 
                     }
                     

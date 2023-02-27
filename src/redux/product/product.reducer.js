@@ -15,6 +15,7 @@ const initialState = {
 }
 
 export const productReducer = (state=initialState,{type,payload})=>{
+  console.log(payload)
    switch(type){
     case GET_PRODUCTS_LOADING : return{
         ...state,
@@ -68,7 +69,7 @@ case GET_WATCH_PRODUCTS_SUCCESS : return {
           let sorted = state.data.sort(
             (a, b) => Number(a.price) - Number(b.price)
           );
-  
+            console.log(state.data)
           return { ...state, data: [...sorted] };
         } else if (payload == "low") {
           let sorted = state.data.sort(

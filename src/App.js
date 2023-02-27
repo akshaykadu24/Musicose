@@ -23,13 +23,14 @@ function App() {
   const {isAuth} = useSelector((store=>store.authManager))
     const token = localStorage.getItem('token')
     const [adminBar,setAdminBar]= useState(false)
-
+  console.log(isAuth,adminBar,token,"kkkk")
     // isAuth&&token? setAdminBar(true): setAdminBar(false)
+  console.log(isAuth)
   return (
     <div className="App">
    
         {
-            isAuth||token? adminBar?<AdminNavbar/>: <NavbarLoggedIn setAdminBar={setAdminBar}/> : <Navbar />
+            isAuth||token? adminBar?<AdminNavbar  setAdminBar={setAdminBar}/>: <NavbarLoggedIn setAdminBar={setAdminBar}/> : <Navbar />
     
         }
 

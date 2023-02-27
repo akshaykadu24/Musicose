@@ -30,6 +30,13 @@ export default function Carousel() {
       >
         <SwiperSlide>
           <img
+            src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/999-Store-Desktop_1_1600x.jpg?v=1677239714"
+            alt=""
+          />
+        </SwiperSlide>
+        
+        <SwiperSlide>
+          <img
             src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/DD-Desktop_1600x.jpg?v=1676020067"
             alt=""
           />

@@ -62,8 +62,9 @@ import { UpdateAction } from "../../redux/authReducer/auth.action";
     console.log(val)
 
     const handleUpdate = async(e) => {
-        dispatch(updateProduct(el._id))
-
+        dispatch(updateProduct(el._id,val))
+        setCount((prev)=>prev+1)
+      dispatch(getProducts())
       e.preventDefault();
       toast({
         title: "Congratulations",
@@ -201,7 +202,7 @@ import { UpdateAction } from "../../redux/authReducer/auth.action";
             </ModalBody>
   
             <ModalFooter>
-              <Button variantcolor="teal" backgroundColor={"Black"} color={"white"} mr={3} onClick={handleUpdate}>
+              <Button variantcolor="teal" backgroundColor={"Black"} color={"white"} mr={3} onClick={()=>handleUpdate()}>
                 Update
               </Button>
               

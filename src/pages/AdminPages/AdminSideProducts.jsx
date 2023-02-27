@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../AdminStyles/AdminSideProducts.css";
 
 import loadingImg from "../AdminAssets/adminloading.gif"
@@ -10,19 +10,25 @@ import AdminMapProductBox from "./AdminMapProductBox";
 
 const AdminSideProducts = () => {
   const dispatch = useDispatch();
+  let [count,setCount] = useState(0)
   const {products,Loading,Error} = useSelector((store) => store.adminManager);
+  
+  useEffect(() => {
+    // if (products.length === 0) {
+      dispatch(getProducts());
+    // }
+  },[count]);
 
-//   useEffect(() => {
-//     if (products.length === 0) {
-//       dispatch(getProducts());
-//     }
-//   }, [products.length, dispatch]);
-
+// console.log("1")
   useEffect(()=>{
+    // console.log("2")
+
     dispatch(getProducts())
+    // console.log("3")
 
   },[])
-  console.log(products)
+  
+  console.log(products,"4")
 
   if(Loading){
     return(
@@ -30,8 +36,8 @@ const AdminSideProducts = () => {
             style={{
               display: "flex",
               justifyContent: "center",
-              position: "absolute",
-              zIndex: "10",
+              // position: "absolute",
+              // zIndex: "10",
               width: "100%",
             }}
           >
@@ -70,8 +76,8 @@ const AdminSideProducts = () => {
               display: "flex",
               justifyContent: "center",
               // border:"1px solid black",
-              position: "absolute",
-              zIndex: "10",
+              // position: "absolute",
+              // zIndex: "10",
               width: "100%",
             }}
           >
@@ -128,7 +134,7 @@ const AdminSideProducts = () => {
                       {products.length ? (
                         products.map((el) => {
                           return (
-                                  <AdminMapProductBox  key={el._id}  el={el}  />
+                                  <AdminMapProductBox setCount={setCount}  key={el._id}  el={el}  />
                           );
                         })) : (
                             <>No Data available</>

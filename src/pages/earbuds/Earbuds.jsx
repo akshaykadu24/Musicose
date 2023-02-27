@@ -60,7 +60,7 @@ const EarbudProducts = () => {
   });
   // console.log(products.data.products);
   // console.log("revati")
-
+// console.log(products.data.products[0].category)
 
   
 
@@ -79,7 +79,7 @@ const EarbudProducts = () => {
     <>
      <Center py={12} backgroundColor={"rgb(245,245,245)"} >
        <Wrap spacing={"80px"} width={"90%"} justify="center">
-         <ProductHeader products={products}  sort={sort}setSort={setSort} category={"earbuds"}
+         <ProductHeader products={products} category={products.data.products[0].category}  sort={sort}setSort={setSort} 
             
           />
      

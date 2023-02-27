@@ -74,10 +74,11 @@ const Payments = () => {
           required
         />  
         <Link to={"/OTPGenerator"}>
-
-        <button className="checkoutBtn" onClick={otpSend}>
-          Submit
-        </button>
+        <Link to={"/thanku"}>
+          <button className="checkoutBtn" onClick={otpSend}>
+            Submit
+          </button>
+        </Link>
         </Link>
       </Box>
     </Box>

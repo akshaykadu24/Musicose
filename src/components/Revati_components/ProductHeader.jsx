@@ -30,7 +30,7 @@ const ProductHeader = ({products,search,setSearch,sort,setSort,category}) => {
     //   setReset((previous) => !previous);
     //   return;
     // }
-    dispatch(sortMydata(value));
+    dispatch(sortMydata(value,category));
     dispatch(handleSortAlpha(value,category))
   };
 

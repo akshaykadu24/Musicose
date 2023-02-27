@@ -7,6 +7,7 @@ import {
   FaYoutube,
   FaLinkedinIn,
 } from "react-icons/fa";
+import { Image } from "@chakra-ui/react";
 // import logo from "./logo.gif";
 
 const Footer = () => {
@@ -22,11 +23,11 @@ const Footer = () => {
       <div className="footer">
         <div className="flex firstFooterDiv">
           <div className="sendEmailBox">
-            <div className="footerLogo">
-              <img
-                w="200px"
-                height="70px"
-                src={"musicose.png"}
+            <div className="footerLogo" >
+              <Image
+                width="200px"
+                height="30px"
+                src={"logo.png"}
                 alt="musicose"
                 borderRadius={10}
               />
