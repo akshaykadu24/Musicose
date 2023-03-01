@@ -209,11 +209,9 @@ console.log(cartItems.products)
               </Tr>
             </Thead>
             <Tbody>
-              ak
+              
               {
-                 cartItems.products.length>0?(
-
-                data.map((ele) => {
+                 data.length>0?( data.map((ele) => {
                   return (
                     <Tr
                       boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
