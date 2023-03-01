@@ -88,7 +88,7 @@ console.log(cartItems.products)
         setsAmt(s);
       });
   }, [count]);
-  //console.log(data);
+  console.log(data);
 
 
   const removeProduct = (id) => {
@@ -209,10 +209,9 @@ console.log(cartItems.products)
               </Tr>
             </Thead>
             <Tbody>
+              
               {
-                 cartItems.products.length>0?(
-
-                cartItems.products.map((ele) => {
+                 data.length>0?( data.map((ele) => {
                   return (
                     <Tr
                       boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
