@@ -25,7 +25,7 @@ function App() {
     const [adminBar,setAdminBar]= useState(false)
   console.log(isAuth,adminBar,token,"kkkk")
     // isAuth&&token? setAdminBar(true): setAdminBar(false)
-  console.log(isAuth)
+
   return (
     <div className="App">
    

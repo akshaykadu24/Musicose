@@ -3,15 +3,18 @@ import axios from "axios"
 
 export const getearbudproduct = (search,low,high,sort)=>async(dispatch)=>{
     dispatch({ type : GET_PRODUCTS_LOADING });
-
+    let filt
     try{
         let url = `http://localhost:8080/products`;
         let res = await axios.get(url)
         console.log(res.data.products)
-        let filt = res.data.products.filter((el)=> el.category == "earbud")
+        console.log("filtering")
+        filt = res.data.products.filter((el)=> el.category=="earbud")
+        
         dispatch({ type : GET_PRODUCTS_SUCCESS , payload : {products : filt} })
 
-    }catch(error){
+    }catch(err){
+      console.log(err,"error")
         dispatch({ type : GET_PRODUCTS_ERROR })
     }
 }

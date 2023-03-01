@@ -12,7 +12,7 @@ import { Image } from "@chakra-ui/react";
 
 const Footer = () => {
   return (
-    <div style={{ marginTop: "15px" }}>
+    <div style={{ marginTop: "15px" ,border:"1px solid red"}}>
       <div className="disclaimer">
         <p className="disclaimerText">
           India's fastest growing audio & wearables brand. The most incredible

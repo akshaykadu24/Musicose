@@ -102,6 +102,7 @@ console.log(name,localName)
         zIndex={"10"}
         top="0px"
         boxShadow={" rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;"}
+        
       >
         <HStack w={"68%"} justify={"flex-start"} align={"center"}>
           <Box>

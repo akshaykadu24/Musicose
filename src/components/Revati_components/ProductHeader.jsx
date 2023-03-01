@@ -59,7 +59,7 @@ const ProductHeader = ({products,search,setSearch,sort,setSort,category}) => {
       onChange={(e) => handleChange(e)}  id="" name=""
       
       >
-            {/* <option value="reset">Sort-By-Price</option> */}
+            {/* <option value="">Sort-By-Price</option> */}
             <option value="high">Price: Low to High</option>
             <option value="low">Price: High to Low</option>
             <option value="a">Alphabet: A to Z</option>

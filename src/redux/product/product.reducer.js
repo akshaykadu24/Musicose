@@ -31,7 +31,7 @@ export const productReducer = (state=initialState,{type,payload})=>{
         ...state,
         loading : false,
         error : false,
-        data : payload
+        earbuds : payload
     };
     case GET_EARBUD_PRODUCTS_SUCCESS : return {
         ...state,
@@ -65,35 +65,40 @@ case GET_WATCH_PRODUCTS_SUCCESS : return {
 };
 
     case SORT_projectorES: {
-        if (payload == "high") {
-          let sorted = state.data.sort(
+      let data2 = []
+      data2 = payload.category=="earbud"?  state.earbuds :payload.category=="watch"?  state.watch :payload.category=="speaker"?  state.speaker :payload.category=="bluetoothHeadphone"?  state.bluetoothHeadphone :payload.category=="headphone"?  state.headphone :[]
+      let sorted
+        if (payload.how == "high") {
+          sorted = data2.products.sort(
             (a, b) => Number(a.price) - Number(b.price)
           );
-            console.log(state.data)
-          return { ...state, data: [...sorted] };
-        } else if (payload == "low") {
-          let sorted = state.data.sort(
+          // return { ...state, data: [...sorted] };
+        } 
+        else if (payload.how == "low") {
+          sorted = data2.products.sort(
             (a, b) => Number(b.price) - Number(a.price)
           );
-          return { ...state, data: [...sorted] };
+          // return { ...state, data: [...sorted] };
         }
       };
 
 
+
       case SORT_BY_ALPHABET:{
-        let da = []
-        
+        let data2 = []
+        let sortedData
+        data2 = payload.category=="earbud"?  state.earbuds :payload.category=="watch"?  state.watch :payload.category=="speaker"?  state.speaker :payload.category=="bluetoothHeadphone"?  state.bluetoothHeadphone :payload.category=="headphone"?  state.headphone :[]
         if(payload.alpha =="z"){
-          let sortedData = payload.category === "earbuds" ? state.earbuds : [].sort((a,b)=>
-             a.title < b.title ? 1 : a.title > b.title ? -1 : 0
+          sortedData = data2.products.sort(
+            (a,b)=> a.product_item_meta__title < b.product_item_meta__title ? 1 : a.product_item_meta__title > b.product_item_meta__title ? -1 : 0
           )
-          return { ...state, data: [...sortedData]}
+          // return { ...state, data: [...sortedData]}
         }
          else if(payload.alpha == "a"){
-          let sortedData = state.data.sort((a,b)=>
-          a.title < b.title ? -1 : a.title > b.title ? 1 : 0
+          sortedData = data2.products.sort(
+            (a,b)=> a.product_item_meta__title < b.product_item_meta__title ? -1 : a.product_item_meta__title > b.product_item_meta__title ? 1 : 0
        )
-       return { ...state, data: [...sortedData]}
+      //  return { ...state, data: [...sortedData]}
          }
       }
 
