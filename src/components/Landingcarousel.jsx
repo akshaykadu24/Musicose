@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
@@ -13,12 +13,16 @@ import "./styles.css";
 import { FreeMode, Pagination } from "swiper";
 
 export default function Landingcarousel() {
+  const swiper = useSwiper()
   return (
     <>
       <Swiper
         slidesPerView={3}
         spaceBetween={30}
         freeMode={true}
+        onSwiper={(swiper) => console.log(swiper)}
+        onSlideChange={() => console.log('slide change')}
+        scrollbar={{ draggable: true }}
         pagination={{
           clickable: true,
         }}
@@ -55,6 +59,7 @@ export default function Landingcarousel() {
             alt=""
           />
         </SwiperSlide>
+        -----
       </Swiper>
     </>
   );

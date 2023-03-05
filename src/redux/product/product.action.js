@@ -1,4 +1,4 @@
-import {GET_PRODUCTS_SUCCESS,GET_PRODUCTS_LOADING,GET_PRODUCTS_ERROR,GET_EARBUD_PRODUCTS_SUCCESS, SORT_projectorES, SORT_projectorESS,GET_SINGLE_PRODUCT_SUCCESS, SORT_BY_ALPHABET} from "./product.types"
+import {GET_PRODUCTS_SUCCESS,GET_PRODUCTS_LOADING,GET_PRODUCTS_ERROR,GET_EARBUD_PRODUCTS_SUCCESS, SORT_projectorES, SORT_projectorESS,GET_SINGLE_PRODUCT_SUCCESS, SORT_BY_ALPHABET, GET_HEADPHONE_PRODUCTS_SUCCESS, GET_BLUETOOTH_HEADPHONE_PRODUCTS_SUCCESS, GET_WATCH_PRODUCTS_SUCCESS, GET_SPEAKER_PRODUCTS_SUCCESS} from "./product.types"
 import axios from "axios"
 
 export const getearbudproduct = (search,low,high,sort)=>async(dispatch)=>{
@@ -11,7 +11,7 @@ export const getearbudproduct = (search,low,high,sort)=>async(dispatch)=>{
         console.log("filtering")
         filt = res.data.products.filter((el)=> el.category=="earbud")
         
-        dispatch({ type : GET_PRODUCTS_SUCCESS , payload : {products : filt} })
+        dispatch({ type : GET_EARBUD_PRODUCTS_SUCCESS , payload : {products : filt} })
 
     }catch(err){
       console.log(err,"error")
@@ -27,7 +27,7 @@ export const getspeakerproduct = (search,low,high,sort)=>async(dispatch)=>{
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "speaker")
-      dispatch({ type : GET_PRODUCTS_SUCCESS , payload : {products : filt} })
+      dispatch({ type : GET_SPEAKER_PRODUCTS_SUCCESS , payload : {products : filt} })
 
   }catch(error){
       dispatch({ type : GET_PRODUCTS_ERROR })
@@ -44,7 +44,7 @@ export const getheadphoneproduct = (search,low,high,sort)=>async(dispatch)=>{
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "headphone")
-      dispatch({ type : GET_PRODUCTS_SUCCESS , payload : {products : filt} })
+      dispatch({ type : GET_HEADPHONE_PRODUCTS_SUCCESS , payload : {products : filt} })
 
   }catch(error){
       dispatch({ type : GET_PRODUCTS_ERROR })
@@ -60,7 +60,7 @@ export const getbluetoothheadphoneproduct = (search,low,high,sort)=>async(dispat
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "bluetoothHeadphone")
-      dispatch({ type : GET_PRODUCTS_SUCCESS , payload : {products : filt}})
+      dispatch({ type : GET_BLUETOOTH_HEADPHONE_PRODUCTS_SUCCESS , payload : {products : filt}})
 
   }catch(error){
       dispatch({ type : GET_PRODUCTS_ERROR })
@@ -77,7 +77,7 @@ export const getwatchproduct = (search,low,high,sort)=>async(dispatch)=>{
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "watch")
-      dispatch({ type : GET_PRODUCTS_SUCCESS , payload : {products : filt} })
+      dispatch({ type : GET_WATCH_PRODUCTS_SUCCESS , payload : {products : filt} })
 
   }catch(error){
       dispatch({ type : GET_PRODUCTS_ERROR })

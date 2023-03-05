@@ -66,7 +66,7 @@ case GET_WATCH_PRODUCTS_SUCCESS : return {
 
     case SORT_projectorES: {
       let data2 = []
-      data2 = payload.category=="earbud"?  state.earbuds :payload.category=="watch"?  state.watch :payload.category=="speaker"?  state.speaker :payload.category=="bluetoothHeadphone"?  state.bluetoothHeadphone :payload.category=="headphone"?  state.headphone :[]
+      data2 = payload.category=="earbud"?  state.earbuds :payload.category=="watch"?  state.watch :payload.category=="speaker"?  state.speaker :payload.category=="bluetoothHeadphone"?  state.bluetooth_headphone :payload.category=="headphone"?  state.headphone :[]
       let sorted
         if (payload.how == "high") {
           sorted = data2.products.sort(
@@ -87,7 +87,7 @@ case GET_WATCH_PRODUCTS_SUCCESS : return {
       case SORT_BY_ALPHABET:{
         let data2 = []
         let sortedData
-        data2 = payload.category=="earbud"?  state.earbuds :payload.category=="watch"?  state.watch :payload.category=="speaker"?  state.speaker :payload.category=="bluetoothHeadphone"?  state.bluetoothHeadphone :payload.category=="headphone"?  state.headphone :[]
+        data2 = payload.category=="earbud"?  state.earbuds :payload.category=="watch"?  state.watch :payload.category=="speaker"?  state.speaker :payload.category=="bluetoothHeadphone"?  state.bluetooth_headphone :payload.category=="headphone"?  state.headphone :[]
         if(payload.alpha =="z"){
           sortedData = data2.products.sort(
             (a,b)=> a.product_item_meta__title < b.product_item_meta__title ? 1 : a.product_item_meta__title > b.product_item_meta__title ? -1 : 0
