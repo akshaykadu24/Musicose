@@ -9,7 +9,7 @@ export const loginAction = (payload) => (dispatch) => {
         
         axios({
             method:"POST",
-            url:"hhttps://blue-crocodile-robe.cyclic.app/user/login",
+            url:"https://blue-crocodile-robe.cyclic.app/user/login",
             data: payload,
     
             headers:{
@@ -43,7 +43,7 @@ export const signupAction = (payload) => (dispatch) => {
    return(
     axios({
         method:"POST",
-        url:"hhttps://blue-crocodile-robe.cyclic.app/user/register",
+        url:"https://blue-crocodile-robe.cyclic.app/user/register",
         data: payload,
 
         headers:{

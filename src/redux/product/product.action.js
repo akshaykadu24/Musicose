@@ -5,7 +5,7 @@ export const getearbudproduct = (search,low,high,sort)=>async(dispatch)=>{
     dispatch({ type : GET_PRODUCTS_LOADING });
     let filt
     try{
-        let url = `hhttps://blue-crocodile-robe.cyclic.app/products`;
+        let url = `https://blue-crocodile-robe.cyclic.app/products`;
         let res = await axios.get(url)
         console.log(res.data.products)
         console.log("filtering")
@@ -23,7 +23,7 @@ export const getspeakerproduct = (search,low,high,sort)=>async(dispatch)=>{
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `hhttps://blue-crocodile-robe.cyclic.app/products`;
+      let url = `https://blue-crocodile-robe.cyclic.app/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "speaker")
@@ -40,7 +40,7 @@ export const getheadphoneproduct = (search,low,high,sort)=>async(dispatch)=>{
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `hhttps://blue-crocodile-robe.cyclic.app/products`;
+      let url = `https://blue-crocodile-robe.cyclic.app/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "headphone")
@@ -56,7 +56,7 @@ export const getbluetoothheadphoneproduct = (search,low,high,sort)=>async(dispat
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `hhttps://blue-crocodile-robe.cyclic.app/products`;
+      let url = `https://blue-crocodile-robe.cyclic.app/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "bluetoothHeadphone")
@@ -73,7 +73,7 @@ export const getwatchproduct = (search,low,high,sort)=>async(dispatch)=>{
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `hhttps://blue-crocodile-robe.cyclic.app/products`;
+      let url = `https://blue-crocodile-robe.cyclic.app/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "watch")
@@ -104,7 +104,7 @@ export const sortMydata = (how,category) => (dispatch) => {
     console.log(id)
     dispatch({ type : GET_PRODUCTS_LOADING });
     try{
-         let res = await axios.get(`hhttps://blue-crocodile-robe.cyclic.app/products`,{
+         let res = await axios.get(`https://blue-crocodile-robe.cyclic.app/products`,{
            headers : {
              "Authorization" : JSON.parse(localStorage.getItem("token"))
            }
