@@ -12,10 +12,15 @@ import "./styles.css";
 // import required modules
 import { FreeMode, Pagination } from "swiper";
 import Iframe from "react-iframe";
+import { Box, HStack, Show, SimpleGrid, VStack } from "@chakra-ui/react";
 
 export default function Gifcarousel() {
   return (
-    <>
+    <Box>
+    <Show above="800px">
+
+    
+    < HStack>
       <Swiper
         slidesPerView={3}
         spaceBetween={30}
@@ -57,6 +62,36 @@ export default function Gifcarousel() {
           />
         </SwiperSlide>
       </Swiper>
-    </>
+    </HStack>
+    </Show>
+    <Show below="799px">
+
+    
+    < VStack>
+      <Swiper
+        slidesPerView={3}
+        spaceBetween={30}
+        freeMode={true}
+        pagination={{
+          clickable: true,
+        }}
+        modules={[FreeMode, Pagination]}
+        className="mySwiper"
+      >
+        
+        <Box >
+          <Iframe
+            src="https://giphy.com/embed/mCbhenyAxo3oytYHan"
+            width="450"
+            height="880"
+            frameBorder="0"
+            class="giphy-embed"
+            allowFullScreen
+          />
+        </Box>
+      </Swiper>
+    </VStack>
+    </Show>
+    </Box>
   );
 }

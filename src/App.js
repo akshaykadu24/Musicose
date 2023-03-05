@@ -1,6 +1,6 @@
 
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AllRoutes from './all-routes/AllRoutes';
 import './App.css'
@@ -25,6 +25,10 @@ function App() {
     const [adminBar,setAdminBar]= useState(false)
   console.log(isAuth,adminBar,token,"kkkk")
     // isAuth&&token? setAdminBar(true): setAdminBar(false)
+    useEffect(()=>{
+      
+      isAuth && token ? setAdminBar(true):setAdminBar(false)
+    },[])
 
   return (
     <div className="App">

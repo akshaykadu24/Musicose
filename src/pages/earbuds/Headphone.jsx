@@ -58,7 +58,7 @@ import {
     const products = useSelector((store) => {
       return store.productManager
     });
-    // console.log(products.data.products);
+    console.log(products);
     // console.log("revati")
   
   
@@ -79,7 +79,7 @@ import {
       <>
        <Center py={12} backgroundColor={"rgb(245,245,245)"} >
          <Wrap spacing={"80px"} width={"90%"} justify="center">
-           <ProductHeader products={products}  sort={sort}setSort={setSort}
+           <ProductHeader products={products} category={"headphone"} sort={sort}setSort={setSort}
               
             />
        
@@ -99,7 +99,7 @@ import {
   
               {
               // products.data.products.length > 0 &&
-                products.data.products?.map((e, i) => ( 
+                products.headphone.products?.map((e, i) => ( 
                 
                   <Products_box e={e}/>
                   

@@ -12,6 +12,7 @@ const Home = () => {
   return (
     <div>
       {/* <Header />; */}
+      
       <Carousel />
       {/* <Dailydeals /> */}
       <Dailydeals />
