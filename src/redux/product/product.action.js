@@ -3,15 +3,18 @@ import axios from "axios"
 
 export const getearbudproduct = (search,low,high,sort)=>async(dispatch)=>{
     dispatch({ type : GET_PRODUCTS_LOADING });
-
+    let filt
     try{
-        let url = `https://blue-crocodile-robe.cyclic.app/products`;
+        let url = `hhttps://blue-crocodile-robe.cyclic.app/products`;
         let res = await axios.get(url)
         console.log(res.data.products)
-        let filt = res.data.products.filter((el)=> el.category == "earbud")
+        console.log("filtering")
+        filt = res.data.products.filter((el)=> el.category=="earbud")
+        
         dispatch({ type : GET_PRODUCTS_SUCCESS , payload : {products : filt} })
 
-    }catch(error){
+    }catch(err){
+      console.log(err,"error")
         dispatch({ type : GET_PRODUCTS_ERROR })
     }
 }
@@ -20,7 +23,7 @@ export const getspeakerproduct = (search,low,high,sort)=>async(dispatch)=>{
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `https://blue-crocodile-robe.cyclic.app/products`;
+      let url = `hhttps://blue-crocodile-robe.cyclic.app/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "speaker")
@@ -37,7 +40,7 @@ export const getheadphoneproduct = (search,low,high,sort)=>async(dispatch)=>{
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `https://blue-crocodile-robe.cyclic.app/products`;
+      let url = `hhttps://blue-crocodile-robe.cyclic.app/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "headphone")
@@ -53,7 +56,7 @@ export const getbluetoothheadphoneproduct = (search,low,high,sort)=>async(dispat
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `https://blue-crocodile-robe.cyclic.app/products`;
+      let url = `hhttps://blue-crocodile-robe.cyclic.app/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "bluetoothHeadphone")
@@ -70,7 +73,7 @@ export const getwatchproduct = (search,low,high,sort)=>async(dispatch)=>{
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `https://blue-crocodile-robe.cyclic.app/products`;
+      let url = `hhttps://blue-crocodile-robe.cyclic.app/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "watch")
@@ -83,8 +86,8 @@ export const getwatchproduct = (search,low,high,sort)=>async(dispatch)=>{
 
 
 
-export const sortMydata = (how) => (dispatch) => {
-    dispatch({ type: SORT_projectorES, payload: how });
+export const sortMydata = (how,category) => (dispatch) => {
+    dispatch({ type: SORT_projectorES, payload: {how:how,category:category} });
   };
 
   export const handleSortAlpha = (alpha,category) => (dispatch)=>{
@@ -101,7 +104,7 @@ export const sortMydata = (how) => (dispatch) => {
     console.log(id)
     dispatch({ type : GET_PRODUCTS_LOADING });
     try{
-         let res = await axios.get(`https://blue-crocodile-robe.cyclic.app/products`,{
+         let res = await axios.get(`hhttps://blue-crocodile-robe.cyclic.app/products`,{
            headers : {
              "Authorization" : JSON.parse(localStorage.getItem("token"))
            }

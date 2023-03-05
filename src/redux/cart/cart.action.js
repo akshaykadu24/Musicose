@@ -9,7 +9,7 @@ export const addCart = (item)=>async(dispatch)=>{
    
     axios({
         method:"POST",
-        url:`https://blue-crocodile-robe.cyclic.app/cart/create/${item._id}`,
+        url:`hhttps://blue-crocodile-robe.cyclic.app/cart/create/${item._id}`,
         data:item,
         headers:{
             "Content-Type" : "application/json",
@@ -27,18 +27,31 @@ export const addCart = (item)=>async(dispatch)=>{
    
 }
 
-export const getCartItems = ()=>async(dispatch)=>{
+export const getCartItems = (userid,type)=>async(dispatch)=>{
+console.log(userid)
     dispatch({type:CART_LOADING})
     try{
-        let res = await axios.get("https://blue-crocodile-robe.cyclic.app/cart",{
+        let res = await axios.get("hhttps://blue-crocodile-robe.cyclic.app/cart",{
             headers:{
                 "Content-Type" : "application/json",
                 "Authorization" : JSON.parse(localStorage.getItem("token"))
              },
         })
         
-        //console.log(res.data)
-        dispatch({type:GET_CART,payload:res.data})
+        let localtype = JSON.parse(localStorage.getItem("type"))
+        let useridLocal = JSON.parse(localStorage.getItem("user"))
+
+
+        console.log(userid,"id",type,"type",localtype,"b")
+        console.log(res.data.products)
+        let filt
+        
+        if(type||localtype){
+            console.log(userid,"1",useridLocal,"2")
+            filt = res.data.products.filter((el)=>el.user==(userid||useridLocal))
+            console.log(filt)
+        }
+        dispatch({type:GET_CART,payload:{products:filt}})
     }catch(error){
         dispatch({type:CART_ERROR})
     }
@@ -48,7 +61,7 @@ export const deleteCart = (id)=>async(dispatch)=>{
     console.log(id)
     dispatch({type:CART_LOADING})
     try{
-        let res = await axios.delete(`https://blue-crocodile-robe.cyclic.app/cart/delete/${id}`,{
+        let res = await axios.delete(`hhttps://blue-crocodile-robe.cyclic.app/cart/delete/${id}`,{
             headers:{
                 "Content-Type" : "application/json",
                 "Authorization" : JSON.parse(localStorage.getItem("token"))
@@ -66,7 +79,7 @@ export const updateCart = (id,quantity)=>async(dispatch)=>{
     console.log(id)
     dispatch({type:CART_LOADING})
     // try{
-    //     let res = await axios.patch(`https://blue-crocodile-robe.cyclic.app/cart/update/${id}`,{
+    //     let res = await axios.patch(`hhttps://blue-crocodile-robe.cyclic.app/cart/update/${id}`,{
     //         headers:{
     //             "Content-Type" : "application/json",
     //             "Authorization" : JSON.parse(localStorage.getItem("token"))
@@ -81,7 +94,7 @@ export const updateCart = (id,quantity)=>async(dispatch)=>{
 
     axios({
         method:"PATCH",
-        url:`https://blue-crocodile-robe.cyclic.app/cart/update/${id}`,
+        url:`hhttps://blue-crocodile-robe.cyclic.app/cart/update/${id}`,
         data:JSON.stringify({quantity:quantity}),
         headers:{
             "Content-Type" : "application/json",

@@ -9,7 +9,7 @@ export const loginAction = (payload) => (dispatch) => {
         
         axios({
             method:"POST",
-            url:"https://blue-crocodile-robe.cyclic.app/user/login",
+            url:"hhttps://blue-crocodile-robe.cyclic.app/user/login",
             data: payload,
     
             headers:{
@@ -21,11 +21,12 @@ export const loginAction = (payload) => (dispatch) => {
             if(res.data.token){
                 localStorage.setItem("token",JSON.stringify(res.data.token))
                 localStorage.setItem("user",JSON.stringify(res.data.user))
-                localStorage.setItem("user",JSON.stringify(res.data.type))
+                localStorage.setItem("type",JSON.stringify(res.data.type))
+                localStorage.setItem("name",JSON.stringify(res.data.name))
+
 
 
             }
-
             dispatch({type:USER_LOGIN_SUCCESS,payload:res.data})
             alert(res.data.msg)
             
@@ -42,7 +43,7 @@ export const signupAction = (payload) => (dispatch) => {
    return(
     axios({
         method:"POST",
-        url:"https://blue-crocodile-robe.cyclic.app/user/register",
+        url:"hhttps://blue-crocodile-robe.cyclic.app/user/register",
         data: payload,
 
         headers:{
@@ -61,6 +62,9 @@ export const signupAction = (payload) => (dispatch) => {
 export const logoutAction = (dispatch)=>{
     localStorage.removeItem("token")
     localStorage.removeItem("user")
+    localStorage.removeItem("type")
+    localStorage.removeItem("name")
+
     alert("logged out successfully")
     return (
         dispatch({type:USER_LOGOUT})

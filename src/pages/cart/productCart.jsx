@@ -13,12 +13,13 @@ import {
   useToast,
   HStack,
   Grid,
+  Heading,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteCart, getCartItems, updateCart } from "../../redux/cart/cart.action";
-let api = "https://blue-crocodile-robe.cyclic.app/cart";
+let api = "hhttps://blue-crocodile-robe.cyclic.app/cart";
 
 const ProductCart = () => {
   const [quant, setQuant] = useState(0);
@@ -37,29 +38,57 @@ const ProductCart = () => {
     return store.cart.cart;
   });
   console.log(cartItems)
+  const {user,type} = useSelector((store)=>store.authManager)
+  console.log(user)
 
+  useEffect(()=>{
+    dispatch(getCartItems(user,type));
+  },[count])
+  
+console.log(cartItems.products)
   useEffect(() => {
-    dispatch(getCartItems());
+    dispatch(getCartItems(user,type));
 
-    fetch(api)
+    fetch(api,{
+      headers:{
+        "Authorization":JSON.parse(localStorage.getItem("token"))
+      }
+    })
       .then((res) => res.json())
       .then((data) => {
-        //console.log(data);
-        setData(data);
+
+        let localtype = JSON.parse(localStorage.getItem("type"))
+        let useridLocal = JSON.parse(localStorage.getItem("user"))
+
+        let userid = user
+        console.log(userid,"id",type,"type",localtype,"b")
+        console.log(data.products)
+        let filt
+        
+        if(type||localtype){
+            console.log(userid,"1",useridLocal,"2")
+            filt = data.products.filter((el)=>el.user==(userid||useridLocal))
+            console.log(filt)
+        }
+
+        console.log(filt);
+        setData(filt);
         let q = 0;
         let s = 0;
         let p = 0;
-        for (let j = 0; j < data.length; j++) {
-          q += data[j].quantity;
-          p += data[j].quantity * data[j].price;
-          s += data[j].strike_price * data[j].quantity;
+        for (let j = 0; j < filt.length; j++) {
+          q += filt[j].quantity;
+          p += filt[j].quantity * filt[j].price;
+          s += filt[j].price2 * filt[j].quantity;
         }
+        console.log(q,p,s)
+        
         setQuant(q);
         setAmt(p);
         setsAmt(s);
       });
-  }, []);
-  //console.log(data);
+  }, [count]);
+  console.log(data);
 
 
   const removeProduct = (id) => {
@@ -95,6 +124,7 @@ const ProductCart = () => {
     //  });
 
      dispatch(updateCart(id,quantity))
+     setCount((prev)=>prev+1)
     console.log(id, api);
 
     //setRefresh(refresh)
@@ -179,8 +209,9 @@ const ProductCart = () => {
               </Tr>
             </Thead>
             <Tbody>
+              
               {
-                cartItems.products?.map((ele) => {
+                 data.length>0?( data.map((ele) => {
                   return (
                     <Tr
                       boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
@@ -198,7 +229,7 @@ const ProductCart = () => {
                           flexDirection="column"
                           justifyContent={"space-between"}>
                           <Box mb="20px">
-                            <Text>{ele.product_item_meta__title}</Text>
+                            <Heading size={"md"}>{ele.product_item_meta__title}</Heading>
                           </Box>
                         </Box>
                       </Td>
@@ -211,10 +242,10 @@ const ProductCart = () => {
                           display={"flex"}
                           flexDirection="column"
                           justifyContent={"flex-start"}>
-                          <Text>₹{ele.price * ele.quantity}.00</Text>
-                          <Text color={"gray"} textDecoration={"line-through"}>
+                          <Heading size={"sm"} >₹{ele.price * ele.quantity}.00</Heading>
+                          <Heading size={"sm"} color={"gray"} textDecoration={"line-through"}>
                             ₹{ele.price2 * ele.quantity}.00
-                          </Text>
+                          </Heading>
                         </Box>
                       </Td>
                       <Td
@@ -233,9 +264,9 @@ const ProductCart = () => {
                             }>
                             -
                           </span>
-                          <Text display="inline" px="2px">
+                          <Heading size={"md"} display="inline" px="2px">
                             {ele.quantity}
-                          </Text>
+                          </Heading>
                           <span
                             style={{ cursor: "pointer" }}
                             onClick={() =>
@@ -260,8 +291,12 @@ const ProductCart = () => {
                         </Flex>
                       </Td>
                     </Tr>
-                  );
-                })}
+                  )
+                })):(
+                  <>NO Items in Cart</>
+              )   
+              }
+                
             </Tbody>
           </Table>
         </Box>
@@ -282,32 +317,32 @@ const ProductCart = () => {
                   justifyContent="space-between"
                   alignItems={"center"}>
                   <Box>
-                    <Text fontWeight={"bold"}>Subtotal</Text>
-                    <Text fontWeight={"bold"}>Discount</Text>
-                    <Text
+                    <Heading size={"sm"} marginTop={"10px"} fontWeight={"bold"}>Subtotal</Heading>
+                    <Heading size={"sm"} marginTop={"10px"} fontWeight={"bold"}>Discount</Heading>
+                    <Heading size={"sm"} marginTop={"10px"}
                       fontWeight={"bold"}
                       display={applied === true ? "block" : "none"}>
                       Coupon Discount
-                    </Text>
-                    <Text fontWeight={"bold"}>Shipping Charges</Text>
+                    </Heading>
+                    <Heading size={"sm"} marginTop={"10px"} fontWeight={"bold"}>Shipping Charges</Heading>
                   </Box>
                   <Box>
-                    <Text>&nbsp;&nbsp;₹{samt}.00 </Text>
-                    <Text>- ₹{samt - amt}.00 </Text>
-                    <Text display={applied === true ? "block" : "none"}>
+                    <Heading size={"sm"} marginTop="10px">&nbsp;&nbsp;₹{samt}.00 </Heading>
+                    <Heading size={"sm"} marginTop="10px">- ₹{samt - amt}.00 </Heading>
+                    <Heading size={"sm"} marginTop="10px" display={applied === true ? "block" : "none"}>
                       &nbsp;- ₹{(amt * 0.3).toFixed(2)}{" "}
-                    </Text>
-                    <Text>
+                    </Heading>
+                    <Text marginTop="10px">
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;₹0.00{" "}
                     </Text>
                   </Box>
                 </Box>
                 <Box display={"flex"} justifyContent="space-between">
-                  <Text fontWeight={"bold"}>Total Price</Text>
-                  <Text fontWeight={"bold"}>
+                  <Heading size={"sm"} marginTop="10px" fontWeight={"bold"}>Total Price</Heading >
+                  <Heading size={"sm"} marginTop="10px" fontWeight={"bold"}>
                     ₹
                     {applied === true ? (amt * 0.7).toFixed(2) : amt.toFixed(2)}
-                  </Text>
+                  </Heading >
                 </Box>
               </Box>
 

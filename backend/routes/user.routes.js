@@ -50,7 +50,7 @@ userRoutes.post("/login",async(req,res)=>{
             if(passDecript){
                 let token = jwt.sign({userID:user[0]._id},"shhhh")
                 if(token){
-                    res.send({msg:"Login successfully",token:token,user:user[0]._id,type:user[0].type})
+                    res.send({msg:"Login successfully",token:token,user:user[0]._id,type:user[0].type,name:user[0].name})
                 }else{
                     res.send({msg:"token is missing"})
                 }

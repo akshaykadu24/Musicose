@@ -107,7 +107,7 @@ import { loginAction } from "../../redux/authReducer/auth.action";
             </ModalBody>
   
             <ModalFooter>
-              <Button variantcolor="teal" backgroundColor={"Black"} color={"white"} mr={3} onClick={handlelLogin}>
+              <Button variantcolor="teal" backgroundColor={"Black"} color={"white"} mr={3} onClick={()=>handlelLogin()}>
                 Login
               </Button>
               

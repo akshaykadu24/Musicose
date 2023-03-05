@@ -54,13 +54,13 @@ const EarbudProducts = () => {
   }
 
   const dispatch = useDispatch();
-
   const products = useSelector((store) => {
     return store.productManager
   });
-  // console.log(products.data.products);
-  // console.log("revati")
 
+  console.log(products.earbuds.products);
+
+// console.log(products.data.products[0].category)
 
   
 
@@ -79,11 +79,11 @@ const EarbudProducts = () => {
     <>
      <Center py={12} backgroundColor={"rgb(245,245,245)"} >
        <Wrap spacing={"80px"} width={"90%"} justify="center">
-         <ProductHeader products={products}  sort={sort}setSort={setSort} category={"earbuds"}
+         <ProductHeader products={products} category={"earbud"}  sort={sort}setSort={setSort} 
             
           />
      
-          <Box w={{ base: "75%", md: "85%", lg: "95%" }} display={"grid"}
+          <Box w={{ base: "75%", md: "85%", lg: "90%" }} display={"grid"}
             gridTemplateColumns={{
               base: "repeat(1,1fr)",
               sm:"repeat(2,1fr)",
@@ -99,7 +99,7 @@ const EarbudProducts = () => {
 
             {
             // products.data.products.length > 0 &&
-              products.data.products?.map((e, i) => ( 
+              products.earbuds.products?.map((e, i) => ( 
               
                 <Products_box e={e}/>
                 

@@ -87,11 +87,12 @@
     margin: 0px;
     font-size: 2rem;
     padding-bottom: 25px;
-    color: red;
+    color: #D2042D;
   }
   
   .checkoutDiv {
     margin-bottom: 20px;
+    width:35%
   }
   
   label {
@@ -123,7 +124,7 @@
     margin-top: 30px;
     height: 40px;
     border: none;
-    background-color: red;
+    background-color: #D2042D;
     color: white;
     font-weight: bold;
     cursor: pointer;

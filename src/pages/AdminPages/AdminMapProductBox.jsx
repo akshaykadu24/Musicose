@@ -1,16 +1,18 @@
 import { Box, Heading, Image, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { deleteProduct } from '../../redux/adminReducer/admin.action'
+import { deleteProduct, getProducts } from '../../redux/adminReducer/admin.action'
 import UpdateProduct from './updateProduct'
 
 const AdminMapProductBox = ({el}) => {
     const dispatch = useDispatch()
-    // const handleUpdate = (id)=>{
-    //   <UpdateProduct el={id}/>
-    // }
+    const handleDelete = (id)=>{
+      dispatch(deleteProduct(el._id))
+      dispatch(getProducts())
+      el.setCount((prev)=>prev+1)
+    }
     useEffect(()=>{
-
+      
     },[])
   return (
     <Tr key={el._id} width={"100%"} boxShadow="outline">
@@ -32,8 +34,8 @@ const AdminMapProductBox = ({el}) => {
         
             <Td><Text  width={"90px"} fontSize={["xl","xl"]}>{el.feature}</Text></Td>
             
-            <Td>  <UpdateProduct el={el}/></Td>
-            <Td><Text backgroundColor={"red"} color={"white"} textAlign={"center"} padding={"5px"} borderRadius={"8%"} fontWeight={"medium"} onClick={()=>{dispatch(deleteProduct(el._id))}} fontSize={["xl","2xl"]}>Delete</Text></Td>
+            <Td>  <UpdateProduct  el={el}/></Td>
+            <Td><Text backgroundColor={"red"} color={"white"} textAlign={"center"} padding={"5px"} borderRadius={"8%"} fontWeight={"medium"} onClick={()=>handleDelete(el._id)} fontSize={["xl","2xl"]}>Delete</Text></Td>
         
     </Tr>
   )
