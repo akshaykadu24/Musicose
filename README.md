@@ -1,70 +1,146 @@
-# Getting Started with Create React App
+#  Musicose 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Musicose is an Audio Product company that sells Audio products on website like Earbuds, Speaker, Earphone, Bluetooth Headphone.
+And we made a partnership with the Smartwatch brand so watches are also present on our website.
 
-## Available Scripts
+### Credentials to access Smartwatch admin panel
+Email: tony@gmail.com 
 
-In the project directory, you can run:
+Password: tony
 
-### `npm start`
+tony can see only watches in his admin panel and he can edit and delete the product from the website or database, 
+he has no access to changes in audio products of musicose,
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+But musicose owner has access to edit and delete audio products as well as watch products from the database, 
+because he is the owner of the website, he can make changes anytime on any products
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The admin option will be visible only to the admin user, for normal users admin option will not be visible, so the user can not visit the admin panel or admin side
 
-### `npm test`
+Admin can also use a website like normal user uses he can also put o order from the website  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Deployed link of project
+- <a href="https://vercel.com/akshaykadu24/needy-direction-2456">Musicose</a>
 
-### `npm run build`
+## Team Members
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<ul>
+  <li><a href="https://github.com/akshaykadu24">Akshay Kadu</a></li>
+  <li><a href="https://github.com/RevatiJunghare">Revati Junghare</a></li>
+  <li><a href="https://github.com/Preetibildani">Preeti bildani</a></li>
+  
+</ul>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Deployment
 
-### `npm run eject`
+create a folder first 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+clone the repository
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+For Frontend terminal perform:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+  cd needy-direction-2456
+  npm install
+  npm start
+  Then you are able to see the app running on your browser
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+For Backend terminal perform:
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+  cd needy-direction-2456
+  cd backend
+  npm install
+  npm run server
+  Then your server will run port 'that you will add in your .env file with monogo atlas url'
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+TO SEE THE ADMIN PANEL YOU MUST NEED TO LOGIN AS ADMIN
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🛠 Tech Stack
 
-### Analyzing the Bundle Size
+- React
+- Redux
+- Javascript
+- HTML
+- CSS
+- Chakra UI
+- NodeJS
+- ExpressJS
+- MongoDB
+- Mongoose
+- jwt
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Functionality
 
-### Advanced Configuration
+- Login/Signup
+- Authentication
+- Authorization
+- Admin panel Navbar
+- Implemented Admin panel which include all products which we can edit and delete
+- Add product page
+- Implemented Users page will show the all registered user in musicose website
+- User Detail page 
+- Filter product with different categories link speraker, earbuds, headphone
+- Sorting price of product high to low and low to high and also added sorting of 
+product name
+- Cart page to buy products at a time with calculating the price of all products
+- adding ,removing updating product from Cart functionality 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Website flow for User
 
-### `npm run build` fails to minify
+- Home page
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Login to app
+
+- Admin for add item to the app
+
+- Products page for diffeerent categories
+
+- Product detail on single Product page
+
+- Adding product to cart 
+
+- Remove or increase quantity of product 
+
+- checkout page for payment
+
+
+
+
+
+
+#### Website Presentation :
+#
+##### before login Navbar
+![Alt text](public/redme/Screenshot%20(276).png)
+
+##### after loggedin Navbar with admin user 
+![Alt text](public/redme/Screenshot%20(278).png)
+
+##### after loggedin Navbar with normal user 
+![Alt text](public/redme/Screenshot%20(290).png)
+![Alt text](public/redme/Screenshot%20(279).png)
+![Alt text](public/redme/Screenshot%202023-03-07%20024326.png)
+![Alt text](public/redme/Screenshot%20(280).png)
+![Alt text](public/redme/Screenshot%20(281).png)
+![Alt text](public/redme/Screenshot%20(282).png)
+#### admin panel Navbar conver into black Navbar
+![Alt text](public/redme/Screenshot%20(283).png)
+![Alt text](public/redme/Screenshot%20(284).png)
+![Alt text](public/redme/Screenshot%20(286).png)
+![Alt text](public/redme/Screenshot%20(287).png)
+
+
+
+## Thank you note
+Thank you all who is giving precious time to visit our little creative project which is made with lot of efforts.
+
+_<p align="center"><sub>- Readme file designed by <a href="https://github.com/akshaykadu24">Akshay Kadu</a> -</sub></p>_
