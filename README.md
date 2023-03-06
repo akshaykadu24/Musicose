@@ -19,7 +19,7 @@ The admin option will be visible only to the admin user, for normal users admin 
 Admin can also use a website like normal user uses he can also put o order from the website  
 
 ## Deployed link of project
-- <a href="https://vercel.com/akshaykadu24/needy-direction-2456">Musicose</a>
+- <a href="https://needy-direction-2456.vercel.app/">Musicose</a>
 
 ## Team Members
 
