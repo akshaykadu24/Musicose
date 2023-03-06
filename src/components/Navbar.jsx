@@ -130,7 +130,7 @@ function Navbar() {
                     lg: "15px",
                   }}
                 >
-                  SAIL WITH BOAT
+                  Smart Watch
                 </ListItem>
               </Link>
 

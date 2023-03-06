@@ -138,7 +138,7 @@ console.log(name,localName)
                 {show && <Categories />}
               </ListItem>
 
-              <Link to={"/sailwithboAt"}>
+              <Link to={"/Watch"}>
                 <ListItem
                   cursor="pointer"
                   p={"10px 5px"}
@@ -150,7 +150,7 @@ console.log(name,localName)
                     lg: "15px",
                   }}
                 >
-                  SAIL WITH BOAT
+                 Smart Watch
                 </ListItem>
               </Link>
 
