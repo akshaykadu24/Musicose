@@ -19,7 +19,7 @@ The admin option will be visible only to the admin user, for normal users admin 
 Admin can also use a website like normal user uses he can also put o order from the website  
 
 ## Deployed link of project
-- <a href="https://vercel.com/akshaykadu24/needy-direction-2456">Musicose</a>
+- <a href="https://needy-direction-2456.vercel.app/">Musicose</a>
 
 ## Team Members
 
@@ -116,9 +116,9 @@ product name
 
 
 
-
-#### Website Presentation :
 #
+#### Website Presentation :
+## User side
 ##### before login Navbar
 ![Alt text](public/redme/Screenshot%20(276).png)
 
@@ -132,7 +132,8 @@ product name
 ![Alt text](public/redme/Screenshot%20(280).png)
 ![Alt text](public/redme/Screenshot%20(281).png)
 ![Alt text](public/redme/Screenshot%20(282).png)
-#### admin panel Navbar conver into black Navbar
+## Admin side
+##### admin panel Navbar conver into black Navbar
 ![Alt text](public/redme/Screenshot%20(283).png)
 ![Alt text](public/redme/Screenshot%20(284).png)
 ![Alt text](public/redme/Screenshot%20(286).png)
