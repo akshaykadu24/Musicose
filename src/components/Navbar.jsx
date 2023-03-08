@@ -3,6 +3,7 @@ import {
   Box,
   Flex,
   Grid,
+  Heading,
   HStack,
   Image,
   Input,
@@ -23,13 +24,18 @@ import "./Navbar.css";
 import { NavSlider } from "./NavSlider";
 import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
+import { useDispatch, useSelector } from "react-redux";
+import { getSearchProducts } from "../redux/product/product.action";
 
 function Navbar() {
   const [login, setLogin] = useState(false);
   const [cartShow, setCartShow] = useState(false);
   const [show, setShow] = useState(false);
   const [menu, setMenu] = useState(false);
-
+  const [value,setValue] = useState("")
+  const dispatch = useDispatch()
+  const data = useSelector((store)=>store.productManager.searchData)
+// console.log(data)
   const cartCount = {
     height: "20px",
     width: "20px",
@@ -60,9 +66,18 @@ function Navbar() {
   const removeMenu = () => {
     setMenu(!menu);
   };
+ 
+  console.log(value)
+  const handleSearch = (e) =>{
+    console.log(e.target.value)
+    let val = e.target.value
+     setValue(val)
+    dispatch(getSearchProducts(val))
+  }
+
 
   return (
-    <>
+    <Box>
       {/* <Stack
         w={"100%"}
         color={"white"}
@@ -177,11 +192,27 @@ function Navbar() {
                   border={"none"}
                   p={"0px"}
                   w={"100%"}
+                  onChange={(e)=>handleSearch(e)}
                   focusBorderColor={"transparent"}
                   placeholder="Search..."
                   color={"black"}
                 />
               </HStack>
+              <Box position={"absolute"} zIndex="3" backgroundColor={"lightgray"} top={"51px"} pr="20px">
+                {
+                  
+                 value? data.map((el,i)=>{
+                    if(i<8){
+                      return (
+                        <Box display={"flex"}>
+                          <Image width={"50px"} src={el.product_item__primary_image} alt="" />
+                          <Heading size={"xs"}>{el.product_item_meta__title}</Heading>
+                        </Box>
+                      )
+                    }
+                  }):""
+                }
+              </Box>
             </Stack>
           </UnorderedList>
 
@@ -222,7 +253,7 @@ function Navbar() {
           </UnorderedList>
         </HStack>
       </Flex>
-    </>
+    </Box>
   );
 }
 export default Navbar;

@@ -13,7 +13,7 @@ const getUsers = () => (dispatch) => {
 
   return(
     axios({
-      url:"https://blue-crocodile-robe.cyclic.app/user",
+      url:"http://localhost:8080/user",
       headers:{
         "Content-Type":"application/json",
         "Authorization": JSON.parse(localStorage.getItem("token"))
@@ -37,7 +37,7 @@ const deleteUser = (id) => (dispatch) => {
  return(
   axios({
     method:"DELETE",
-    url:`https://blue-crocodile-robe.cyclic.app/user/delete/${id}`,
+    url:`http://localhost:8080/user/delete/${id}`,
     headers:{
       "Content-Type":"application/json",
       "Authorization": JSON.parse(localStorage.getItem('token'))
@@ -60,7 +60,7 @@ const getProducts = () => (dispatch) => {
   dispatch({ type: GET_PRODUCTS_REQUEST });
   return( 
     axios({
-      url:"https://blue-crocodile-robe.cyclic.app/adminProduct",
+      url:"http://localhost:8080/adminProduct",
       headers:{
         "Content-Type":"application/json",
         "Authorization": JSON.parse(localStorage.getItem("token"))
@@ -93,7 +93,7 @@ const addProduct = (product) => (dispatch) => {
   return( 
     axios({
       method:"POST",
-      url:"https://blue-crocodile-robe.cyclic.app/adminProduct/create",
+      url:"http://localhost:8080/adminProduct/create",
       data:product,
 
       headers: {
@@ -120,7 +120,7 @@ const updateProduct = (id, payload) => (dispatch) => {
   return (
     axios({
       method:"PATCH",
-      url: `https://blue-crocodile-robe.cyclic.app/adminProduct/update/${id}`,
+      url: `http://localhost:8080/adminProduct/update/${id}`,
       data:payload,
       headers:{
         "Content-Type":"application/json",
@@ -142,7 +142,7 @@ const deleteProduct = (id) => (dispatch) => {
   return (
     axios({
       method:"DELETE",
-      url: `https://blue-crocodile-robe.cyclic.app/adminProduct/delete/${id}`,
+      url: `http://localhost:8080/adminProduct/delete/${id}`,
       headers:{
         "Content-Type":"application/json",
         "Authorization": JSON.parse(localStorage.getItem("token"))
