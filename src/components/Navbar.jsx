@@ -206,7 +206,7 @@ function Navbar() {
                     if(i<8){
                       return (
                         <Link to={`/products/${el._id}`}  >
-                          <Box display={"flex"} border="1px solid red" key={el._id}>
+                          <Box display={"flex"}  key={el._id}>
                             <Image width={"50px"} src={el.product_item__primary_image} alt="" />
                             <Heading size={"xs"}>{el.product_item_meta__title}</Heading>
                           </Box>
