@@ -1,3 +1,7 @@
+export const GET_SEARCH_SUCCESS = "search/get/success"
+export const GET_SEARCH_LOADING = "search/get/loading"
+export const GET_SEARCH_ERROR = "search/get/error"
+
 export const GET_PRODUCTS_SUCCESS = "products/get/success"
 export const GET_PRODUCTS_LOADING = "products/get/loading"
 export const GET_PRODUCTS_ERROR = "products/get/error"

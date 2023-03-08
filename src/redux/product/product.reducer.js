@@ -1,9 +1,10 @@
-import {GET_PRODUCTS_SUCCESS,GET_PRODUCTS_LOADING,GET_PRODUCTS_ERROR,GET_EARBUD_PRODUCTS_SUCCESS,GET_FILTERED_PRODUCTS, SORT_projectorES, SORT_projectorESS, SORT_alphabet, GET_SINGLE_PRODUCT_SUCCESS, SORT_BY_ALPHABET, GET_SPEAKER_PRODUCTS_SUCCESS, GET_BLUETOOTH_HEADPHONE_PRODUCTS_SUCCESS, GET_HEADPHONE_PRODUCTS_SUCCESS, GET_WATCH_PRODUCTS_SUCCESS} from "./product.types"
+import {GET_PRODUCTS_SUCCESS,GET_PRODUCTS_LOADING,GET_PRODUCTS_ERROR,GET_EARBUD_PRODUCTS_SUCCESS,GET_FILTERED_PRODUCTS, SORT_projectorES, SORT_projectorESS, SORT_alphabet, GET_SINGLE_PRODUCT_SUCCESS, SORT_BY_ALPHABET, GET_SPEAKER_PRODUCTS_SUCCESS, GET_BLUETOOTH_HEADPHONE_PRODUCTS_SUCCESS, GET_HEADPHONE_PRODUCTS_SUCCESS, GET_WATCH_PRODUCTS_SUCCESS, GET_SEARCH_LOADING, GET_SEARCH_ERROR, GET_SEARCH_SUCCESS} from "./product.types"
 
 const initialState = {
     loading : false,
     error : false,
     data : [],
+    searchData : [],
     earbuds:[],
     watch:[],
     bluetooth_headphone:[],
@@ -15,8 +16,24 @@ const initialState = {
 }
 
 export const productReducer = (state=initialState,{type,payload})=>{
-  console.log(payload)
+  console.log(type,payload)
    switch(type){
+    case GET_SEARCH_LOADING : return{
+        ...state,
+        loading : true,
+        error : false
+    };
+    case GET_SEARCH_ERROR : return {
+        ...state,
+        loading : false,
+        error : true
+    };
+    case GET_SEARCH_SUCCESS : return{
+        ...state,
+        loading : false,
+        error : false,
+        searchData : payload.products
+    };
     case GET_PRODUCTS_LOADING : return{
         ...state,
         loading : true,

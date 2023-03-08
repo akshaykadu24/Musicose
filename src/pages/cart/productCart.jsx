@@ -19,7 +19,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteCart, getCartItems, updateCart } from "../../redux/cart/cart.action";
-let api = "https://blue-crocodile-robe.cyclic.app/cart";
+let api = "http://localhost:8080/cart";
 
 const ProductCart = () => {
   const [quant, setQuant] = useState(0);
