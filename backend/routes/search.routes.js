@@ -5,7 +5,7 @@ const { AdminProductModel } = require("../modules/admin.product.model")
 const searchRouter = express.Router()
 
 
-searchRouter.post("/",async(req,res)=>{
+searchRouter.get("/",async(req,res)=>{
     try {
         let a = req.query
         console.log(a.search)
