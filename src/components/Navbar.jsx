@@ -72,6 +72,7 @@ function Navbar() {
     console.log(e.target.value)
     let val = e.target.value
      setValue(val)
+
     dispatch(getSearchProducts(val))
   }
 
@@ -204,10 +205,12 @@ function Navbar() {
                  value? data.map((el,i)=>{
                     if(i<8){
                       return (
-                        <Box display={"flex"}>
-                          <Image width={"50px"} src={el.product_item__primary_image} alt="" />
-                          <Heading size={"xs"}>{el.product_item_meta__title}</Heading>
-                        </Box>
+                        <Link to={`/products/${el._id}`}  >
+                          <Box display={"flex"} border="1px solid red" key={el._id}>
+                            <Image width={"50px"} src={el.product_item__primary_image} alt="" />
+                            <Heading size={"xs"}>{el.product_item_meta__title}</Heading>
+                          </Box>
+                        </Link>
                       )
                     }
                   }):""

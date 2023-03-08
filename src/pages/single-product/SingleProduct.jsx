@@ -26,7 +26,7 @@ const SingleProduct = () => {
   const [pincode, setPincode] = useState("");
   const toast = useToast();
   //console.log(id)
-
+  
   const dispatch = useDispatch();
 
   const product = useSelector((store) => {
