@@ -6,6 +6,7 @@ const {  adminProductRoutes } = require("./routes/admin.products.routes")
 const { cartRoutes } = require("./routes/cart.routes")
 const { productRoutes } = require("./routes/product.routes")
 const {auth} = require("./middlewares/authentication.middleware")
+const { searchRouter } = require("./routes/search.routes")
 const app = express()
 
 app.use(cors())
@@ -21,6 +22,7 @@ app.get("/",(req,res)=>{
 
 app.use("/user",userRoutes)
 app.use("/products",productRoutes)
+app.use("/search",searchRouter)
 app.use(auth)
 app.use("/adminProduct",adminProductRoutes)
 app.use("/cart",cartRoutes)
