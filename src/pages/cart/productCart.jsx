@@ -211,7 +211,7 @@ console.log(cartItems.products)
             <Tbody>
               
               {
-                 data.length>0?( data.map((ele) => {
+                 ( data.map((ele) => {
                   return (
                     <Tr
                       boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
@@ -292,10 +292,8 @@ console.log(cartItems.products)
                       </Td>
                     </Tr>
                   )
-                })):(
-                  <>NO Items in Cart</>
-              )   
-              }
+                })
+             ) }
                 
             </Tbody>
           </Table>

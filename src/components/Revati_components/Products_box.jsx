@@ -166,7 +166,7 @@ const Products_box = ({ e }) => {
             //style={{ padding: "2px 4px" }}
             //width="250px"
             // onClick={handleClick}
-            w={{ base: "190px", md: "180px", lg: "180px", xl: "280px" }}
+            w={{ base: "190px", md: "180px", lg: "180px", xl: "270px" }}
             px={2}
             alignItems="center" >
             <Link to={`/products/${e._id}`} >
