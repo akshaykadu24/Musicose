@@ -33,6 +33,8 @@ function NavbarLoggedIn({setAdminBar}) {
   const [cartShow, setCartShow] = useState(false);
   const [show, setShow] = useState(false);
   const [menu, setMenu] = useState(false);
+  const [value,setValue] = useState("")
+  const data = useSelector((store)=>store.productManager.searchData)
   const Navigate = useNavigate()
   const {type} = useSelector((store=>store.authManager))
   const localType = JSON.parse(localStorage.getItem('type'))
@@ -79,6 +81,13 @@ console.log(name,localName)
   const removeMenu = () => {
     setMenu(!menu);
   };
+
+   const handleSearch = (e) =>{
+    console.log(e.target.value)
+    let val = e.target.value
+     setValue(val)
+    dispatch(getSearchProducts(val))
+  }
 
   return (
     <>
@@ -198,11 +207,29 @@ console.log(name,localName)
                   border={"none"}
                   p={"0px"}
                   w={"100%"}
+                  onChange={(e)=>handleSearch(e)}
                   focusBorderColor={"transparent"}
                   placeholder="Search..."
                   color={"black"}
                 />
               </HStack>
+              <Box position={"absolute"} zIndex="3" backgroundColor={"lightgray"} top={"51px"} pr="20px">
+                {
+                  
+                 value? data.map((el,i)=>{
+                    if(i<8){
+                      return (
+                        <Link to={`/products/${el._id}`} >
+                          <Box display={"flex"}>
+                            <Image width={"50px"} src={el.product_item__primary_image} alt="" />
+                            <Heading size={"xs"}>{el.product_item_meta__title}</Heading>
+                          </Box>
+                        </Link>
+                      )
+                    }
+                  }):""
+                }
+              </Box>
             </Stack>
           </UnorderedList>
 
