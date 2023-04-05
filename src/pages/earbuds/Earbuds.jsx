@@ -71,7 +71,6 @@ const EarbudProducts = () => {
 
   
 
-  
 
   return (
 
@@ -79,7 +78,7 @@ const EarbudProducts = () => {
     <>
      <Center py={12} backgroundColor={"rgb(245,245,245)"} >
        <Wrap spacing={"80px"} width={"90%"} justify="center">
-         <ProductHeader products={products} category={"earbud"}  sort={sort}setSort={setSort} 
+         <ProductHeader products={products.earbuds.products} category="Earbuds"  sort={sort}setSort={setSort} 
             
           />
      

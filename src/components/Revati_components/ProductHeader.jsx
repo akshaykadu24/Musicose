@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 
 
 const ProductHeader = ({products,search,setSearch,sort,setSort,category}) => {
-
+console.log(category)
     const [reset, setReset] = useState(false);
     const dispatch = useDispatch();
 
@@ -35,24 +35,24 @@ const ProductHeader = ({products,search,setSearch,sort,setSort,category}) => {
   };
 
   
-  
+  console.log(products)
 
   return (
     <Box display="flex"  w={{base:"75%",md:"85%",lg:"95%"}}  >
 
      <Box display={{sm:"flex",base:"none"}} flex={{sm:"0.8",md:"0.8",lg:"0.6"}}  alignItems="center"  >
-      <Text fontSize={{sm:12,md:16,lg:19}} mr={{sm:"5px",md:"7px",lg:"10px"}}>Earbuds</Text>
-      <Text fontSize={{sm:9,md:12,lg:14}}>({products.data.length} items)</Text>
+      <Text fontSize={{sm:12,md:16,lg:19}} mr={{sm:"5px",md:"7px",lg:"10px"}}>{category}</Text>
+      <Text fontSize={{sm:9,md:12,lg:14}}>({products?products.length:"0"} items)</Text>
      </Box>
 
-     <Box flex={{base:"0.9",sm:"0.8",md:"0.7",lg:"0.7"}}  >
+     {/* <Box flex={{base:"0.9",sm:"0.8",md:"0.7",lg:"0.7"}}  >
       <InputGroup size="md" w={{base:"100%",md:"100%",lg:"90%"}} >
       <InputLeftElement pointerEvents="none"
       children={<SearchIcon color="#999999" boxSize={{base:"11px",md:"13px",lg:"16px"}} />}
       />
       <Input  variant="flushed" size="md" _placeholder={{fontSize:{base:"10px",md:"12px",lg:"14px"}}} focusBorderColor='red.500'  placeholder="Search..."  type="text" value={search} onChange={handleSearch} />
       </InputGroup>
-     </Box>
+     </Box> */}
 
      <Box flex={{base:"0.7",md:"0.8",lg:"0.8"}}  display="flex" justifyContent="flex-end" alignItems="center" >
      <Select  size={{base:"xs",md:"sm",lg:"sm"}} placeholder='Sort by:' width={{base:"100px",sm:"115px",md:"150px",lg:"175px"}}   focusBorderColor="red.500" value={sort} 

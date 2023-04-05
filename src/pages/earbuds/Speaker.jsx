@@ -77,7 +77,7 @@ import {
       <>
        <Center py={12} backgroundColor={"rgb(245,245,245)"} >
          <Wrap spacing={"80px"} width={"90%"} justify="center">
-           <ProductHeader products={products} category={"speaker"}  sort={sort}setSort={setSort}
+           <ProductHeader products={products.speaker.products} category={"Speaker"}  sort={sort}setSort={setSort}
               
             />
        

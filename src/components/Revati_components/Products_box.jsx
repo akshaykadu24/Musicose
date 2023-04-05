@@ -27,9 +27,9 @@ const Products_box = ({ e }) => {
 
   return (
     <>
-      <Box key={e._id} display={{ lg: "flex", base: "block" }}
+      <Box key={e._id} display={{ lg: "flex", base: "block"  }}
         w="100%"
-        // w={{lg:""}}
+        // w={{lg:"350px"}}
         m="auto"
         mt="40px"
         boxShadow="rgba(149, 157, 165, 0.2) 0px 8px 24px"
@@ -39,17 +39,20 @@ const Products_box = ({ e }) => {
       >
 
         <Box flex={{ xl: "0.5", lg: "0.6" }}
+        
           borderRadius="20px">
+            
           <Link to={`/products/${e._id}`} >
             <Image src={e.product_item__primary_image} m="auto" width="200px" height="200px" alt="image" />
           </Link>
         </Box>
 
 
-        <Box w={{ base: "100%", md: "90%", lg: "40%" }} h={"auto"} p={{ xl: "15px", lg: "15px 10px", md: "15px", base: "15px" }}>
+        <Box w={{ base: "100%", md: "90%", lg: "30%",xl: "10%"}} h={"auto"} p={{ xl: "15px", lg: "15px ", md: "15px", base: "15px" }}>
 
           <Heading
-            size={{ md: "md", base: "xs", lg: "sm" }}
+          
+            size={{ md: "md", base: "xs", lg: "sm" ,xl:'md'}}
             textAlign={"center"}
             color="black"
             _hover={{ textDecoration: "underLine" }}
@@ -69,8 +72,8 @@ const Products_box = ({ e }) => {
               flexWrap="wrap"
               textAlign="center"
               justifyContent="center"
-              w={{ sm: "200px", md: "190px", xl: "270px" }}
-              size={{ md: "md", base: "xs", lg: "sm" }} >
+              w={{ sm: "200px", md: "190px", xl: "190px" }}
+              size={{ md: "md", base: "xs", lg: "sm", xl:"md" }} >
 
               <b fontSize="13px">Rs. {e.price}</b>
 
@@ -88,16 +91,16 @@ const Products_box = ({ e }) => {
 
           <Button display="flex"
             h="30px"
-
+            
             flexWrap="wrap"
             textAlign="left"
             justifyContent="center"
 
-            w={{ sm: "150px", md: "150px", lg: "150px", xl: "250px" }}
+            w={{ sm: "150px", md: "150px", lg: "150px", xl: "150px" }}
             ml={{ base: "100px", sm: "10px", md: "10px", xl: "10px" }}
 
-            size={{ md: "md", base: "xs", lg: "sm" }}
-            style={{ border: "1px solid gray", borderRadius: "15px" }}
+            size={{ md: "md", base: "xs", lg: "sm", xl:'md'}}
+            style={{ border: "1px solid gray", borderRadius: "15px"  }}
 
             marginRight={{ base: "1px", md: "2px", lg: "2px", xl: "2px" }}
             mt={{ base: "15px", md: "15px", lg: "10px", xl: "10px" }}
@@ -130,12 +133,12 @@ const Products_box = ({ e }) => {
           </Button>
 
           <Text
-            size={{ md: "md", base: "xs", lg: "sm" }}
+            size={{ md: "md", base: "xs", lg: "sm",xl:'md' }}
             textAlign={"center"}
             color="black"
 
             cursor="pointer"
-            w={{ lg: "170px", xl: "270px" }}
+            w={{ lg: "170px", xl: "170px" }}
 
             alignItems="center"
             justifyContent="center"
@@ -166,7 +169,8 @@ const Products_box = ({ e }) => {
             //style={{ padding: "2px 4px" }}
             //width="250px"
             // onClick={handleClick}
-            w={{ base: "190px", md: "180px", lg: "180px", xl: "270px" }}
+            w={{ base: "190px", md: "180px", lg: "180px", xl: "180px" }}
+
             px={2}
             alignItems="center" >
             <Link to={`/products/${e._id}`} >
