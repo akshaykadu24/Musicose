@@ -18,6 +18,7 @@ import {
     Wrap,
     Heading,
     useToast,
+    Img,
   } from "@chakra-ui/react";
   import { useEffect, useState } from "react";
   import { StarIcon } from "@chakra-ui/icons";
@@ -99,8 +100,12 @@ import {
              
   
               {
+                 products.loading? <Box  width='100%' margin={'auto'} marginTop="30px" >
+                
+                 <Img  margin='auto' marginLeft={{base:"0%",sm: "50%",md: "100%",lg: "100%" ,xl:"100%"}}  src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a2c21d7e-02b8-430c-b6a8-255189077a5a/d6i89u6-1957aee4-8182-4a53-8df5-a8a300498751.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2EyYzIxZDdlLTAyYjgtNDMwYy1iNmE4LTI1NTE4OTA3N2E1YVwvZDZpODl1Ni0xOTU3YWVlNC04MTgyLTRhNTMtOGRmNS1hOGEzMDA0OTg3NTEuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.6JT-iH4XiEArLL2pStH73HKWHnUqVNrSDiCTlkQFZqA"/>
+               </Box>
               // products.data.products.length > 0 &&
-                products.watch.products?.map((e, i) => ( 
+                :products.watch.products?.map((e, i) => ( 
                 
                   <Products_box e={e}/>
                   
