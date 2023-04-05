@@ -22,7 +22,7 @@ import Checkout from '../pages/Payment/Checkout';
 import OTPGenerator from '../pages/Payment/OTPGenerator';
 import Payments from '../pages/Payment/payments';
 import Thanking from '../pages/thanku';
-import About from '../pages/About';
+import About from '../pages/about';
 
 const AllRoutes = ()=>{
    return(
