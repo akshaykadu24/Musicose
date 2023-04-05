@@ -26,13 +26,14 @@ export function Dailydeals() {
   };
   return (
     <>
-      <Box color="white" bg="grey" pb={"30px"}>
+      <Box color="black"  pb={"30px"}>
         <Stack>
           <Flex alignItems={"center"}>
             <Stack ml="3rem" pt="2.5rem">
               <Text
                 width={"100%"}
-                fontSize="2rem"
+                fontSize="25px"
+                fontWeight={"bold"}
                 textAlign={"center"}
                 cursor={"pointer"}
               >
