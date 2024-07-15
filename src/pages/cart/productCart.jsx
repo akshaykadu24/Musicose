@@ -19,7 +19,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteCart, getCartItems, updateCart } from "../../redux/cart/cart.action";
-let api = `${MusicoseApi}/cart`;
+let api = `${process.env.REACT_APP_MUSICOSE_API}/cart`;
 
 const ProductCart = () => {
   const [quant, setQuant] = useState(0);

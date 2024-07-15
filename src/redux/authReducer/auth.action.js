@@ -9,7 +9,7 @@ export const loginAction = (payload) => (dispatch) => {
         
         axios({
             method:"POST",
-            url:`${MusicoseApi}/user/login`,
+            url:`${process.env.REACT_APP_MUSICOSE_API}/user/login`,
             data: payload,
     
             headers:{
@@ -43,7 +43,7 @@ export const signupAction = (payload) => (dispatch) => {
    return(
     axios({
         method:"POST",
-        url:`${MusicoseApi}/user/register`,
+        url:`${process.env.REACT_APP_MUSICOSE_API}/user/register`,
         data: payload,
 
         headers:{

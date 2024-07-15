@@ -4,7 +4,7 @@ import axios from "axios"
 export const getSearchProducts = (value)=>async(dispatch)=>{
   dispatch({ type : GET_SEARCH_LOADING });
   try{
-      let url = `${MusicoseApi}/search?search=${value}`;
+      let url = `${process.env.REACT_APP_MUSICOSE_API}/search?search=${value}`;
       let res = await axios.get(url)
       console.log(res.data.data)
       console.log("searching")      
@@ -20,7 +20,7 @@ export const getearbudproduct = (search,low,high,sort)=>async(dispatch)=>{
     dispatch({ type : GET_PRODUCTS_LOADING });
     let filt
     try{
-        let url = `${MusicoseApi}/products`;
+        let url = `${process.env.REACT_APP_MUSICOSE_API}/products`;
         let res = await axios.get(url)
         console.log(res.data.products)
         console.log("filtering")
@@ -38,7 +38,7 @@ export const getspeakerproduct = (search,low,high,sort)=>async(dispatch)=>{
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `${MusicoseApi}/products`;
+      let url = `${process.env.REACT_APP_MUSICOSE_API}/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "speaker")
@@ -55,7 +55,7 @@ export const getheadphoneproduct = (search,low,high,sort)=>async(dispatch)=>{
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `${MusicoseApi}/products`;
+      let url = `${process.env.REACT_APP_MUSICOSE_API}/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "headphone")
@@ -71,7 +71,7 @@ export const getbluetoothheadphoneproduct = (search,low,high,sort)=>async(dispat
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `${MusicoseApi}/products`;
+      let url = `${process.env.REACT_APP_MUSICOSE_API}/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "bluetoothHeadphone")
@@ -88,7 +88,7 @@ export const getwatchproduct = (search,low,high,sort)=>async(dispatch)=>{
   dispatch({ type : GET_PRODUCTS_LOADING });
 
   try{
-      let url = `${MusicoseApi}/products`;
+      let url = `${process.env.REACT_APP_MUSICOSE_API}/products`;
       let res = await axios.get(url)
      //console.log(res.data)
      let filt = res.data.products.filter((el)=> el.category == "watch")
@@ -119,7 +119,7 @@ export const sortMydata = (how,category) => (dispatch) => {
     console.log(id)
     dispatch({ type : GET_PRODUCTS_LOADING });
     try{
-         let res = await axios.get(`${MusicoseApi}/products`,{
+         let res = await axios.get(`${process.env.REACT_APP_MUSICOSE_API}/products`,{
            headers : {
              "Authorization" : JSON.parse(localStorage.getItem("token"))
            }

@@ -13,7 +13,7 @@ const getUsers = () => (dispatch) => {
 
   return(
     axios({
-      url:`${MusicoseApi}/user`,
+      url:`${process.env.REACT_APP_MUSICOSE_API}/user`,
       headers:{
         "Content-Type":"application/json",
         "Authorization": JSON.parse(localStorage.getItem("token"))
@@ -37,7 +37,7 @@ const deleteUser = (id) => (dispatch) => {
  return(
   axios({
     method:"DELETE",
-    url:`${MusicoseApi}/user/delete/${id}`,
+    url:`${process.env.REACT_APP_MUSICOSE_API}/user/delete/${id}`,
     headers:{
       "Content-Type":"application/json",
       "Authorization": JSON.parse(localStorage.getItem('token'))
@@ -60,7 +60,7 @@ const getProducts = () => (dispatch) => {
   dispatch({ type: GET_PRODUCTS_REQUEST });
   return( 
     axios({
-      url:`${MusicoseApi}/adminProduct`,
+      url:`${process.env.REACT_APP_MUSICOSE_API}/adminProduct`,
       headers:{
         "Content-Type":"application/json",
         "Authorization": JSON.parse(localStorage.getItem("token"))
@@ -93,7 +93,7 @@ const addProduct = (product) => (dispatch) => {
   return( 
     axios({
       method:"POST",
-      url:`${MusicoseApi}/adminProduct/create`,
+      url:`${process.env.REACT_APP_MUSICOSE_API}/adminProduct/create`,
       data:product,
 
       headers: {
@@ -120,7 +120,7 @@ const updateProduct = (id, payload) => (dispatch) => {
   return (
     axios({
       method:"PATCH",
-      url: `${MusicoseApi}/adminProduct/update/${id}`,
+      url: `${process.env.REACT_APP_MUSICOSE_API}/adminProduct/update/${id}`,
       data:payload,
       headers:{
         "Content-Type":"application/json",
@@ -142,7 +142,7 @@ const deleteProduct = (id) => (dispatch) => {
   return (
     axios({
       method:"DELETE",
-      url: `${MusicoseApi}/adminProduct/delete/${id}`,
+      url: `${process.env.REACT_APP_MUSICOSE_API}/adminProduct/delete/${id}`,
       headers:{
         "Content-Type":"application/json",
         "Authorization": JSON.parse(localStorage.getItem("token"))
