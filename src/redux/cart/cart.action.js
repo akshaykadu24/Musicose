@@ -9,7 +9,7 @@ export const addCart = (item)=>async(dispatch)=>{
    
     axios({
         method:"POST",
-        url:`https://blue-crocodile-robe.cyclic.app/cart/create/${item._id}`,
+        url:`${MusicoseApi}/cart/create/${item._id}`,
         data:item,
         headers:{
             "Content-Type" : "application/json",
@@ -31,7 +31,7 @@ export const getCartItems = (userid,type)=>async(dispatch)=>{
 console.log(userid)
     dispatch({type:CART_LOADING})
     try{
-        let res = await axios.get("https://blue-crocodile-robe.cyclic.app/cart",{
+        let res = await axios.get(`${MusicoseApi}/cart`,{
             headers:{
                 "Content-Type" : "application/json",
                 "Authorization" : JSON.parse(localStorage.getItem("token"))
@@ -61,7 +61,7 @@ export const deleteCart = (id)=>async(dispatch)=>{
     console.log(id)
     dispatch({type:CART_LOADING})
     try{
-        let res = await axios.delete(`https://blue-crocodile-robe.cyclic.app/cart/delete/${id}`,{
+        let res = await axios.delete(`${MusicoseApi}/cart/delete/${id}`,{
             headers:{
                 "Content-Type" : "application/json",
                 "Authorization" : JSON.parse(localStorage.getItem("token"))
@@ -79,7 +79,7 @@ export const updateCart = (id,quantity)=>async(dispatch)=>{
     console.log(id)
     dispatch({type:CART_LOADING})
     // try{
-    //     let res = await axios.patch(`https://blue-crocodile-robe.cyclic.app/cart/update/${id}`,{
+    //     let res = await axios.patch(`${MusicoseApi}/cart/update/${id}`,{
     //         headers:{
     //             "Content-Type" : "application/json",
     //             "Authorization" : JSON.parse(localStorage.getItem("token"))
@@ -94,7 +94,7 @@ export const updateCart = (id,quantity)=>async(dispatch)=>{
 
     axios({
         method:"PATCH",
-        url:`https://blue-crocodile-robe.cyclic.app/cart/update/${id}`,
+        url:`${MusicoseApi}/cart/update/${id}`,
         data:JSON.stringify({quantity:quantity}),
         headers:{
             "Content-Type" : "application/json",
