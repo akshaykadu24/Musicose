@@ -19,7 +19,7 @@ The admin option will be visible only to the admin user, for normal users admin 
 Admin can also use a website like normal user uses he can also put o order from the website  
 
 ## Deployed link of project
-- <a href="https://needy-direction-2456.vercel.app/">Musicose</a>
+- <a href="https://musicose.vercel.app/">Musicose</a>
 
 ## Team Members
 
@@ -41,7 +41,6 @@ clone the repository
 For Frontend terminal perform:
 
 ```bash
-  cd needy-direction-2456
   npm install
   npm start
   Then you are able to see the app running on your browser
@@ -51,7 +50,6 @@ For Backend terminal perform:
 
 
 ```bash
-  cd needy-direction-2456
   cd backend
   npm install
   npm run server
