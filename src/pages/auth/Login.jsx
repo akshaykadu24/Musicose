@@ -1,124 +1,98 @@
 import {
-    FormControl,
-    FormLabel,
-    Input,
-    Button,
-    useToast,
-    useDisclosure,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    ModalCloseButton,
-    Text
-  } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+  Button,
+  FormControl,
+  FormLabel,
+  IconButton,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { FiUser } from "react-icons/fi";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { loginAction } from "../../redux/authReducer/auth.action";
-  
 
+function Login({ iconOnly = false }) {
+  const [formData, setFormData] = useState({});
+  const dispatch = useDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  function Login() {
-    const toast = useToast();
-    const [val,setVal] = useState({})
-    const dispatch = useDispatch()
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const {isAuth,msg} = useSelector((store)=>store.authManager)
-   
-    const handleChange = (e)=>{
-      const {name,value} = e.target
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-      setVal({...val,[name]:value})
-    }
-    console.log(val)
-    console.log("1")
-    // useEffect(()=>{
-    //   if(isAuth){
-    //     toast({
-    //       title: "Welcome",
-    //       description: msg,
-    //       status: "success",
-    //       duration: 9000,
-    //       isClosable: true,
-    //     });
-    //   }else{
-    //     toast({
-    //       title: "Login Failed",
-    //       description: msg,
-    //       status: "error",
-    //       duration: 9000,
-    //       isClosable: true,
-    //     });
-    //   }
-    //   console.log("2")
-    // },[isAuth])
+  const handleLogin = (event) => {
+    event.preventDefault();
+    dispatch(loginAction(formData));
+    onClose();
+  };
 
-    
-
-    console.log("3")
-    const handlelLogin = (e) => {
-      dispatch(loginAction(val))
-      
-
-      e.preventDefault();
-      
-      onClose();
-    };
-  
-    return (
-      <>
-        <Text fontSize={"18px"} variantcolor="teal" onClick={onOpen}>
+  return (
+    <>
+      {iconOnly ? (
+        <IconButton
+          icon={<FiUser size="21px" />}
+          onClick={onOpen}
+          variant="ghost"
+          borderRadius="full"
+          aria-label="Login"
+        />
+      ) : (
+        <Text fontSize="md" fontWeight="600" onClick={onOpen}>
           Login
-        </Text >
-  
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Login</ModalHeader>
+        </Text>
+      )}
+
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent mx="4">
+          <form onSubmit={handleLogin}>
+            <ModalHeader>Login to Musicose</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <form onSubmit={handlelLogin}>
-                <FormControl>
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    onChange={(e)=>{handleChange(e)}}
-                    placeholder="Enter your email"
-                    aria-describedby="email-helper-text"
-                  />
-                </FormControl>
-  
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <Input
-                    type="password"
-                    id="pass"
-                    name="pass"
-                    onChange={(e)=>{handleChange(e)}}
-                    placeholder="Enter your password"
-                    aria-describedby="password-helper-text"
-                  />
-                </FormControl>
-              </form>
+              <FormControl isRequired>
+                <FormLabel htmlFor="email">Email</FormLabel>
+                <Input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email || ""}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                />
+              </FormControl>
+
+              <FormControl mt="4" isRequired>
+                <FormLabel htmlFor="pass">Password</FormLabel>
+                <Input
+                  type="password"
+                  id="pass"
+                  name="pass"
+                  value={formData.pass || ""}
+                  onChange={handleChange}
+                  placeholder="Enter your password"
+                />
+              </FormControl>
             </ModalBody>
-  
+
             <ModalFooter>
-              <Button variantcolor="teal" backgroundColor={"Black"} color={"white"} mr={3} onClick={()=>handlelLogin()}>
+              <Button type="submit" bg="#111827" color="white" _hover={{ bg: "gray.700" }}>
                 Login
               </Button>
-              
             </ModalFooter>
-          </ModalContent>:
-          
-          
-        </Modal>
-      </>
-    );
-  }
-  
-  export default Login;
-  
+          </form>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
+export default Login;

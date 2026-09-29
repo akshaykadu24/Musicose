@@ -25,11 +25,10 @@ const Footer = () => {
           <div className="sendEmailBox">
             <div className="footerLogo" >
               <Image
-                width="200px"
-                height="30px"
-                src={"logo.png"}
-                alt="musicose"
-                borderRadius={10}
+                width="190px"
+                height="auto"
+                src="/musicose-logo.svg"
+                alt="Musicose"
               />
             </div>
             <p className="subscribeText">

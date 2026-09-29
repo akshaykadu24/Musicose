@@ -1,110 +1,71 @@
-import axios from "axios"
-import { ADD_TO_CART, CART_ERROR, CART_LOADING, GET_CART, REMOVE_FROM_CART, UPDATE_TO_CART } from "./cart.types"
+import axios from "axios";
+import { CART_ERROR, CART_LOADING, GET_CART } from "./cart.types";
 
+const getHeaders = () => ({
+  "Content-Type": "application/json",
+  Authorization: JSON.parse(localStorage.getItem("token")),
+});
 
+export const getCartItems = (userId) => async (dispatch) => {
+  dispatch({ type: CART_LOADING });
 
-export const addCart = (item)=>async(dispatch)=>{
-    console.log(item)
-   dispatch({type:CART_LOADING})
-   
-    axios({
-        method:"POST",
-        url:`${process.env.REACT_APP_MUSICOSE_API}/cart/create/${item._id}`,
-        data:item,
-        headers:{
-            "Content-Type" : "application/json",
-            "Authorization" : JSON.parse(localStorage.getItem("token"))
-         },
-    }).then((res)=>{
-        console.log(res)
-        dispatch({type:ADD_TO_CART,payload:res.data})
-    }).catch(err=>{
-        console.log(err)
-        dispatch({type:CART_ERROR})
-    })
-    
-   
-   
-}
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_MUSICOSE_API}/cart`,
+      { headers: getHeaders() }
+    );
+    const savedUserId = JSON.parse(localStorage.getItem("user"));
+    const currentUserId = userId || savedUserId;
+    const products = currentUserId
+      ? response.data.products.filter((item) => item.user === currentUserId)
+      : [];
 
-export const getCartItems = (userid,type)=>async(dispatch)=>{
-console.log(userid)
-    dispatch({type:CART_LOADING})
-    try{
-        let res = await axios.get(`${process.env.REACT_APP_MUSICOSE_API}/cart`,{
-            headers:{
-                "Content-Type" : "application/json",
-                "Authorization" : JSON.parse(localStorage.getItem("token"))
-             },
-        })
-        
-        let localtype = JSON.parse(localStorage.getItem("type"))
-        let useridLocal = JSON.parse(localStorage.getItem("user"))
+    dispatch({ type: GET_CART, payload: { products } });
+  } catch (error) {
+    dispatch({ type: CART_ERROR });
+  }
+};
 
+export const addCart = (item) => async (dispatch) => {
+  dispatch({ type: CART_LOADING });
 
-        console.log(userid,"id",type,"type",localtype,"b")
-        console.log(res.data.products)
-        let filt
-        
-        if(type||localtype){
-            console.log(userid,"1",useridLocal,"2")
-            filt = res.data.products.filter((el)=>el.user==(userid||useridLocal))
-            console.log(filt)
-        }
-        dispatch({type:GET_CART,payload:{products:filt}})
-    }catch(error){
-        dispatch({type:CART_ERROR})
-    }
-}
+  try {
+    await axios.post(
+      `${process.env.REACT_APP_MUSICOSE_API}/cart/create/${item._id}`,
+      item,
+      { headers: getHeaders() }
+    );
+    await dispatch(getCartItems());
+  } catch (error) {
+    dispatch({ type: CART_ERROR });
+  }
+};
 
-export const deleteCart = (id)=>async(dispatch)=>{
-    console.log(id)
-    dispatch({type:CART_LOADING})
-    try{
-        let res = await axios.delete(`${process.env.REACT_APP_MUSICOSE_API}/cart/delete/${id}`,{
-            headers:{
-                "Content-Type" : "application/json",
-                "Authorization" : JSON.parse(localStorage.getItem("token"))
-             },
-        })
-        console.log(res)
-        dispatch({type:REMOVE_FROM_CART,payload:res.msg})
-    }catch(error){
-        dispatch({type:CART_ERROR})
-    }
-}
+export const deleteCart = (id) => async (dispatch) => {
+  dispatch({ type: CART_LOADING });
 
+  try {
+    await axios.delete(
+      `${process.env.REACT_APP_MUSICOSE_API}/cart/delete/${id}`,
+      { headers: getHeaders() }
+    );
+    await dispatch(getCartItems());
+  } catch (error) {
+    dispatch({ type: CART_ERROR });
+  }
+};
 
-export const updateCart = (id,quantity)=>async(dispatch)=>{
-    console.log(id)
-    dispatch({type:CART_LOADING})
-    // try{
-    //     let res = await axios.patch(`${process.env.REACT_APP_MUSICOSE_API}/cart/update/${id}`,{
-    //         headers:{
-    //             "Content-Type" : "application/json",
-    //             "Authorization" : JSON.parse(localStorage.getItem("token"))
-    //          },
-    //     });
-    //     console.log(res)
-    //     dispatch({type:UPDATE_TO_CART,payload:res.body})
-    // }catch(error){
-    //     dispatch({type:CART_ERROR})
-    // }
+export const updateCart = (id, quantity) => async (dispatch) => {
+  dispatch({ type: CART_LOADING });
 
-
-    axios({
-        method:"PATCH",
-        url:`${process.env.REACT_APP_MUSICOSE_API}/cart/update/${id}`,
-        data:JSON.stringify({quantity:quantity}),
-        headers:{
-            "Content-Type" : "application/json",
-            "Authorization" : JSON.parse(localStorage.getItem("token"))
-         },
-    }).then((res)=>{
-        console.log(res)
-        dispatch({type:ADD_TO_CART,payload:res.data})
-    }).catch(err=>{
-        console.log(err)
-        dispatch({type:CART_ERROR})
-    })
-}
+  try {
+    await axios.patch(
+      `${process.env.REACT_APP_MUSICOSE_API}/cart/update/${id}`,
+      { quantity },
+      { headers: getHeaders() }
+    );
+    await dispatch(getCartItems());
+  } catch (error) {
+    dispatch({ type: CART_ERROR });
+  }
+};
