@@ -6,19 +6,21 @@ const getHeaders = () => ({
   Authorization: JSON.parse(localStorage.getItem("token")),
 });
 
-export const getCartItems = (userId) => async (dispatch) => {
+export const getCartItems = () => async (dispatch) => {
+  if (!localStorage.getItem("token")) {
+    dispatch({ type: GET_CART, payload: { products: [] } });
+    return;
+  }
+
   dispatch({ type: CART_LOADING });
 
   try {
+    // The backend returns only the logged-in user's cart
     const response = await axios.get(
       `${process.env.REACT_APP_MUSICOSE_API}/cart`,
       { headers: getHeaders() }
     );
-    const savedUserId = JSON.parse(localStorage.getItem("user"));
-    const currentUserId = userId || savedUserId;
-    const products = currentUserId
-      ? response.data.products.filter((item) => item.user === currentUserId)
-      : [];
+    const products = Array.isArray(response.data.products) ? response.data.products : [];
 
     dispatch({ type: GET_CART, payload: { products } });
   } catch (error) {
@@ -68,4 +70,36 @@ export const updateCart = (id, quantity) => async (dispatch) => {
   } catch (error) {
     dispatch({ type: CART_ERROR });
   }
+};
+
+// Removes every item from the logged-in user's cart. Returns true on success.
+export const clearCart = () => async (dispatch, getState) => {
+  dispatch({ type: CART_LOADING });
+  const api = process.env.REACT_APP_MUSICOSE_API;
+
+  try {
+    await axios.delete(`${api}/cart/clear`, { headers: getHeaders() });
+  } catch (error) {
+    // Older backends (like the deployed one) don't have /cart/clear yet.
+    // In that case, remove the items one by one with the existing delete route.
+    if (error.response?.status !== 404) {
+      dispatch({ type: CART_ERROR });
+      return false;
+    }
+
+    try {
+      const items = getState().cart.cart.products || [];
+      await Promise.all(
+        items.map((item) =>
+          axios.delete(`${api}/cart/delete/${item._id}`, { headers: getHeaders() })
+        )
+      );
+    } catch (deleteError) {
+      dispatch({ type: CART_ERROR });
+      return false;
+    }
+  }
+
+  dispatch({ type: GET_CART, payload: { products: [] } });
+  return true;
 };

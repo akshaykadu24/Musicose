@@ -1,75 +1,79 @@
-// Import Swiper React components
+import { Box, Image } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
+import { Autoplay, Navigation, Pagination } from "swiper";
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 
-import "./Carousel.css";
-
-// import required modules
-import { Autoplay, Pagination, Navigation } from "swiper";
+const banners = [
+  { image: "/carousel/all.jpg", path: "/" },
+  { image: "/carousel/earbuds.jpg", path: "/earbuds" },
+  { image: "/carousel/headphone.jpg", path: "/headphone" },
+  { image: "/carousel/speaker.jpg", path: "/speaker" },
+  { image: "/carousel/watch.jpg", path: "/watch" },
+];
 
 export default function Carousel() {
   return (
-    <>
+    <Box
+      w="100%"
+      bg="gray.900"
+      sx={{
+        ".swiper-button-next, .swiper-button-prev": {
+          color: "white",
+          transform: "scale(0.7)",
+          display: { base: "none", md: "flex" },
+        },
+        ".swiper-pagination-bullet": { bg: "white", opacity: 0.7 },
+        ".swiper-pagination-bullet-active": { bg: "red.500", opacity: 1 },
+      }}
+    >
       <Swiper
-        spaceBetween={30}
-        centeredSlides={true}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        navigation={true}
+        loop
+        autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+        pagination={{ clickable: true }}
+        navigation
         modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper"
       >
-        <SwiperSlide>
-          <img
-            src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/999-Store-Desktop_1_1600x.jpg?v=1677239714"
-            alt=""
-          />
-        </SwiperSlide>
-        
-        <SwiperSlide>
-          <img
-            src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/DD-Desktop_1600x.jpg?v=1676020067"
-            alt=""
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          {" "}
-          <img
-            src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/DC-Desktop-Banner_1600x.jpg?v=1676607577"
-            alt=""
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          {" "}
-          <img
-            src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/Desktop-192_55738f37-c97c-4e73-874a-dd117eb9a9a2_1600x.jpg?v=1676466626"
-            alt=""
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          {" "}
-          <img
-            src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/trinity-web_c5e16c27-35b7-498b-a046-bdec250d517b_1600x.jpg?v=1676960518"
-            alt=""
-          />
-        </SwiperSlide>
-        {/* <SwiperSlide>
-          {" "}
-          <img
-            src="https://d2g9wbak88g7ch.cloudfront.net/bannerimages/84_inr.jpg"
-            alt=""
-          />
-        </SwiperSlide> */}
+        {banners.map((banner, index) => (
+          <SwiperSlide key={banner.image}>
+            <Box
+              as={Link}
+              to={banner.path}
+              position="relative"
+              display="block"
+              w="100%"
+              h={{ base: "56vw", md: "42vw", xl: "520px" }}
+              maxH="560px"
+              overflow="hidden"
+              bg="gray.900"
+              _before={{
+                content: '""',
+                position: "absolute",
+                inset: "0",
+                bgImage: `linear-gradient(rgba(17, 24, 39, 0.18), rgba(17, 24, 39, 0.18)), url(${banner.image})`,
+                bgSize: "cover",
+                bgPosition: "center",
+                filter: "blur(12px)",
+                transform: "scale(1.08)",
+              }}
+            >
+              <Image
+                src={banner.image}
+                fallbackSrc="/musicose-logo-white.svg"
+                alt={`Musicose featured offer ${index + 1}`}
+                position="relative"
+                zIndex="1"
+                display="block"
+                w="100%"
+                h="100%"
+                objectFit="contain"
+              />
+            </Box>
+          </SwiperSlide>
+        ))}
       </Swiper>
-    </>
+    </Box>
   );
 }

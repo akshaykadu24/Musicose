@@ -6,7 +6,7 @@ const initialState = {
     data : [],
     searchData : [],
     earbuds:[],
-    watch:[],
+    watch:{products:[]},
     bluetooth_headphone:[],
     headphone:[],
     speaker:[],

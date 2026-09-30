@@ -2,10 +2,15 @@ const { AdminProductModel } = require("../modules/admin.product.model")
 
 const cartCreateMiddleware = async(req,res,next)=>{
     let id = req.params.id
-    console.log(id)
     let data = await AdminProductModel.findById(id)
-    console.log(data)
-    let cData = {...req.body,
+    if(!data){
+        return res.status(404).send({msg:"product not found"})
+    }
+    // Build the cart row only from trusted product data.
+    // Do not copy req.body, because it contains the product's own _id.
+    let cData = {
+        user: req.body.user,
+        productId: id,
         product_item_meta__title:  data.product_item_meta__title,
         product_item__primary_image:  data.product_item__primary_image,
         product_item__secondary_image:  data.product_item__secondary_image,

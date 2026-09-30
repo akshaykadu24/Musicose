@@ -1,469 +1,382 @@
 import {
+  AspectRatio,
+  Badge,
   Box,
-  Table,
-  Tbody,
-  Td,
-  Thead,
-  Tr,
-  Image,
-  Flex,
   Button,
-  Text,
-  Input,
-  useToast,
-  HStack,
+  Divider,
+  Flex,
   Grid,
   Heading,
+  HStack,
+  Icon,
+  IconButton,
+  Image,
+  Input,
+  Skeleton,
+  Stack,
+  Text,
+  useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  FiLock,
+  FiMinus,
+  FiPlus,
+  FiShoppingBag,
+  FiTag,
+  FiTrash2,
+  FiTruck,
+} from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { deleteCart, getCartItems, updateCart } from "../../redux/cart/cart.action";
-let api = `${process.env.REACT_APP_MUSICOSE_API}/cart`;
+import {
+  clearCoupon,
+  COUPON_CODE,
+  COUPON_PERCENT,
+  formatPrice,
+  getCartTotals,
+  isCouponSaved,
+  saveCoupon,
+} from "../../utils/cartTotals";
+
+const MAX_QUANTITY = 10;
+
+const SummaryRow = ({ label, value, color, bold }) => (
+  <Flex justify="space-between" fontSize={bold ? "md" : "sm"} fontWeight={bold ? "800" : "500"}>
+    <Text color={bold ? "gray.900" : "gray.600"}>{label}</Text>
+    <Text color={color || "gray.900"}>{value}</Text>
+  </Flex>
+);
 
 const ProductCart = () => {
-  const [quant, setQuant] = useState(0);
   const dispatch = useDispatch();
-  const [data, setData] = useState([]);
-  const [amt, setAmt] = useState(0);
-  const [samt, setsAmt] = useState(0);
-  const [refresh, setRefresh] = useState(false);
-  const [applied, setApplied] = useState(false);
   const navigate = useNavigate();
-  const [value, setValue] = useState("");
   const toast = useToast();
-  const [count, setCount] = useState(0);
 
-  const cartItems = useSelector((store) => {
-    return store.cart.cart;
-  });
-  console.log(cartItems)
-  const {user,type} = useSelector((store)=>store.authManager)
-  console.log(user)
+  const items = useSelector((store) => store.cart.cart.products || []);
+  const loading = useSelector((store) => store.cart.loading);
+  const [loaded, setLoaded] = useState(false);
+  const [busyId, setBusyId] = useState(null);
+  const [couponInput, setCouponInput] = useState("");
+  const [couponApplied, setCouponApplied] = useState(isCouponSaved);
 
-  useEffect(()=>{
-    dispatch(getCartItems(user,type));
-  },[count])
-  
-console.log(cartItems.products)
   useEffect(() => {
-    dispatch(getCartItems(user,type));
+    dispatch(getCartItems()).finally(() => setLoaded(true));
+  }, [dispatch]);
 
-    fetch(api,{
-      headers:{
-        "Authorization":JSON.parse(localStorage.getItem("token"))
-      }
-    })
-      .then((res) => res.json())
-      .then((data) => {
-
-        let localtype = JSON.parse(localStorage.getItem("type"))
-        let useridLocal = JSON.parse(localStorage.getItem("user"))
-
-        let userid = user
-        console.log(userid,"id",type,"type",localtype,"b")
-        console.log(data.products)
-        let filt
-        
-        if(type||localtype){
-            console.log(userid,"1",useridLocal,"2")
-            filt = data.products.filter((el)=>el.user==(userid||useridLocal))
-            console.log(filt)
-        }
-
-        console.log(filt);
-        setData(filt);
-        let q = 0;
-        let s = 0;
-        let p = 0;
-        for (let j = 0; j < filt.length; j++) {
-          q += filt[j].quantity;
-          p += filt[j].quantity * filt[j].price;
-          s += filt[j].price2 * filt[j].quantity;
-        }
-        console.log(q,p,s)
-        
-        setQuant(q);
-        setAmt(p);
-        setsAmt(s);
-      });
-  }, [count]);
-  console.log(data);
-
-
-  const removeProduct = (id) => {
-    console.log("ok")
-    console.log(id)
-    dispatch(deleteCart(id));
-    
-    setCount((prev) => prev + 1);
-
-   // setTimeout(() => {
-     // dispatch(getCartItems);
-     // window.location.reload();
-   // }, 500);
+  const changeQuantity = async (item, newQuantity) => {
+    if (newQuantity < 1 || newQuantity > MAX_QUANTITY) return;
+    setBusyId(item._id);
+    await dispatch(updateCart(item._id, newQuantity));
+    setBusyId(null);
   };
 
-  let handleInc = async (id, price, quantity) => {
-    // let res = await fetch(`${api}/${id}`
-    // , {
-    //   method: "PATCH",
-    //   body: JSON.stringify({ quantity: quantity + 1 }),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // }
-    // )
-    //   .then((res) => {
-    //     res.json()
-    //    window.location.reload();
-    //  })
-    //  .then((res) => {
-    //    console.log(res);
-        
-    //  });
-
-     dispatch(updateCart(id,quantity))
-     setCount((prev)=>prev+1)
-    console.log(id, api);
-
-    //setRefresh(refresh)
+  const removeItem = async (item) => {
+    setBusyId(item._id);
+    await dispatch(deleteCart(item._id));
+    setBusyId(null);
+    toast({ title: "Removed from cart", status: "info", duration: 2000, position: "top" });
   };
 
-  let handleDec = async (id, price, quantity) => {
-    if (quantity == 1) {
-      removeProduct(id);
+  const applyCoupon = () => {
+    if (couponInput.trim().toUpperCase() === COUPON_CODE) {
+      setCouponApplied(true);
+      saveCoupon();
+      toast({ title: `${COUPON_PERCENT}% coupon applied`, status: "success", duration: 2500, position: "top" });
     } else {
-      let res = await fetch(`${api}/${id}`
-      // , {
-      //   method: "PATCH",
-      //   body: JSON.stringify({ quantity: quantity - 1 }),
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // }
-      )
-        .then((res) => {
-          res.json()
-         // window.location.reload();
-        })
-        .then((res) => {
-          console.log(res);
-        });
+      toast({ title: "Invalid coupon code", status: "error", duration: 2500, position: "top" });
     }
   };
 
-  const handlecoup = () => {
-    if (value == "boat100") {
-      setApplied(true);
-      return toast({
-        title: "YAY!",
-        description: "30% off has been applied on your total amount!",
-        status: "success",
-        position: "top",
-        duration: 3000,
-        isClosable: true,
-      });
-    } else {
-      return toast({
-        title: "Error",
-        description: "Sorry Inavalid Coupon",
-        status: "error",
-        position: "top",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+  const removeCoupon = () => {
+    setCouponApplied(false);
+    setCouponInput("");
+    clearCoupon();
   };
 
-  const removecoup = () => {
-    setApplied(false);
-    return toast({
-      title: "Coupon dismissed",
-      description: "Discount has been discarded",
-      status: "warning",
-      position: "top",
-      duration: 3000,
-      isClosable: true,
-    });
-  };
+  const { itemCount, mrpTotal, productDiscount, couponDiscount, total, totalSaving } =
+    getCartTotals(items, couponApplied);
+
+  // Not logged in
+  if (!localStorage.getItem("token")) {
+    return (
+      <EmptyState
+        title="Login to see your cart"
+        text="Your saved products will appear here after you login."
+        buttonText="Continue shopping"
+      />
+    );
+  }
+
+  // First load
+  if (!loaded && loading) {
+    return (
+      <Box maxW="1200px" mx="auto" px={{ base: "4", md: "6" }} py="8">
+        <Skeleton h="36px" w="200px" mb="6" />
+        <Grid templateColumns={{ base: "1fr", lg: "1fr 360px" }} gap="6">
+          <Stack spacing="4">
+            {[1, 2, 3].map((n) => (
+              <Skeleton key={n} h="130px" borderRadius="xl" />
+            ))}
+          </Stack>
+          <Skeleton h="320px" borderRadius="xl" />
+        </Grid>
+      </Box>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <EmptyState
+        title="Your cart is empty"
+        text="Looks like you haven't added anything yet. Explore our latest audio products and smart watches."
+        buttonText="Start shopping"
+      />
+    );
+  }
 
   return (
-    <Box p="40px" mt="20px">
-      <Box
-        display="flex"
-        flexDirection={["column", "column", "row"]}
-        gap="40px"
-        justifyContent="center"
-        alignItems="flex-start">
-        <Box w={["100%", "100%", "100%", "100%", "60%"]}>
-          <Table>
-            <Thead
-              boxShadow=" rgba(149, 157, 165, 0.2) 0px 8px 24px"
-              bgColor={"white"}>
-              <Tr fontSize={"xs"} fontWeight="bold">
-                <Td>ITEM</Td>
-                <Td>TITLE</Td>
-                <Td>PRICE</Td>
-                <Td>QUANTITY</Td>
-              </Tr>
-            </Thead>
-            <Tbody>
-              
-              {
-                 data.length>0?( data.map((ele) => {
-                  return (
-                    <Tr
-                      boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
-                      key={ele._id}>
-                      <Td fontSize={"xs"} fontWeight="bold" w="15%" p="5px">
-                        <Image src={ele.product_item__primary_image} w="100%" />
-                      </Td>
-                      <Td
-                        fontSize={"xs"}
-                        fontWeight="bold"
-                        w="40%"
-                        style={{ border: "0px solid black", padding: "20px" }}>
-                        <Box
-                          display={"flex"}
-                          flexDirection="column"
-                          justifyContent={"space-between"}>
-                          <Box mb="20px">
-                            <Heading size={"md"}>{ele.product_item_meta__title}</Heading>
-                          </Box>
-                        </Box>
-                      </Td>
-                      <Td
-                        pt="22px"
-                        valign="top"
-                        fontSize={"xs"}
-                        fontWeight="bold">
-                        <Box
-                          display={"flex"}
-                          flexDirection="column"
-                          justifyContent={"flex-start"}>
-                          <Heading size={"sm"} >₹{ele.price * ele.quantity}.00</Heading>
-                          <Heading size={"sm"} color={"gray"} textDecoration={"line-through"}>
-                            ₹{ele.price2 * ele.quantity}.00
-                          </Heading>
-                        </Box>
-                      </Td>
-                      <Td
-                        pt="22px"
-                        valign="top"
-                        fontSize={"xs"}
-                        fontWeight="bold">
-                        <Box
-                          display="flex"
-                          justifyContent={"space-evenly"}
-                          border="1px solid black">
-                          <span
-                            style={{ cursor: "pointer" }}
-                            onClick={() =>
-                              handleDec(ele._id, ele.price, ele.quantity)
-                            }>
-                            -
-                          </span>
-                          <Heading size={"md"} display="inline" px="2px">
-                            {ele.quantity}
-                          </Heading>
-                          <span
-                            style={{ cursor: "pointer" }}
-                            onClick={() =>
-                              handleInc(ele._id, ele.price, ele.quantity)
-                            }>
-                            +
-                          </span>
-                        </Box>
+    <Box bg="#f8fafc" textAlign="left" minH="70vh">
+      <Box maxW="1200px" mx="auto" px={{ base: "4", md: "6" }} py={{ base: "6", md: "10" }}>
+        <HStack align="baseline" spacing="3" mb={{ base: "5", md: "7" }}>
+          <Heading size={{ base: "lg", md: "xl" }}>My Cart</Heading>
+          <Text color="gray.500">
+            ({itemCount} {itemCount === 1 ? "item" : "items"})
+          </Text>
+        </HStack>
 
-                        <Flex gap="2px" p="2px">
-                          <Button
-                            color={"white"}
-                            bgColor="#004d3d"
-                            onClick={() => removeProduct(ele._id)}
-                            w={{ lg: "100%", md: "100%", sm: "100%" }}
-                            size="xs"
-                            mt={{ lg: "70px" }}
-                            padding="19px"
-                            fontSize="20px">
-                            Remove
-                          </Button>
-                        </Flex>
-                      </Td>
-                    </Tr>
-                  )
-                })):(
-                  <>NO Items in Cart</>
-              )   
-              }
-                
-            </Tbody>
-          </Table>
-        </Box>
+        <Grid templateColumns={{ base: "1fr", lg: "1fr 360px" }} gap={{ base: "5", lg: "8" }} alignItems="start">
+          {/* Cart items */}
+          <Stack spacing="3">
+            {items.map((item) => {
+              const price = Number(item.price) || 0;
+              const mrp = Number(item.price2) || 0;
+              const quantity = Number(item.quantity) || 1;
+              const isBusy = busyId === item._id;
+              const productLink = item.productId ? `/products/${item.productId}` : null;
 
-        <Box w={["100%", "100%", "100%", "100%", "30%"]}>
-          <Box m="auto" display={"flex"} flexDirection="column">
-            <Box
-              p="20px"
-              boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
-              gap="20px"
-              display={"flex"}
-              flexDirection="column"
-              w="100%">
-              <Box display="flex" flexDirection={"column"} gap="20px">
-                <Box
-                  fontSize={"14px"}
-                  display={"flex"}
-                  justifyContent="space-between"
-                  alignItems={"center"}>
-                  <Box>
-                    <Heading size={"sm"} marginTop={"10px"} fontWeight={"bold"}>Subtotal</Heading>
-                    <Heading size={"sm"} marginTop={"10px"} fontWeight={"bold"}>Discount</Heading>
-                    <Heading size={"sm"} marginTop={"10px"}
-                      fontWeight={"bold"}
-                      display={applied === true ? "block" : "none"}>
-                      Coupon Discount
-                    </Heading>
-                    <Heading size={"sm"} marginTop={"10px"} fontWeight={"bold"}>Shipping Charges</Heading>
+              return (
+                <Flex
+                  key={item._id}
+                  gap={{ base: "3", md: "5" }}
+                  p={{ base: "3", md: "4" }}
+                  bg="white"
+                  border="1px solid"
+                  borderColor="gray.100"
+                  borderRadius="xl"
+                  boxShadow="sm"
+                  opacity={isBusy ? 0.6 : 1}
+                  transition="opacity 0.2s"
+                >
+                  <Box
+                    as={productLink ? Link : "div"}
+                    to={productLink || undefined}
+                    w={{ base: "84px", md: "120px" }}
+                    flexShrink="0"
+                    bg="gray.50"
+                    borderRadius="lg"
+                    p="2"
+                  >
+                    <AspectRatio ratio={1}>
+                      <Image
+                        src={item.product_item__primary_image}
+                        fallbackSrc="/musicose-mark.svg"
+                        alt={item.product_item_meta__title}
+                        objectFit="contain"
+                      />
+                    </AspectRatio>
                   </Box>
-                  <Box>
-                    <Heading size={"sm"} marginTop="10px">&nbsp;&nbsp;₹{samt}.00 </Heading>
-                    <Heading size={"sm"} marginTop="10px">- ₹{samt - amt}.00 </Heading>
-                    <Heading size={"sm"} marginTop="10px" display={applied === true ? "block" : "none"}>
-                      &nbsp;- ₹{(amt * 0.3).toFixed(2)}{" "}
-                    </Heading>
-                    <Text marginTop="10px">
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;₹0.00{" "}
-                    </Text>
-                  </Box>
+
+                  <Flex flex="1" direction="column" minW="0">
+                    <Flex justify="space-between" gap="2">
+                      <Text
+                        as={productLink ? Link : "p"}
+                        to={productLink || undefined}
+                        fontWeight="700"
+                        fontSize={{ base: "sm", md: "md" }}
+                        noOfLines={2}
+                        _hover={productLink ? { color: "red.500" } : undefined}
+                      >
+                        {item.product_item_meta__title}
+                      </Text>
+                      <IconButton
+                        icon={<FiTrash2 />}
+                        size="sm"
+                        variant="ghost"
+                        color="gray.400"
+                        aria-label="Remove item"
+                        isDisabled={isBusy}
+                        onClick={() => removeItem(item)}
+                        _hover={{ color: "red.500", bg: "red.50" }}
+                      />
+                    </Flex>
+
+                    <HStack mt="1" spacing="2" align="baseline">
+                      <Text fontWeight="800">{formatPrice(price)}</Text>
+                      {mrp > price && (
+                        <>
+                          <Text fontSize="sm" color="gray.500" textDecoration="line-through">
+                            {formatPrice(mrp)}
+                          </Text>
+                          <Badge colorScheme="green" fontSize="10px" borderRadius="md">
+                            {Math.round(((mrp - price) * 100) / mrp)}% off
+                          </Badge>
+                        </>
+                      )}
+                    </HStack>
+
+                    <Flex mt="auto" pt="3" justify="space-between" align="center">
+                      <HStack
+                        spacing="0"
+                        border="1px solid"
+                        borderColor="gray.200"
+                        borderRadius="full"
+                      >
+                        <IconButton
+                          icon={<FiMinus />}
+                          size="sm"
+                          variant="ghost"
+                          borderRadius="full"
+                          aria-label="Decrease quantity"
+                          isDisabled={isBusy || quantity <= 1}
+                          onClick={() => changeQuantity(item, quantity - 1)}
+                        />
+                        <Text w="32px" textAlign="center" fontWeight="700" fontSize="sm">
+                          {quantity}
+                        </Text>
+                        <IconButton
+                          icon={<FiPlus />}
+                          size="sm"
+                          variant="ghost"
+                          borderRadius="full"
+                          aria-label="Increase quantity"
+                          isDisabled={isBusy || quantity >= MAX_QUANTITY}
+                          onClick={() => changeQuantity(item, quantity + 1)}
+                        />
+                      </HStack>
+
+                      <Text fontWeight="800" fontSize={{ base: "md", md: "lg" }}>
+                        {formatPrice(price * quantity)}
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </Flex>
+              );
+            })}
+
+            <Button
+              as={Link}
+              to="/"
+              variant="ghost"
+              alignSelf="flex-start"
+              color="red.500"
+              size="sm"
+              leftIcon={<FiShoppingBag />}
+            >
+              Continue shopping
+            </Button>
+          </Stack>
+
+          {/* Order summary */}
+          <Stack spacing="4" position={{ lg: "sticky" }} top={{ lg: "110px" }}>
+            <Box bg="white" border="1px solid" borderColor="gray.100" borderRadius="xl" boxShadow="sm" p="5">
+              <Heading size="md" mb="4">Order summary</Heading>
+              <Stack spacing="3">
+                <SummaryRow label={`MRP (${itemCount} items)`} value={formatPrice(mrpTotal)} />
+                {productDiscount > 0 && (
+                  <SummaryRow label="Product discount" value={`- ${formatPrice(productDiscount)}`} color="green.600" />
+                )}
+                {couponApplied && (
+                  <SummaryRow label={`Coupon (${COUPON_CODE})`} value={`- ${formatPrice(couponDiscount)}`} color="green.600" />
+                )}
+                <SummaryRow label="Delivery" value="FREE" color="green.600" />
+                <Divider />
+                <SummaryRow label="Total" value={formatPrice(total)} bold />
+              </Stack>
+
+              {totalSaving > 0 && (
+                <Box mt="4" py="2" px="3" bg="green.50" color="green.700" borderRadius="md" fontSize="sm" fontWeight="700">
+                  You save {formatPrice(totalSaving)} on this order
                 </Box>
-                <Box display={"flex"} justifyContent="space-between">
-                  <Heading size={"sm"} marginTop="10px" fontWeight={"bold"}>Total Price</Heading >
-                  <Heading size={"sm"} marginTop="10px" fontWeight={"bold"}>
-                    ₹
-                    {applied === true ? (amt * 0.7).toFixed(2) : amt.toFixed(2)}
-                  </Heading >
-                </Box>
+              )}
+
+              <Button
+                mt="5"
+                w="100%"
+                size="lg"
+                colorScheme="red"
+                borderRadius="full"
+                onClick={() => navigate("/checkout")}
+              >
+                Proceed to checkout
+              </Button>
+
+              <HStack mt="3" justify="center" spacing="2" color="gray.500" fontSize="xs">
+                <Icon as={FiLock} />
+                <Text>Safe and secure payments</Text>
+              </HStack>
+            </Box>
+
+            <Box bg="white" border="1px solid" borderColor="gray.100" borderRadius="xl" boxShadow="sm" p="5">
+              <HStack mb="3" spacing="2">
+                <Icon as={FiTag} color="red.500" />
+                <Text fontWeight="700">Apply coupon</Text>
+              </HStack>
+              {couponApplied ? (
+                <Flex justify="space-between" align="center" bg="green.50" p="3" borderRadius="md">
+                  <Text fontSize="sm" fontWeight="700" color="green.700">
+                    {COUPON_CODE} applied
+                  </Text>
+                  <Button size="xs" variant="ghost" colorScheme="red" onClick={removeCoupon}>
+                    Remove
+                  </Button>
+                </Flex>
+              ) : (
+                <HStack>
+                  <Input
+                    value={couponInput}
+                    onChange={(e) => setCouponInput(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && applyCoupon()}
+                    placeholder="Enter coupon code"
+                    borderRadius="full"
+                    focusBorderColor="red.400"
+                    textTransform="uppercase"
+                  />
+                  <Button onClick={applyCoupon} borderRadius="full" px="6" isDisabled={!couponInput.trim()}>
+                    Apply
+                  </Button>
+                </HStack>
+              )}
+            </Box>
+
+            <HStack bg="white" border="1px solid" borderColor="gray.100" borderRadius="xl" p="4" spacing="3">
+              <Flex boxSize="36px" flexShrink="0" align="center" justify="center" bg="red.50" color="red.500" borderRadius="full">
+                <Icon as={FiTruck} />
+              </Flex>
+              <Box>
+                <Text fontSize="sm" fontWeight="700">Free delivery on every order</Text>
+                <Text fontSize="xs" color="gray.500">Usually delivered in 5-7 days</Text>
               </Box>
-
-              <Button
-                bgColor="#004d3d"
-                color="white"
-                onClick={() => {
-                  navigate("/checkout");
-                }}>
-                Checkout
-              </Button>
-              <Button bgColor={"rgb(255,255,255)"}>
-                <Image
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASsAAACoCAMAAACPKThEAAAA4VBMVEX///8AMIcAnN4BIWkAldwAmd0AlNwALoYAmt0AE34Al90ALYbe4OoAJ4QAKoUAEX4AJIPj8voAIIIAG4Dj5u9suudse6wAAHsADH1OYJze7fkAGYDL5fbX6/gAh8iep8YBEmCPmr64v9Xx8/eAwurC4PSo1PCPyOzL0OA7qeLCyNthteadz+6rs82EkLjr7vQBKHYBGGNeb6U6qOI2T5V5hrJDWZpSsOQcPY3T2OUlRI8AMX4ASowAaakBJnIBU5MBL3QAeboBE2AAWqUAbrUAgMQATJoAYapldagAdLpIXZvq4T9CAAAJhElEQVR4nO2ce3/auBKGwcVXsDE2wSYkpYFwSULCpkna0N1227329Pt/oGNbGlnCljFrfOD8dp6/isFGjKTRO6+UNhoIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAI8u9i3cmjf+xmnSIPgZlHN7SHV8tjN+606ARNCbrjmt7D9NgNPCHuPVmsEtxwfOwWng4PbmGsmrr5/thNPBmGTnGsmk3/+7HbeCo09V2xanbvj93IEyHcGaqm7h+7kadBx9wdq6aPAytm4peIlTM8djNPgqsdyyBOwpTvdolYNUNUpBGf2mVi1V0fu52nQIllsNS46gscOrTTnsCeo5zeVbUR/S4fkp/e5PDlp2hc7XjMMuiKRIX3+HBOxUJrCWgt5W5eOmDX5G5tVbEVtyM+VnmhSvh5x2OGmaynO14wPFS0NGUbw7C065J3PxnJLeqiYivGfOWcO6xiHn9RLgofY+eKfzu4rdg8Qq+ViVXy45Vy08oiH7fmFZvxYpeK1WdFmxU8ZSrJenqwqdi+hJmVG6tocJW5u0dHZeuyYjM+8JXzF1ms3r2NvqogP2xk4r/drNi+hJWaHytFPStx9wWNtFZV93j85JGmq8e4XXfyp8jFvzmp2MCYM1msSv3+OYmVoVRshTh5pKH6dUe7mPh3zG7XHHmpZrMHFVsYc2PAOIqWM8viIlcmB12TzxsfK7ZiU2oZjKdgYbtA/DvDSFttlldNlgXbrxVbGAPpSl30eueXs2sLYqeoJdbCj0bpjxYiGsiyWH3d9WWvdCCNYN1L06BbsYURU5AMGr3QU9lAK5GwDOMwy6BgIMuWwXffyCCWJyzY3uh26AXm9OgHiBUk53TZY8m+oE0ARNoqVj27EQxkWay+KjsmPBP/IbvEYnWAhXBubTfggs3K3RPrkoozrWqNIxjIEslAslVRH4L455ITxMr5wS51Jvfj8eQfCC6anLnApLFK65bL+Xw1n2UDApG29v9igTLLIJ2BRX0I4t9mOz5rGGnuC7nQf7C7vud5fnc0WDfWryS2H6J3JmQdaIu7RVc01PFVmpy5jAO/X7GoQr64ixZIVbUsTYkqmRm5wUgavKDL4FPFWIkGcn6oPivZPtwCxL97BVeY4PKJvhoELoxg3Q2W9yM9IVhHb7nk3ya/DzkJ2snFdtBgyZnLOExwkYl1/qSxldGwlMadasSoiaK6M0qvAoWIGrI4VKwPs8Cq5zPh+Qx5MIzdmY0nmK+6+568rZuNdAI7H9IHTkHKdOMnakJg4rehPiT6cpVGKrl4Q4tlkjQUY0dPl+RqxzL4+Phn2ga5Fu3SMWNCMnoAKeI8N+JBslVZ6w73bgM+y3lkYFu48RSE5Ky04O0nJhli6+B624WAcUiMBVgGi+rZMnwvrJwf3/3KdZi8RlhD1iMuV3/yzFTb6D72tmQ7kETUv7jbo/LehAEYv4LK2bhJ3jxfGaxV8Uhb5JsQCs1v4FG0qi6DgoH8ZStQbz4LZZjc/lnCjNFd3x+FXZ8JkXY7nk9ppvJN0+dUipekqCWNjA3b22uT3hEmx3QWrBlqlL21lpqq9miSzdioMlQryu9c7ybGAkRak7W+LOIy+Ntv74A3v3x+u9VL2rnsKan4j9Mx/8jwlrMB7dHLZLO5H6brCZX51Pxim0WQ/jyyht4ZioTY+mDBsZTF7PJipaQdnCQNKlsrV86Cgax//faWklfWqzfSx0hPj/jRHFtCf4xAFExYD1GZD5PQJKe9xltqTZHFKrbU2KBjDvE16Aki8+mSWULgF8MbyLou6z3aFnmJIDs9Mhpyb9JBkgQDxmFAXoP75T7Er/ohHZoBLZiyBjIXHQgMZ0WCHCMy/6YGA7n9e2Go1AJHI99AdoL4p69pqUiWPArNR0zmt+nrpB4CueFTsSYzkFtxdECU8jr5QrhWh4Hs/FEUKsOSm1d5BnLbDZ8TAQG5zORPU9KxxmQ+TOKwn85AFtw8A1lVtbukQZDLhAIGVEIcnmkdBrL9Z7ZJKQUzkDOQbT9hZIafHqjUGpDu0G3+DipVmMzf0LwZrYt9Gng9hC3G1ECOSpiEVutmRRUAVIqCKIehFLe5FgPZlsqUaFQVbkww8e8NJgm3nbRhVJU4QrVH+ygVVE36qQ+NT7T7THYyh9Uz1mqWcJEqJRg1qjDD6MVE5tdiINvyUKlG4QAG8Z97mIZ2h/3CX6Tfy2Q+e4T7AlV4+iwwkPOKFJD0giiHoZTI/EMZyEt+GXyVjSl1154liH8v7xAunV3CuIIclhY1Heg1SKCjdGQySyGnw1ga58cVzWHEWKjDQM5bBo1YJiuLXTM9YyDz+Fs6M4ZaDrqTfQYlTHd/etsGMs9lxgWM4gfzMslhdRjIzt9ClFpWvF1yczaXivWUjIHMA0HwmF3DRAE/Z8VTYC53mJfZenn7piyQLbb29CC9kTlbh4HsfONDpZQIEcDEf5D37gBmVZcGa8nmGZGehA6fOuMqkpE1kHnSCodmrHlLuFKLgWzz5d9evZBjIHOkDpnXfhmPX15NNts8/hAqX8UHvBbLGsg86S5r6+l6vjpTUzGWGAuzOgxkmy+69qrJswaygMk6RHc9z+VCMlrmPCWO4QN/f9ZA5rlIC6Aou6rq9o84lIEsHkLgp2CpIxVA1kAWuMps30PwQv5AW5913Nb4zBrIAjeywtqozUDW/+K/Zi8x8pwxkEU+iUezdP+VLoNm7mNYyUzJGMgiPdE/Zp5ojQZym18G9xMj5raBvMW0ya9xTjChZrtQTaf11khUaVkDeYsLIViRbAbJVZuB7PyH+8K9xMg0sBPc3GUw4X0Ibp4b/ug3fDe5oSukJZiqWxFszDSVIM045wocb0hkc4/ekJRl7EXVapDXf0LlvJ8YGQ8IBZukm4EdmqYZNl/iD02+J58X0tuGijQ9c+D5+oxQUGbNPlpay2ppT4t4ni7I50l/0xdV1VWjbTsMT1hBKp/YzTLtbDoFnUuL53/8V1K9y8saGp2y/DFk/ODzY1Uxsj8DmtIkuuO06HGGmiF31msCHHjd+3/48wzefKwsRvZlyva4DnNsuWYWXL6qLEb2BeSCe4jzkvXD78FVFiN7wva4DnJmuX74Pbg6lsEC2P95cJiz8PXzMf2Dl9J/unEgbul/pRHk15MnyDnjfzuqIvr4f7IgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIIgyOH5L+iRvAxO6cHLAAAAAElFTkSuQmCC"
-                  height="100%"></Image>
-              </Button>
-            </Box>
-            <Box
-              p="30px"
-              mt="40px"
-              boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px">
-              <Text fontStyle={"italic"} fontWeight="bold">
-                Have A coupon code?
-              </Text>
-              <Input
-                display={applied === false ? "inline" : "none"}
-                w="100%"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}></Input>
-              <Button
-                bgColor="#004d3d"
-                color="white"
-                w="100%"
-                mt="10px"
-                onClick={!applied ? handlecoup : removecoup}>
-                {applied ? "Remove Coupon" : "Apply"}
-              </Button>
-            </Box>
-          </Box>
-        </Box>
+            </HStack>
+          </Stack>
+        </Grid>
       </Box>
-
-      <Box border="1px solid gray" marginTop="30px"></Box>
-
-      <Grid
-        m={"auto"}
-        w="95%"
-        templateColumns={{
-          base: "repeat(1, 1fr)",
-          sm: "repeat(1, 1fr)",
-          md: "repeat(2, 1fr)",
-          lg: "repeat(2, 1fr)",
-        }}
-        p={"20px 0px"}>
-        <Box
-          pt={"10px"}
-          mb={"20px"}
-          fontSize={{ base: "16px", sm: "15px", md: "16px", lg: "18px" }}>
-          <Text
-            fontSize={{ base: "17px", sm: "17px", md: "17px", lg: "18px" }}
-            textAlign="left"
-            fontWeight={"bold"}>
-            Accepted Payment Methods
-          </Text>
-          <HStack m={"5px 0"}>
-            <Image
-              src="https://www.paisabazaar.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2019/04/Regalia-HDFC.png.webp"
-              style={{ width: "10%", height: "100%" }}></Image>
-            <Image
-              src="https://www.paisabazaar.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2017/10/simplysave-credit-card.jpg.webp"
-              style={{
-                width: "10%",
-                height: "100%",
-                marginLeft: "10px",
-              }}></Image>
-            <Image
-              src="https://www.paisabazaar.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2017/10/ICICI-Coral-Contactless-Card.jpg.webp"
-              style={{
-                width: "10%",
-                height: "100%",
-                marginLeft: "10px",
-              }}></Image>
-            <Image
-              src="https://www.paisabazaar.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2019/11/222.png.webp"
-              style={{
-                width: "10%",
-                height: "100%",
-                marginLeft: "10px",
-              }}></Image>
-            <Image
-              src="https://www.paisabazaar.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2017/10/Citi-Cash-Back-Credit-Card.jpg.webp"
-              style={{
-                width: "10%",
-                height: "100%",
-                marginLeft: "10px",
-              }}></Image>
-            <Image
-              src="https://www.paisabazaar.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2017/10/YES-Prosperity-Rewards-Plus.jpg.webp"
-              style={{
-                width: "10%",
-                height: "100%",
-                marginLeft: "10px",
-              }}></Image>
-          </HStack>
-
-          <Text textAlign="left">
-            Need help? Call 1.888.282.6060 or chat with us
-          </Text>
-          <Text textAlign="left">Shipping internationally?</Text>
-        </Box>
-
-        <Box>
-          <Image
-            src="https://storage.needpix.com/rsynced_images/discount-2789863_1280.png"
-            style={{ height: "100%" }}
-            w={{ sm: "70%", lg: "50%" }}
-            ml={{ sm: "-50px", lg: "150px" }}></Image>
-        </Box>
-      </Grid>
     </Box>
   );
 };
+
+const EmptyState = ({ title, text, buttonText }) => (
+  <Flex direction="column" align="center" textAlign="center" py={{ base: "16", md: "24" }} px="4">
+    <Flex boxSize="88px" align="center" justify="center" bg="red.50" color="red.500" borderRadius="full">
+      <Icon as={FiShoppingBag} boxSize="38px" />
+    </Flex>
+    <Heading mt="5" size="lg">{title}</Heading>
+    <Text mt="2" color="gray.600" maxW="420px">{text}</Text>
+    <Button as={Link} to="/" mt="6" colorScheme="red" borderRadius="full" px="8">
+      {buttonText}
+    </Button>
+  </Flex>
+);
 
 export default ProductCart;

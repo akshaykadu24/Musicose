@@ -12,7 +12,8 @@ const cartSchema = mongoose.Schema({
         feature2: {type:String},
         feature3: {type:String},
         quantity:{type:Number},
-        user:{type:String}
+        user:{type:String},
+        productId:{type:String}
 })
 
 

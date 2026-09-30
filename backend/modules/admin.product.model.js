@@ -10,7 +10,9 @@ const adminProductSchema = mongoose.Schema({
         price2: {type:String},
         feature: {type:String},
         feature2: {type:String},
-        feature3: {type:String}
+        feature3: {type:String},
+        rating__stars: {type:String},
+        rating__caption: {type:String}
 })
 
 
