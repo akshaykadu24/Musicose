@@ -1,6 +1,7 @@
 
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import AllRoutes from './all-routes/AllRoutes';
 import './App.css'
@@ -20,29 +21,22 @@ import { hideAuthPopup } from './redux/authReducer/auth.action';
 
 
 
+// Pages that belong to the admin panel. The navbar is picked from the URL so it
+// survives a page refresh (redux state is lost on reload).
+const ADMIN_PATHS = ["/adminSideProducts", "/adminAddProduct", "/alluser", "/users", "/user"]
+
 function App() {
   const {isAuth, popup} = useSelector((store=>store.authManager))
   const dispatch = useDispatch()
   const closeAuthPopup = useCallback(()=>dispatch(hideAuthPopup()),[dispatch])
-    const token = localStorage.getItem('token')
-    const [adminBar,setAdminBar]= useState(false)
-  console.log(isAuth,adminBar,token,"kkkk")
-    // isAuth&&token? setAdminBar(true): setAdminBar(false)
-    useEffect(()=>{
-      
-      isAuth && token ? setAdminBar(true):setAdminBar(false)
-    },[])
+  const { pathname } = useLocation()
+  const token = localStorage.getItem('token')
+  const isAdminPage = ADMIN_PATHS.includes(pathname)
 
   return (
     <div className="App">
-   
-        {
-            isAuth||token? adminBar?<AdminNavbar  setAdminBar={setAdminBar}/>: <NavbarLoggedIn setAdminBar={setAdminBar}/> : <Navbar />
-    
-        }
+      {isAuth || token ? (isAdminPage ? <AdminNavbar /> : <NavbarLoggedIn />) : <Navbar />}
 
- 
-      
       <AllRoutes/>
       <Footer />
       <AuthStatusPopup popup={popup} onClose={closeAuthPopup} />

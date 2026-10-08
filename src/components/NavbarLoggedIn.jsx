@@ -28,7 +28,7 @@ import { logoutAction } from "../redux/authReducer/auth.action";
 import { getSearchProducts } from "../redux/product/product.action";
 import { getCartItems } from "../redux/cart/cart.action";
 
-function NavbarLoggedIn({ setAdminBar }) {
+function NavbarLoggedIn() {
   const [showCategories, setShowCategories] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const dispatch = useDispatch();
@@ -57,13 +57,11 @@ function NavbarLoggedIn({ setAdminBar }) {
   };
 
   const openAdmin = () => {
-    setAdminBar(true);
     navigate("/adminSideProducts");
   };
 
   const handleLogout = () => {
     dispatch(logoutAction);
-    setAdminBar(false);
     navigate("/");
   };
 

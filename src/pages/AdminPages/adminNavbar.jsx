@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { logoutAction } from "../../redux/authReducer/auth.action";
 
-const AdminNavbar = ({ setAdminBar }) => {
+const AdminNavbar = () => {
   const { isAuth } = useSelector((store) => store.authManager);
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
@@ -32,13 +32,11 @@ const AdminNavbar = ({ setAdminBar }) => {
   ];
 
   const openStore = () => {
-    setAdminBar(false);
     navigate("/");
   };
 
   const handleLogout = () => {
     dispatch(logoutAction);
-    setAdminBar(false);
     navigate("/");
   };
 
