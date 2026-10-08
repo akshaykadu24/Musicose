@@ -49,6 +49,11 @@ const deleteUser = (id) => (dispatch) => {
 
 //////////////////////////////////admin Products ////////////////////////////////////////
 
+// Admin accounts limited to one product category (user id -> category)
+export const CATEGORY_ADMINS = {
+  "63f62622ef17e26786936ac3": "watch",
+};
+
 
 const getProducts = () => (dispatch) => {
   dispatch({ type: GET_PRODUCTS_REQUEST });
@@ -64,13 +69,13 @@ const getProducts = () => (dispatch) => {
       dispatch({type:GET_PRODUCTS_FAILURE,payload:res.data.msg})
       return
     }
+    // Category admins only manage their own category. Filter by category, not by
+    // the product's "user" field: products added from the admin form don't store it.
     let use = JSON.parse(localStorage.getItem("user"))
-    let filt
-    if(use=="63f62622ef17e26786936ac3"){
-      filt = res.data.products.filter((el)=>el.user==use)
-    }else{
-      filt = res.data.products
-    }
+    let category = CATEGORY_ADMINS[use]
+    let filt = category
+      ? res.data.products.filter((el)=>el.category==category)
+      : res.data.products
     dispatch({type:GET_PRODUCTS_SUCCESS,payload:filt })
   }).catch(err=>{
     dispatch({type:GET_PRODUCTS_FAILURE,payload:err})
