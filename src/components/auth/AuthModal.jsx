@@ -88,7 +88,7 @@ function Field({ label, icon, rightElement, ...inputProps }) {
   );
 }
 
-function AuthModal({ isOpen, onClose, initialMode = "login" }) {
+function AuthModal({ isOpen, onClose, initialMode = "login", onLoginSuccess }) {
   const dispatch = useDispatch();
   const [mode, setMode] = useState(initialMode);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -139,6 +139,7 @@ function AuthModal({ isOpen, onClose, initialMode = "login" }) {
 
     if (isLogin) {
       onClose();
+      onLoginSuccess?.();
     } else {
       setSignupDone(true);
     }

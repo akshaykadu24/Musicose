@@ -11,21 +11,28 @@ import {
   ListItem,
   Text,
   UnorderedList,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { FiShoppingBag } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Categories } from "./Categories";
 import { NavSlider } from "./NavSlider";
 import { MobileSearch } from "./MobileSearch";
 import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
+import AuthModal from "./auth/AuthModal";
+import LoginRequiredModal from "./auth/LoginRequiredModal";
 import { getSearchProducts } from "../redux/product/product.action";
 
 function Navbar() {
   const [showCategories, setShowCategories] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [authMode, setAuthMode] = useState("login");
+  const cartPrompt = useDisclosure();
+  const authModal = useDisclosure();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const searchData = useSelector((store) => store.productManager.searchData);
 
@@ -36,6 +43,14 @@ function Navbar() {
     if (value.trim()) {
       dispatch(getSearchProducts(value));
     }
+  };
+
+  // This navbar only renders for logged-out users, and /productCart is a
+  // private route, so prompt for login instead of navigating and bouncing back.
+  const openAuthFromCart = (mode) => {
+    setAuthMode(mode);
+    cartPrompt.onClose();
+    authModal.onOpen();
   };
 
   return (
@@ -235,8 +250,9 @@ function Navbar() {
           </HStack>
 
           <Box
-            as={Link}
-            to="/productCart"
+            as="button"
+            type="button"
+            onClick={cartPrompt.onOpen}
             display="flex"
             alignItems="center"
             justifyContent="center"
@@ -248,6 +264,19 @@ function Navbar() {
             <Icon as={FiShoppingBag} boxSize="24px" />
           </Box>
         </HStack>
+
+        <LoginRequiredModal
+          isOpen={cartPrompt.isOpen}
+          onClose={cartPrompt.onClose}
+          onLogin={() => openAuthFromCart("login")}
+          onSignup={() => openAuthFromCart("signup")}
+        />
+        <AuthModal
+          isOpen={authModal.isOpen}
+          onClose={authModal.onClose}
+          initialMode={authMode}
+          onLoginSuccess={() => navigate("/productCart")}
+        />
       </Flex>
     </Box>
   );
