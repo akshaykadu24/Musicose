@@ -28,18 +28,22 @@ export const getCartItems = () => async (dispatch) => {
   }
 };
 
+// Resolves to true when the product was saved to the cart
 export const addCart = (item) => async (dispatch) => {
   dispatch({ type: CART_LOADING });
 
   try {
-    await axios.post(
+    const res = await axios.post(
       `${process.env.REACT_APP_MUSICOSE_API}/cart/create/${item._id}`,
       item,
       { headers: getHeaders() }
     );
     await dispatch(getCartItems());
+    // The auth middleware answers 200 with { msg: "invalid token" / "token is missing" }
+    return !res.data?.error && !/token/i.test(res.data?.msg || "");
   } catch (error) {
     dispatch({ type: CART_ERROR });
+    return false;
   }
 };
 

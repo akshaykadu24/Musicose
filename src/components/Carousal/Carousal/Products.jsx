@@ -9,13 +9,26 @@ import {
   Text,
   Wrap,
   WrapItem,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { FiShoppingBag } from "react-icons/fi";
+import { useEffect, useRef, useState } from "react";
+import { FiAward, FiCheck, FiShoppingBag, FiTag } from "react-icons/fi";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addCart } from "../../../redux/cart/cart.action";
+import { COUPONS } from "../../../utils/cartTotals";
+import AuthModal from "../../auth/AuthModal";
+import LoginRequiredModal from "../../auth/LoginRequiredModal";
 import { Ratings } from "./Ratings";
+
+const ADDED_STATE_MS = 4000;
+
+// Highly rated products with plenty of reviews get a "Bestseller" badge
+const isBestseller = (stars, reviewCount) => Number(stars) >= 4.5 && reviewCount >= 100;
+
+// Best coupon this product unlocks on its own (coupons are sorted by minCart)
+const bestCouponFor = (price) => [...COUPONS].reverse().find((coupon) => price >= coupon.minCart);
 
 export const Products = ({ product }) => {
   const {
@@ -33,7 +46,16 @@ export const Products = ({ product }) => {
   } = product;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const toast = useToast();
+  const loginPrompt = useDisclosure();
+  const authModal = useDisclosure();
+  const [authMode, setAuthMode] = useState("login");
+  const [adding, setAdding] = useState(false);
+  const [added, setAdded] = useState(false);
+  const addedTimer = useRef();
+
+  useEffect(() => () => clearTimeout(addedTimer.current), []);
 
   const offerPrice = Number(price) || 0;
   const mrp = Number(price2) || 0;
@@ -41,18 +63,45 @@ export const Products = ({ product }) => {
   const features = [feature, feature2, feature3].filter(Boolean).slice(0, 2);
   const hasRating = Number(rating__stars) > 0;
   const reviews = (rating__caption || "").replace(/reviews?/i, "").trim();
+  const bestseller = isBestseller(rating__stars, parseInt(reviews.replace(/\D/g, ""), 10) || 0);
+  const coupon = bestCouponFor(offerPrice);
+
+  const addToCart = async () => {
+    setAdding(true);
+    const ok = await dispatch(addCart(product));
+    setAdding(false);
+
+    if (!ok) {
+      toast({ title: "Couldn't add to cart", description: "Please try again.", status: "error", duration: 2500, position: "top" });
+      return;
+    }
+
+    toast({ title: "Added to cart", description: product_item_meta__title, status: "success", duration: 2000, position: "top" });
+    setAdded(true);
+    clearTimeout(addedTimer.current);
+    addedTimer.current = setTimeout(() => setAdded(false), ADDED_STATE_MS);
+  };
 
   const handleAddToCart = (event) => {
     // Stop the card link from opening the product page
     event.preventDefault();
+    event.stopPropagation();
 
-    if (!localStorage.getItem("token")) {
-      toast({ title: "Please login to add products to cart", status: "warning", position: "top" });
+    if (added) {
+      navigate("/productCart");
       return;
     }
+    if (!localStorage.getItem("token")) {
+      loginPrompt.onOpen();
+      return;
+    }
+    addToCart();
+  };
 
-    dispatch(addCart(product));
-    toast({ title: "Added to cart", status: "success", duration: 2000, position: "top" });
+  const openAuth = (mode) => {
+    setAuthMode(mode);
+    loginPrompt.onClose();
+    authModal.onOpen();
   };
 
   return (
@@ -103,11 +152,26 @@ export const Products = ({ product }) => {
             </Box>
           </AspectRatio>
 
-          {discount > 0 && (
-            <Badge position="absolute" top="3" left="3" colorScheme="red" borderRadius="full" px="2">
-              {discount}% off
-            </Badge>
-          )}
+          <HStack position="absolute" top="3" left="3" right="3" spacing="1.5" flexWrap="wrap">
+            {discount > 0 && (
+              <Badge colorScheme="red" borderRadius="full" px="2">
+                {discount}% off
+              </Badge>
+            )}
+            {bestseller && (
+              <Badge
+                bg="#111827"
+                color="yellow.300"
+                borderRadius="full"
+                px="2"
+                display="inline-flex"
+                alignItems="center"
+                gap="1"
+              >
+                <FiAward /> Bestseller
+              </Badge>
+            )}
+          </HStack>
         </Box>
 
         <Box p={{ base: "3", md: "4" }} display="flex" flexDirection="column" flex="1" textAlign="left">
@@ -160,23 +224,60 @@ export const Products = ({ product }) => {
                 You save ₹{(mrp - offerPrice).toLocaleString("en-IN")}
               </Text>
             )}
+            {coupon && (
+              <HStack
+                mt="2"
+                spacing="1.5"
+                px="2"
+                py="1"
+                bg="red.50"
+                color="red.600"
+                borderRadius="md"
+                border="1px dashed"
+                borderColor="red.200"
+                fontSize="11px"
+                fontWeight="600"
+              >
+                <FiTag style={{ flexShrink: 0 }} />
+                <Text noOfLines={1}>
+                  Extra {coupon.percent}% off with <b>{coupon.code}</b>
+                </Text>
+              </HStack>
+            )}
 
             <Button
               mt="3"
               w="100%"
               size="sm"
-              leftIcon={<FiShoppingBag />}
-              colorScheme="red"
-              variant="outline"
+              leftIcon={added ? <FiCheck /> : <FiShoppingBag />}
+              colorScheme={added ? "green" : "red"}
+              variant={added ? "solid" : "outline"}
               borderRadius="full"
+              isLoading={adding}
+              loadingText="Adding"
               onClick={handleAddToCart}
-              _groupHover={{ bg: "red.500", color: "white" }}
+              _groupHover={added ? undefined : { bg: "red.500", color: "white" }}
             >
-              Add to cart
+              {added ? "Added · View cart" : "Add to cart"}
             </Button>
           </Box>
         </Box>
       </Box>
+
+      <LoginRequiredModal
+        isOpen={loginPrompt.isOpen}
+        onClose={loginPrompt.onClose}
+        onLogin={() => openAuth("login")}
+        onSignup={() => openAuth("signup")}
+        title="Log in to add to cart"
+        message="Log in or create an account to save this product to your cart. We'll add it for you right after."
+      />
+      <AuthModal
+        isOpen={authModal.isOpen}
+        onClose={authModal.onClose}
+        initialMode={authMode}
+        onLoginSuccess={addToCart}
+      />
     </Box>
   );
 };
