@@ -1,13 +1,23 @@
 // Shared price calculations for the cart and checkout pages
 
-export const COUPON_CODE = "MUSICOSE30";
-export const COUPON_PERCENT = 30;
+// Each coupon unlocks once the cart value (after product discounts) reaches minCart
+export const COUPONS = [
+  { code: "MUSICOSE10", percent: 10, minCart: 1000 },
+  { code: "MUSICOSE20", percent: 20, minCart: 2000 },
+  { code: "MUSICOSE30", percent: 30, minCart: 3000 },
+  { code: "MUSICOSE50", percent: 50, minCart: 5000 },
+];
+
+export const findCoupon = (code = "") =>
+  COUPONS.find((coupon) => coupon.code === code.trim().toUpperCase()) || null;
+
+export const isCouponEligible = (coupon, cartValue) => Boolean(coupon) && cartValue >= coupon.minCart;
 
 // The applied coupon is remembered for this browser tab only
 const COUPON_KEY = "musicoseCoupon";
 
-export const isCouponSaved = () => sessionStorage.getItem(COUPON_KEY) === COUPON_CODE;
-export const saveCoupon = () => sessionStorage.setItem(COUPON_KEY, COUPON_CODE);
+export const getSavedCouponCode = () => sessionStorage.getItem(COUPON_KEY) || "";
+export const saveCoupon = (code) => sessionStorage.setItem(COUPON_KEY, code);
 export const clearCoupon = () => sessionStorage.removeItem(COUPON_KEY);
 
 export const formatPrice = (value) => `₹${Math.round(value).toLocaleString("en-IN")}`;
@@ -25,7 +35,7 @@ export const getSavedAddress = () => {
 // Last placed order, shown on the thank-you page
 export const ORDER_KEY = "musicoseLastOrder";
 
-export const getCartTotals = (items = [], couponApplied = false) => {
+export const getCartTotals = (items = [], couponCode = "") => {
   let itemCount = 0;
   let subtotal = 0;
   let mrpTotal = 0;
@@ -41,7 +51,10 @@ export const getCartTotals = (items = [], couponApplied = false) => {
   });
 
   const productDiscount = mrpTotal - subtotal;
-  const couponDiscount = couponApplied ? (subtotal * COUPON_PERCENT) / 100 : 0;
+  // A saved coupon only counts while the cart still qualifies for it
+  const savedCoupon = findCoupon(couponCode);
+  const coupon = isCouponEligible(savedCoupon, subtotal) ? savedCoupon : null;
+  const couponDiscount = coupon ? (subtotal * coupon.percent) / 100 : 0;
   const total = subtotal - couponDiscount;
 
   return {
@@ -49,6 +62,7 @@ export const getCartTotals = (items = [], couponApplied = false) => {
     subtotal,
     mrpTotal,
     productDiscount,
+    coupon,
     couponDiscount,
     total,
     totalSaving: productDiscount + couponDiscount,

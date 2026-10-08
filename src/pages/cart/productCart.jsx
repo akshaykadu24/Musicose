@@ -19,6 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import {
+  FiCheckCircle,
   FiLock,
   FiMinus,
   FiPlus,
@@ -32,11 +33,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { deleteCart, getCartItems, updateCart } from "../../redux/cart/cart.action";
 import {
   clearCoupon,
-  COUPON_CODE,
-  COUPON_PERCENT,
+  COUPONS,
+  findCoupon,
   formatPrice,
   getCartTotals,
-  isCouponSaved,
+  getSavedCouponCode,
+  isCouponEligible,
   saveCoupon,
 } from "../../utils/cartTotals";
 
@@ -59,7 +61,7 @@ const ProductCart = () => {
   const [loaded, setLoaded] = useState(false);
   const [busyId, setBusyId] = useState(null);
   const [couponInput, setCouponInput] = useState("");
-  const [couponApplied, setCouponApplied] = useState(isCouponSaved);
+  const [couponCode, setCouponCode] = useState(getSavedCouponCode);
 
   useEffect(() => {
     dispatch(getCartItems()).finally(() => setLoaded(true));
@@ -79,24 +81,65 @@ const ProductCart = () => {
     toast({ title: "Removed from cart", status: "info", duration: 2000, position: "top" });
   };
 
-  const applyCoupon = () => {
-    if (couponInput.trim().toUpperCase() === COUPON_CODE) {
-      setCouponApplied(true);
-      saveCoupon();
-      toast({ title: `${COUPON_PERCENT}% coupon applied`, status: "success", duration: 2500, position: "top" });
-    } else {
-      toast({ title: "Invalid coupon code", status: "error", duration: 2500, position: "top" });
+  const { itemCount, subtotal, mrpTotal, productDiscount, coupon, couponDiscount, total, totalSaving } =
+    getCartTotals(items, couponCode);
+
+  // Drop a saved coupon once the cart no longer qualifies (e.g. an item was removed)
+  useEffect(() => {
+    if (!loaded || !couponCode || coupon) return;
+    const lost = findCoupon(couponCode);
+    setCouponCode("");
+    clearCoupon();
+    if (lost && items.length > 0) {
+      toast({
+        title: `${lost.code} removed`,
+        description: `Cart value must be at least ${formatPrice(lost.minCart)} to use this coupon.`,
+        status: "info",
+        duration: 3500,
+        position: "top",
+      });
     }
+  }, [loaded, couponCode, coupon, items.length, toast]);
+
+  const applyCoupon = (code) => {
+    const selected = findCoupon(code);
+
+    if (!selected) {
+      toast({ title: "Invalid coupon code", status: "error", duration: 2500, position: "top" });
+      return;
+    }
+    if (!isCouponEligible(selected, subtotal)) {
+      toast({
+        title: `Add ${formatPrice(selected.minCart - subtotal)} more to use ${selected.code}`,
+        description: `Valid on cart value of ${formatPrice(selected.minCart)} or more.`,
+        status: "warning",
+        duration: 3000,
+        position: "top",
+      });
+      return;
+    }
+
+    setCouponCode(selected.code);
+    setCouponInput("");
+    saveCoupon(selected.code);
+    toast({
+      title: `${selected.code} applied`,
+      description: `You saved ${formatPrice((subtotal * selected.percent) / 100)} with ${selected.percent}% off.`,
+      status: "success",
+      duration: 2500,
+      position: "top",
+    });
   };
 
   const removeCoupon = () => {
-    setCouponApplied(false);
+    setCouponCode("");
     setCouponInput("");
     clearCoupon();
   };
 
-  const { itemCount, mrpTotal, productDiscount, couponDiscount, total, totalSaving } =
-    getCartTotals(items, couponApplied);
+  const applicableCoupons = COUPONS.filter((item) => isCouponEligible(item, subtotal));
+  const lockedCoupons = COUPONS.filter((item) => !isCouponEligible(item, subtotal));
+  const bestCoupon = applicableCoupons[applicableCoupons.length - 1];
 
   // Not logged in
   if (!localStorage.getItem("token")) {
@@ -287,8 +330,8 @@ const ProductCart = () => {
                 {productDiscount > 0 && (
                   <SummaryRow label="Product discount" value={`- ${formatPrice(productDiscount)}`} color="green.600" />
                 )}
-                {couponApplied && (
-                  <SummaryRow label={`Coupon (${COUPON_CODE})`} value={`- ${formatPrice(couponDiscount)}`} color="green.600" />
+                {coupon && (
+                  <SummaryRow label={`Coupon (${coupon.code})`} value={`- ${formatPrice(couponDiscount)}`} color="green.600" />
                 )}
                 <SummaryRow label="Delivery" value="FREE" color="green.600" />
                 <Divider />
@@ -323,11 +366,19 @@ const ProductCart = () => {
                 <Icon as={FiTag} color="red.500" />
                 <Text fontWeight="700">Apply coupon</Text>
               </HStack>
-              {couponApplied ? (
+              {coupon ? (
                 <Flex justify="space-between" align="center" bg="green.50" p="3" borderRadius="md">
-                  <Text fontSize="sm" fontWeight="700" color="green.700">
-                    {COUPON_CODE} applied
-                  </Text>
+                  <HStack spacing="2">
+                    <Icon as={FiCheckCircle} color="green.600" />
+                    <Box>
+                      <Text fontSize="sm" fontWeight="700" color="green.700">
+                        {coupon.code} applied
+                      </Text>
+                      <Text fontSize="xs" color="green.700">
+                        {coupon.percent}% off · You save {formatPrice(couponDiscount)}
+                      </Text>
+                    </Box>
+                  </HStack>
                   <Button size="xs" variant="ghost" colorScheme="red" onClick={removeCoupon}>
                     Remove
                   </Button>
@@ -337,16 +388,60 @@ const ProductCart = () => {
                   <Input
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && applyCoupon()}
+                    onKeyDown={(e) => e.key === "Enter" && couponInput.trim() && applyCoupon(couponInput)}
                     placeholder="Enter coupon code"
                     borderRadius="full"
                     focusBorderColor="red.400"
                     textTransform="uppercase"
                   />
-                  <Button onClick={applyCoupon} borderRadius="full" px="6" isDisabled={!couponInput.trim()}>
+                  <Button
+                    onClick={() => applyCoupon(couponInput)}
+                    borderRadius="full"
+                    px="6"
+                    isDisabled={!couponInput.trim()}
+                  >
                     Apply
                   </Button>
                 </HStack>
+              )}
+
+              <Text mt="5" mb="2" fontSize="xs" fontWeight="700" color="gray.500" textTransform="uppercase" letterSpacing="wide">
+                Applicable coupons ({applicableCoupons.length})
+              </Text>
+              {applicableCoupons.length > 0 ? (
+                <Stack spacing="2">
+                  {[...applicableCoupons].reverse().map((item) => (
+                    <CouponCard
+                      key={item.code}
+                      coupon={item}
+                      saving={(subtotal * item.percent) / 100}
+                      isApplied={coupon?.code === item.code}
+                      isBest={item.code === bestCoupon?.code}
+                      onApply={() => applyCoupon(item.code)}
+                    />
+                  ))}
+                </Stack>
+              ) : (
+                <Text fontSize="sm" color="gray.500">
+                  No coupons yet. Add items worth {formatPrice(COUPONS[0].minCart)} or more to unlock offers.
+                </Text>
+              )}
+
+              {lockedCoupons.length > 0 && (
+                <>
+                  <Text mt="5" mb="2" fontSize="xs" fontWeight="700" color="gray.500" textTransform="uppercase" letterSpacing="wide">
+                    Unlock more savings
+                  </Text>
+                  <Stack spacing="2">
+                    {lockedCoupons.map((item) => (
+                      <CouponCard
+                        key={item.code}
+                        coupon={item}
+                        amountNeeded={item.minCart - subtotal}
+                      />
+                    ))}
+                  </Stack>
+                </>
               )}
             </Box>
 
@@ -363,6 +458,72 @@ const ProductCart = () => {
         </Grid>
       </Box>
     </Box>
+  );
+};
+
+const CouponCard = ({ coupon, saving, isApplied, isBest, onApply, amountNeeded }) => {
+  const isLocked = amountNeeded !== undefined;
+
+  return (
+    <Flex
+      as={isLocked ? "div" : "button"}
+      type={isLocked ? undefined : "button"}
+      onClick={isLocked || isApplied ? undefined : onApply}
+      w="100%"
+      textAlign="left"
+      align="center"
+      gap="3"
+      p="3"
+      borderRadius="lg"
+      border="1px dashed"
+      borderColor={isApplied ? "green.400" : isLocked ? "gray.200" : "red.300"}
+      bg={isApplied ? "green.50" : isLocked ? "gray.50" : "white"}
+      opacity={isLocked ? 0.75 : 1}
+      cursor={isLocked || isApplied ? "default" : "pointer"}
+      transition="all 0.15s"
+      _hover={isLocked || isApplied ? undefined : { bg: "red.50", borderColor: "red.400" }}
+    >
+      <Flex
+        direction="column"
+        align="center"
+        justify="center"
+        minW="56px"
+        h="56px"
+        borderRadius="md"
+        bg={isLocked ? "gray.200" : isApplied ? "green.500" : "red.500"}
+        color={isLocked ? "gray.600" : "white"}
+        lineHeight="1"
+      >
+        <Text fontSize="lg" fontWeight="800">{coupon.percent}%</Text>
+        <Text fontSize="10px" fontWeight="700">OFF</Text>
+      </Flex>
+
+      <Box flex="1" minW="0">
+        <HStack spacing="2">
+          <Text fontWeight="800" fontSize="sm" letterSpacing="wide">{coupon.code}</Text>
+          {isBest && !isApplied && (
+            <Badge colorScheme="green" fontSize="9px" borderRadius="md">Best offer</Badge>
+          )}
+        </HStack>
+        <Text fontSize="xs" color="gray.500">On cart value of {formatPrice(coupon.minCart)} or more</Text>
+        {isLocked ? (
+          <HStack mt="0.5" spacing="1" fontSize="xs" color="gray.600" fontWeight="600">
+            <Icon as={FiLock} />
+            <Text>Add {formatPrice(amountNeeded)} more to unlock</Text>
+          </HStack>
+        ) : (
+          <Text mt="0.5" fontSize="xs" color="green.600" fontWeight="700">
+            Save {formatPrice(saving)}
+          </Text>
+        )}
+      </Box>
+
+      {!isLocked && (
+        <Text fontSize="sm" fontWeight="800" color={isApplied ? "green.600" : "red.500"} flexShrink="0">
+          {isApplied ? "Applied" : "Apply"}
+        </Text>
+      )}
+    </Flex>
   );
 };
 

@@ -5,7 +5,6 @@ import {
   Divider,
   Flex,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Grid,
   Heading,
@@ -26,7 +25,7 @@ import { FiArrowLeft, FiLock, FiMapPin, FiShoppingBag } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getCartItems } from "../../redux/cart/cart.action";
-import { ADDRESS_KEY, COUPON_CODE, formatPrice, getCartTotals, isCouponSaved } from "../../utils/cartTotals";
+import { ADDRESS_KEY, formatPrice, getCartTotals, getSavedCouponCode } from "../../utils/cartTotals";
 
 const states = [
   "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat",
@@ -39,18 +38,6 @@ const states = [
 ];
 
 const emptyAddress = { name: "", phone: "", address: "", city: "", state: "", pincode: "" };
-
-// Returns an object with a message for every invalid field
-const validate = (form) => {
-  const errors = {};
-  if (form.name.trim().length < 3) errors.name = "Please enter your full name";
-  if (!/^[6-9][0-9]{9}$/.test(form.phone)) errors.phone = "Enter a valid 10-digit mobile number";
-  if (form.address.trim().length < 10) errors.address = "Please enter your complete address";
-  if (form.city.trim().length < 2) errors.city = "Please enter your city";
-  if (!form.state) errors.state = "Please select your state";
-  if (!/^[1-9][0-9]{5}$/.test(form.pincode)) errors.pincode = "Enter a valid 6-digit pincode";
-  return errors;
-};
 
 const Steps = () => (
   <HStack spacing="2" fontSize="sm" fontWeight="600" color="gray.400" mb={{ base: "5", md: "7" }}>
@@ -76,11 +63,8 @@ const Checkout = () => {
       return emptyAddress;
     }
   });
-  const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
 
-  const couponApplied = isCouponSaved();
-  const totals = getCartTotals(items, couponApplied);
+  const totals = getCartTotals(items, getSavedCouponCode());
 
   useEffect(() => {
     dispatch(getCartItems()).finally(() => setLoaded(true));
@@ -92,23 +76,11 @@ const Checkout = () => {
     if (name === "phone") value = value.replace(/\D/g, "").slice(0, 10);
     if (name === "pincode") value = value.replace(/\D/g, "").slice(0, 6);
 
-    const updated = { ...form, [name]: value };
-    setForm(updated);
-    if (submitted) setErrors(validate(updated));
+    setForm({ ...form, [name]: value });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setSubmitted(true);
-
-    const formErrors = validate(form);
-    setErrors(formErrors);
-
-    if (Object.keys(formErrors).length > 0) {
-      toast({ title: "Please check the highlighted fields", status: "error", duration: 2500, position: "top" });
-      return;
-    }
-
     sessionStorage.setItem(ADDRESS_KEY, JSON.stringify(form));
     toast({ title: "Address saved", status: "success", duration: 2000, position: "top" });
     navigate("/payment");
@@ -177,46 +149,40 @@ const Checkout = () => {
 
             <Stack spacing="4">
               <SimpleGrid columns={{ base: 1, md: 2 }} gap="4">
-                <FormControl isInvalid={!!errors.name}>
+                <FormControl>
                   <FormLabel fontSize="sm">Full name</FormLabel>
                   <Input name="name" value={form.name} onChange={handleChange} placeholder="Your full name" autoComplete="name" focusBorderColor="red.400" />
-                  <FormErrorMessage>{errors.name}</FormErrorMessage>
                 </FormControl>
 
-                <FormControl isInvalid={!!errors.phone}>
+                <FormControl>
                   <FormLabel fontSize="sm">Mobile number</FormLabel>
                   <Input name="phone" value={form.phone} onChange={handleChange} placeholder="10-digit mobile number" inputMode="numeric" autoComplete="tel" focusBorderColor="red.400" />
-                  <FormErrorMessage>{errors.phone}</FormErrorMessage>
                 </FormControl>
               </SimpleGrid>
 
-              <FormControl isInvalid={!!errors.address}>
+              <FormControl>
                 <FormLabel fontSize="sm">Address</FormLabel>
                 <Textarea name="address" value={form.address} onChange={handleChange} placeholder="House no., building, street, area" rows={3} autoComplete="street-address" focusBorderColor="red.400" />
-                <FormErrorMessage>{errors.address}</FormErrorMessage>
               </FormControl>
 
               <SimpleGrid columns={{ base: 1, md: 3 }} gap="4">
-                <FormControl isInvalid={!!errors.city}>
+                <FormControl>
                   <FormLabel fontSize="sm">City</FormLabel>
                   <Input name="city" value={form.city} onChange={handleChange} placeholder="City" autoComplete="address-level2" focusBorderColor="red.400" />
-                  <FormErrorMessage>{errors.city}</FormErrorMessage>
                 </FormControl>
 
-                <FormControl isInvalid={!!errors.state}>
+                <FormControl>
                   <FormLabel fontSize="sm">State</FormLabel>
                   <Select name="state" value={form.state} onChange={handleChange} placeholder="Select state" focusBorderColor="red.400">
                     {states.map((state) => (
                       <option key={state} value={state}>{state}</option>
                     ))}
                   </Select>
-                  <FormErrorMessage>{errors.state}</FormErrorMessage>
                 </FormControl>
 
-                <FormControl isInvalid={!!errors.pincode}>
+                <FormControl>
                   <FormLabel fontSize="sm">Pincode</FormLabel>
                   <Input name="pincode" value={form.pincode} onChange={handleChange} placeholder="6-digit pincode" inputMode="numeric" autoComplete="postal-code" focusBorderColor="red.400" />
-                  <FormErrorMessage>{errors.pincode}</FormErrorMessage>
                 </FormControl>
               </SimpleGrid>
             </Stack>
@@ -294,9 +260,9 @@ const Checkout = () => {
                   <Text color="green.600">- {formatPrice(totals.productDiscount)}</Text>
                 </Flex>
               )}
-              {couponApplied && (
+              {totals.coupon && (
                 <Flex justify="space-between">
-                  <Text color="gray.600">Coupon ({COUPON_CODE})</Text>
+                  <Text color="gray.600">Coupon ({totals.coupon.code})</Text>
                   <Text color="green.600">- {formatPrice(totals.couponDiscount)}</Text>
                 </Flex>
               )}

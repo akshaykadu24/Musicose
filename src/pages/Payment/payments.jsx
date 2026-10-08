@@ -24,11 +24,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { clearCart, getCartItems } from "../../redux/cart/cart.action";
 import {
   clearCoupon,
-  COUPON_CODE,
   formatPrice,
   getCartTotals,
   getSavedAddress,
-  isCouponSaved,
+  getSavedCouponCode,
   ORDER_KEY,
 } from "../../utils/cartTotals";
 
@@ -88,8 +87,7 @@ const Payments = () => {
   const [placing, setPlacing] = useState(false);
 
   const address = getSavedAddress();
-  const couponApplied = isCouponSaved();
-  const totals = getCartTotals(items, couponApplied);
+  const totals = getCartTotals(items, getSavedCouponCode());
 
   useEffect(() => {
     dispatch(getCartItems()).finally(() => setLoaded(true));
@@ -321,9 +319,9 @@ const Payments = () => {
                   <Text color="green.600">- {formatPrice(totals.productDiscount)}</Text>
                 </Flex>
               )}
-              {couponApplied && (
+              {totals.coupon && (
                 <Flex justify="space-between">
-                  <Text color="gray.600">Coupon ({COUPON_CODE})</Text>
+                  <Text color="gray.600">Coupon ({totals.coupon.code})</Text>
                   <Text color="green.600">- {formatPrice(totals.couponDiscount)}</Text>
                 </Flex>
               )}
