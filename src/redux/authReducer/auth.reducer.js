@@ -1,4 +1,11 @@
-import { USER_LOGIN_FAILURE, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT } from "./auth.actionTypes"
+import {
+    HIDE_AUTH_POPUP,
+    SHOW_AUTH_POPUP,
+    USER_LOGIN_FAILURE,
+    USER_LOGIN_REQUEST,
+    USER_LOGIN_SUCCESS,
+    USER_LOGOUT,
+} from "./auth.actionTypes"
 
 
 const initialState = {
@@ -9,7 +16,10 @@ const initialState = {
     type: "",
     msg: "",
     isAuthLoading: false,
-    isAuthError: false
+    isAuthError: false,
+    // Global popup shown after login / logout. Lives here because the
+    // logged-out Navbar (and its Login modal) unmounts as soon as login succeeds.
+    popup: { isOpen: false, title: "", message: "", variant: "success" },
 }
 
 
@@ -24,24 +34,25 @@ export const authReducer = (state = initialState, { type, payload }) => {
             }
         }
         case USER_LOGIN_SUCCESS: {
-            console.log(payload)
             if (payload.token) {
                 return {
                     ...state,
                     isAuthLoading: false,
                     isAuth: true,
+                    isAuthError: false,
                     token: payload.token,
                     msg: payload.msg,
                     user: payload.user,
                     type: payload.type,
                     name: payload.name,
                 }
-            } else {
-                return(
-                    isAuth = false
-                )
-                    
-
+            }
+            return {
+                ...state,
+                isAuthLoading: false,
+                isAuth: false,
+                isAuthError: true,
+                msg: payload.msg,
             }
         }
         case USER_LOGIN_FAILURE: {
@@ -53,14 +64,22 @@ export const authReducer = (state = initialState, { type, payload }) => {
         }
         case USER_LOGOUT: {
             return {
-                isAuth: false,
-                token: "",
-                isAuthLoading: false,
-                isAuthError: false
-
+                ...initialState,
+                popup: state.popup,
+            }
+        }
+        case SHOW_AUTH_POPUP: {
+            return {
+                ...state,
+                popup: { variant: "success", ...payload, isOpen: true },
+            }
+        }
+        case HIDE_AUTH_POPUP: {
+            return {
+                ...state,
+                popup: { ...state.popup, isOpen: false },
             }
         }
         default: return state
     }
 }
-
