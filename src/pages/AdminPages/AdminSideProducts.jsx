@@ -43,12 +43,13 @@ import {
 import { getProducts } from "../../redux/adminReducer/admin.action";
 import AdminMapProductBox, { AdminProductCard } from "./AdminMapProductBox";
 import { CATEGORIES } from "./updateProduct";
+import { createdDate } from "../../utils/dates";
 import { ButtonIconBadge, primaryButtonStyles } from "./adminButtonStyles";
 
 const PAGE_SIZE = 10;
 
 const SORTS = {
-  newest: { label: "Newest first", fn: (a, b) => String(b._id).localeCompare(String(a._id)) },
+  newest: { label: "Newest first", fn: (a, b) => (createdDate(b)?.getTime() || 0) - (createdDate(a)?.getTime() || 0) },
   priceLow: { label: "Price: low to high", fn: (a, b) => (Number(a.price) || 0) - (Number(b.price) || 0) },
   priceHigh: { label: "Price: high to low", fn: (a, b) => (Number(b.price) || 0) - (Number(a.price) || 0) },
   name: { label: "Name: A to Z", fn: (a, b) => (a.product_item_meta__title || "").localeCompare(b.product_item_meta__title || "") },

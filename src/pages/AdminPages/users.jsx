@@ -53,6 +53,7 @@ import {
   FiX,
 } from "react-icons/fi";
 import { deleteUser, getUsers } from "../../redux/adminReducer/admin.action";
+import { createdDate, formatDate } from "../../utils/dates";
 
 const PAGE_SIZE = 10;
 
@@ -61,15 +62,6 @@ const ROLES = [
   { value: "user", label: "Customers" },
   { value: "admin", label: "Admins" },
 ];
-
-// Mongo ObjectIds start with the creation time in seconds (first 8 hex chars)
-export const joinedAt = (id) => {
-  const seconds = parseInt(String(id).slice(0, 8), 16);
-  return Number.isFinite(seconds) ? new Date(seconds * 1000) : null;
-};
-
-export const formatDate = (date) =>
-  date ? date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "—";
 
 const SORTS = {
   newest: { label: "Newest first", fn: (a, b) => String(b._id).localeCompare(String(a._id)) },
@@ -228,7 +220,7 @@ const AllUsers = () => {
       total: list.length,
       customers: list.filter((u) => u.type !== "admin").length,
       admins: list.filter((u) => u.type === "admin").length,
-      recent: list.filter((u) => (joinedAt(u._id)?.getTime() || 0) >= monthAgo).length,
+      recent: list.filter((u) => (createdDate(u)?.getTime() || 0) >= monthAgo).length,
     };
   }, [list]);
 
@@ -391,7 +383,7 @@ const AllUsers = () => {
                         <Tr key={el._id} _hover={{ bg: "gray.50" }} transition="background 0.15s">
                           <Td py="3" maxW="360px"><UserIdentity el={el} isMe={isMe} /></Td>
                           <Td><RoleBadge type={el.type} /></Td>
-                          <Td fontSize="sm" color="gray.600">{formatDate(joinedAt(el._id))}</Td>
+                          <Td fontSize="sm" color="gray.600">{formatDate(createdDate(el))}</Td>
                           <Td>
                             <Text fontSize="xs" fontFamily="mono" color="gray.500" bg="gray.100" px="2" py="1" borderRadius="md" display="inline-block">
                               #{String(el._id).slice(-8)}
@@ -422,7 +414,7 @@ const AllUsers = () => {
                       </Flex>
                       <HStack mt="3" spacing="3" fontSize="xs" color="gray.500">
                         <RoleBadge type={el.type} />
-                        <Text>Joined {formatDate(joinedAt(el._id))}</Text>
+                        <Text>Joined {formatDate(createdDate(el))}</Text>
                       </HStack>
                       <HStack mt="3">
                         <DeleteUser el={el} isMe={isMe} onDeleted={refresh} variant="button" />

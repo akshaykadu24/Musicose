@@ -6,6 +6,9 @@ const userSchema = mongoose.Schema({
     email:{type:String},
     type:{type:String},
     pass:{type:String}
+},{
+    // Adds createdAt (sign-up time) and updatedAt
+    timestamps: true
 })
 
 const UserModel = mongoose.model("user",userSchema)

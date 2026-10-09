@@ -36,7 +36,8 @@ import {
 } from "react-icons/fi";
 import { getUsers } from "../../redux/adminReducer/admin.action";
 import { logoutAction } from "../../redux/authReducer/auth.action";
-import { formatDate, joinedAt, RoleBadge } from "./users";
+import { createdDate, formatDate } from "../../utils/dates";
+import { RoleBadge } from "./users";
 
 const readLocal = (key) => {
   try {
@@ -124,7 +125,7 @@ const AdminUser = () => {
     _id: me?._id || myId,
   };
   const isAdmin = profile.type === "admin";
-  const memberSince = formatDate(joinedAt(profile._id));
+  const memberSince = formatDate(createdDate(me || { _id: profile._id }));
   const loadingDetails = Loading && !me;
 
   const handleLogout = () => {

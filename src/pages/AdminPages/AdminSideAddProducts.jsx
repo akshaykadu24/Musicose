@@ -126,7 +126,9 @@ function AdminSideAddProducts() {
     }
 
     setSaving(true);
-    const result = await dispatch(addProduct(form));
+    // Save who added the product (name stored at login)
+    const addedBy = JSON.parse(localStorage.getItem("name") || "null") || "";
+    const result = await dispatch(addProduct({ ...form, addedBy }));
     setSaving(false);
 
     if (!result.ok) {
