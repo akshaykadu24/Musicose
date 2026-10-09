@@ -5,7 +5,6 @@ const adminProductRoutes = express.Router()
 
 adminProductRoutes.get("/",async(req,res)=>{
     try {
-        console.log(req.body)
         let products = await AdminProductModel.find()
         res.send({products:products})
     } catch (err) {
@@ -28,8 +27,9 @@ adminProductRoutes.post("/create",async(req,res)=>{
 
 adminProductRoutes.patch("/update/:id",async(req,res)=>{
     let id = req.params.id
-    let payload = req.body
-    console.log(id)
+    // Drop the creator fields (the auth middleware adds the editor's id as
+    // req.body.user) so an edit never changes who added the product
+    let { user, addedBy, _id, createdAt, updatedAt, ...payload } = req.body
     try {
          await AdminProductModel.findByIdAndUpdate(id,payload)
         res.send({msg:"product Updated successfully"})

@@ -1,219 +1,280 @@
-
 import {
-    FormControl,
-    FormLabel,
-    Input,
-    Button,
-    useToast,
-    useDisclosure,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    ModalCloseButton,
-    Select,
-    Text
-  } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getProducts, updateProduct } from "../../redux/adminReducer/admin.action";
-import { UpdateAction } from "../../redux/authReducer/auth.action";
-  
+  AspectRatio,
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Grid,
+  HStack,
+  Icon,
+  IconButton,
+  Image,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Select,
+  SimpleGrid,
+  Stack,
+  Text,
+  Tooltip,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { FiEdit2 } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+import { updateProduct } from "../../redux/adminReducer/admin.action";
 
+export const CATEGORIES = [
+  { value: "watch", label: "Smart Watch" },
+  { value: "earbud", label: "Earbuds" },
+  { value: "headphone", label: "Wired Headphone" },
+  { value: "speaker", label: "Speaker" },
+  { value: "bluetoothHeadphone", label: "Bluetooth Headphone" },
+];
 
-  function UpdateProduct({el}) {
-    const toast = useToast();
-    const [val,setVal] = useState({})
-    const [prod,setProd]  = useState({})
-    const dispatch = useDispatch()
-    const { isOpen, onOpen, onClose } = useDisclosure();
+const FIELDS = [
+  "product_item_meta__title",
+  "product_item__primary_image",
+  "product_item__secondary_image",
+  "category",
+  "price",
+  "price2",
+  "feature",
+  "feature2",
+  "feature3",
+];
 
-    // let {products} = useSelector((store)=>store.adminManager)
-    // console.log(products)
-    console.log(el,"l")
-    // let produ = products.filter((item)=>item._id==el)
-    // setProd()
-    // console.log(produ,'b')
-    
+const pickFields = (product) =>
+  FIELDS.reduce((acc, key) => ({ ...acc, [key]: product[key] ?? "" }), {});
 
-    // document.getElementById("product_item_meta__title").value = "lavu"
-    // document.getElementById("product_item__primary_image").value = prod.product_item__primary_image
-    // document.getElementById("product_item__secondary_image").value = prod.product_item__secondary_image
-    // document.getElementById("category").value = prod.category
-    // document.getElementById("price").value = prod.price
-    // document.getElementById("price2").value = prod.price2
-    // document.getElementById("feature").value = prod.feature
-    // document.getElementById("feature2").value = prod.feature2
-    // document.getElementById("feature3").value = prod.feature3
+const inputStyles = {
+  borderRadius: "lg",
+  bg: "gray.50",
+  borderColor: "gray.200",
+  focusBorderColor: "red.400",
+  _hover: { borderColor: "gray.300" },
+};
 
+const SectionTitle = ({ children }) => (
+  <Text fontSize="xs" fontWeight="700" color="gray.500" textTransform="uppercase" letterSpacing="wider" mb="3">
+    {children}
+  </Text>
+);
 
+function UpdateProduct({ el, onUpdated, variant = "icon" }) {
+  const toast = useToast();
+  const dispatch = useDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [form, setForm] = useState(() => pickFields(el));
+  const [saving, setSaving] = useState(false);
 
-    useEffect(()=>{
-        // dispatch(getProducts())
-    },[])
+  const open = () => {
+    setForm(pickFields(el));
+    onOpen();
+  };
 
-    const handleChange = (e)=>{
-      const {name,value} = e.target
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
-      setVal({...val,[name]:value})
+  // Only send the fields that were actually edited
+  const changes = FIELDS.reduce((acc, key) => {
+    if (form[key] !== (el[key] ?? "")) acc[key] = form[key];
+    return acc;
+  }, {});
+  const hasChanges = Object.keys(changes).length > 0;
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    if (!hasChanges) return;
+
+    setSaving(true);
+    const result = await dispatch(updateProduct(el._id, changes));
+    setSaving(false);
+
+    if (!result.ok) {
+      toast({ title: "Update failed", description: result.msg, status: "error", position: "top", duration: 3000 });
+      return;
     }
-    console.log(val)
 
-    const handleUpdate = async(e) => {
-        dispatch(updateProduct(el._id,val))
-        setCount((prev)=>prev+1)
-      dispatch(getProducts())
-      e.preventDefault();
-      toast({
-        title: "Congratulations",
-        description: "User Registered sucessfully",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-      onClose();
-    };
-  
-    return (
-      <>
-        <Text variantcolor="teal" backgroundColor={"blue"} color={"white"} textAlign={"center"} padding={"5px"} borderRadius={"8%"} fontWeight={"medium"} fontSize={["sm","xl"]} onClick={onOpen}>
-          Update
-        </Text>
-  
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader backgroundColor={"skyblue"}>Update</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-            <form onSubmit={handleUpdate}>
+    toast({ title: "Product updated", description: form.product_item_meta__title, status: "success", position: "top", duration: 2500 });
+    onClose();
+    onUpdated?.();
+  };
 
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="name">Title</FormLabel>
-                  <Input
-                //   value={el.product_item_meta__title}
-                    type="text"
-                    name="product_item_meta__title"
-                    onChange={(e)=>{handleChange(e)}}
-                    id="product_item__primary_image"
-                    placeholder="Enter product Name"
-                   
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="img">Image</FormLabel>
-                  <Input
-                    type="text"
-                    name="product_item__primary_image"
-                    onChange={(e)=>{handleChange(e)}}
-                    id="product_item__primary_image"
-                    placeholder="Image 1"
-                  />
-                </FormControl>
-  
-               
-                
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="password">Image2</FormLabel>
-                  <Input
-                    type="text"
-                    name="product_item__secondary_image"
-                    onChange={(e)=>{handleChange(e)}}
-                    id="product_item__secondary_image"
-                    placeholder="Image 2"
-                  />
-                </FormControl>
-  
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="userType">Category</FormLabel>
-                
-                  <Select name="category"  onChange={(e)=>{handleChange(e)}}  id="category" placeholder='Select Category' >
-                    <option value='watch'>Watch </option>
-                    <option value='earbud'>Earbuds</option>
-                    <option value='headphone'>Headphone</option>
-                    <option value='speaker'>Speaker</option>
-                    <option value='bluetoothHeadphone'>Bluetooth Headphone</option>
+  const offer = Number(form.price) || 0;
+  const mrp = Number(form.price2) || 0;
+  const discount = mrp > offer && offer > 0 ? Math.round(((mrp - offer) * 100) / mrp) : 0;
 
-                    
-                    </Select>
-                  
-                </FormControl>
+  return (
+    <>
+      {variant === "icon" ? (
+        <Tooltip label="Edit product" hasArrow>
+          <IconButton
+            icon={<FiEdit2 />}
+            size="sm"
+            variant="ghost"
+            color="gray.600"
+            borderRadius="lg"
+            aria-label="Edit product"
+            onClick={open}
+            _hover={{ bg: "blue.50", color: "blue.600" }}
+          />
+        </Tooltip>
+      ) : (
+        <Button size="sm" leftIcon={<FiEdit2 />} variant="outline" borderRadius="lg" flex="1" onClick={open}>
+          Edit
+        </Button>
+      )}
 
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="password">Offer Price</FormLabel>
-                  <Input
-                    type="text"
-                    name="price"
-                    onChange={(e)=>{handleChange(e)}}
-                    id="price"
-                    placeholder="Offer Price"
-                  />
-                </FormControl>
+      <Modal isOpen={isOpen} onClose={onClose} size="3xl" isCentered scrollBehavior="inside">
+        <ModalOverlay bg="blackAlpha.600" backdropFilter="blur(4px)" />
+        <ModalContent as="form" onSubmit={handleUpdate} mx="4" borderRadius="2xl" overflow="hidden">
+          <ModalHeader borderBottom="1px solid" borderColor="gray.100" py="4">
+            <HStack spacing="3">
+              <Flex boxSize="38px" align="center" justify="center" bg="red.50" color="red.500" borderRadius="lg">
+                <Icon as={FiEdit2} />
+              </Flex>
+              <Box>
+                <Text fontSize="lg" fontWeight="800">Edit product</Text>
+                <Text fontSize="xs" color="gray.500" fontWeight="500">ID: {el._id}</Text>
+              </Box>
+            </HStack>
+          </ModalHeader>
+          <ModalCloseButton top="5" borderRadius="full" />
 
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="password">MRP Price</FormLabel>
-                  <Input
-                    type="text"
-                    name="price2"
-                    onChange={(e)=>{handleChange(e)}}
-                    id="price2"
-                    placeholder="MRP Price"
-                  />
-                </FormControl>
+          <ModalBody py="6">
+            <Grid templateColumns={{ base: "1fr", md: "220px 1fr" }} gap="6">
+              {/* Live preview */}
+              <Stack spacing="3">
+                <AspectRatio ratio={1}>
+                  <Box bg="gray.50" borderRadius="xl" border="1px solid" borderColor="gray.100" p="4">
+                    <Image
+                      src={form.product_item__primary_image}
+                      fallbackSrc="/musicose-mark.svg"
+                      alt="Primary"
+                      objectFit="contain"
+                      w="100%"
+                      h="100%"
+                    />
+                  </Box>
+                </AspectRatio>
+                {form.product_item__secondary_image && (
+                  <AspectRatio ratio={2}>
+                    <Box bg="gray.50" borderRadius="xl" border="1px solid" borderColor="gray.100" p="2">
+                      <Image src={form.product_item__secondary_image} fallbackSrc="/musicose-mark.svg" alt="Secondary" objectFit="contain" w="100%" h="100%" />
+                    </Box>
+                  </AspectRatio>
+                )}
+                <Box>
+                  <Text fontWeight="700" fontSize="sm" noOfLines={2}>
+                    {form.product_item_meta__title || "Product title"}
+                  </Text>
+                  <HStack spacing="2" mt="1">
+                    <Text fontWeight="800">₹{offer.toLocaleString("en-IN")}</Text>
+                    {discount > 0 && (
+                      <>
+                        <Text fontSize="sm" color="gray.400" textDecoration="line-through">₹{mrp.toLocaleString("en-IN")}</Text>
+                        <Text fontSize="xs" color="green.600" fontWeight="700">{discount}% off</Text>
+                      </>
+                    )}
+                  </HStack>
+                </Box>
+              </Stack>
 
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="password">feature1</FormLabel>
-                  <Input
-                    type="text"
-                    name="feature"
-                    onChange={(e)=>{handleChange(e)}}
-                    id="feature"
-                    placeholder="feature1"
-                  />
-                </FormControl>
+              {/* Form */}
+              <Stack spacing="6">
+                <Box>
+                  <SectionTitle>Basic details</SectionTitle>
+                  <Stack spacing="4">
+                    <FormControl>
+                      <FormLabel fontSize="sm">Title</FormLabel>
+                      <Input name="product_item_meta__title" value={form.product_item_meta__title} onChange={handleChange} placeholder="Product name" {...inputStyles} />
+                    </FormControl>
+                    <SimpleGrid columns={{ base: 1, sm: 3 }} gap="4">
+                      <FormControl>
+                        <FormLabel fontSize="sm">Category</FormLabel>
+                        <Select name="category" value={form.category} onChange={handleChange} placeholder="Select" {...inputStyles}>
+                          {CATEGORIES.map((c) => (
+                            <option key={c.value} value={c.value}>{c.label}</option>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm">Offer price</FormLabel>
+                        <InputGroup>
+                          <InputLeftElement pointerEvents="none" color="gray.400">₹</InputLeftElement>
+                          <Input name="price" value={form.price} onChange={handleChange} inputMode="numeric" {...inputStyles} />
+                        </InputGroup>
+                      </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm">MRP</FormLabel>
+                        <InputGroup>
+                          <InputLeftElement pointerEvents="none" color="gray.400">₹</InputLeftElement>
+                          <Input name="price2" value={form.price2} onChange={handleChange} inputMode="numeric" {...inputStyles} />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </Stack>
+                </Box>
 
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="password">feature2</FormLabel>
-                  <Input
-                    type="text"
-                    name="feature2"
-                    onChange={(e)=>{handleChange(e)}}
-                    id="feature2"
-                    placeholder="feature2"
-                  />
-                </FormControl>
+                <Box>
+                  <SectionTitle>Images</SectionTitle>
+                  <Stack spacing="4">
+                    <FormControl>
+                      <FormLabel fontSize="sm">Primary image URL</FormLabel>
+                      <Input name="product_item__primary_image" value={form.product_item__primary_image} onChange={handleChange} placeholder="https://" {...inputStyles} />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel fontSize="sm">Secondary image URL</FormLabel>
+                      <Input name="product_item__secondary_image" value={form.product_item__secondary_image} onChange={handleChange} placeholder="https://" {...inputStyles} />
+                    </FormControl>
+                  </Stack>
+                </Box>
 
-                <FormControl mt={4}>
-                  <FormLabel htmlFor="password">feature3</FormLabel>
-                  <Input
-                    type="text"
-                    name="feature3"
-                    onChange={(e)=>{handleChange(e)}}
-                    id="feature3"
-                    placeholder="feature3"
-                  />
-                </FormControl>
+                <Box>
+                  <SectionTitle>Key features</SectionTitle>
+                  <Stack spacing="3">
+                    {["feature", "feature2", "feature3"].map((key, index) => (
+                      <Input key={key} name={key} value={form[key]} onChange={handleChange} placeholder={`Feature ${index + 1}`} {...inputStyles} />
+                    ))}
+                  </Stack>
+                </Box>
+              </Stack>
+            </Grid>
+          </ModalBody>
 
+          <ModalFooter borderTop="1px solid" borderColor="gray.100" gap="3">
+            <Text flex="1" fontSize="sm" color="gray.500">
+              {hasChanges ? `${Object.keys(changes).length} field(s) changed` : "No changes yet"}
+            </Text>
+            <Button variant="ghost" borderRadius="lg" onClick={onClose}>Cancel</Button>
+            <Button
+              type="submit"
+              colorScheme="red"
+              borderRadius="lg"
+              px="6"
+              isLoading={saving}
+              loadingText="Saving"
+              isDisabled={!hasChanges}
+            >
+              Save changes
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
 
-
-              </form>
-            </ModalBody>
-  
-            <ModalFooter>
-              <Button variantcolor="teal" backgroundColor={"Black"} color={"white"} mr={3} onClick={()=>handleUpdate()}>
-                Update
-              </Button>
-              
-            </ModalFooter>
-          </ModalContent>:
-          
-          
-        </Modal>
-      </>
-    );
-  }
-  
-  export default UpdateProduct;
-  
+export default UpdateProduct;

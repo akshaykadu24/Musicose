@@ -1,94 +1,48 @@
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { GrNext, GrPrevious } from 'react-icons/gr';
-import { Box, Button } from '@chakra-ui/react';
-import { Products } from './Products';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import "./product.css"
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Link } from "react-router-dom";
+import { Products } from "./Products";
+import { scrollRowProps, scrollRowStyles } from "../../scrollRow";
 
-// Product Crousals
+export const ProductCarousel = ({ data = [] }) => {
+  const products = data.slice(0, 10);
 
-const Prev = (props) => {
-    // console.log(props);
-    const { className, onClick } = props;
-    return (
-        <>
-            <Box borderRadius={"3px"} bg={"white"} p={"30px 8px"} zIndex={"10"} position={"absolute"} top={"20%"} left={"0px"} onClick={onClick} boxShadow={"rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px"}>
-                <GrPrevious fontSize={"20px"} color={"#3f4246"} />
-            </Box>
-        </>
-    );
-};
-
-const Next = (props) => {
-    // console.log(props);
-    const { className, onClick } = props;
-    return (
-        <>
-            <Box borderRadius={"3px"} bg={"white"} p={"30px 8px"} zIndex={"10"} position={"absolute"} top={"20%"} right={"0px"} onClick={onClick} boxShadow={"rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px"}>
-                <GrNext fontSize={"20px"} color={"#3f4246"} />
-            </Box>
-        </>
-    );
-};
-
-
-export const ProductCarousel = ({data=[]}) => {
-
-    
-    
-    // below is the amount of products want to show
-    data = data?.filter((e, i) => i<10)
-
-    const settings = {
-        dots: false,
-        // below option is used for scroll inifite function set true to use.
-        infinite: true,
-        // space: 100,
-        speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        initialSlide: 0,
-        responsive: [
-            {
-                breakpoint: 1240,
-                settings: {
-                    slidesToShow: 3,
-                }
-            },
-            {
-                breakpoint: 940,
-                settings: {
-                    slidesToShow: 2,
-                }
-            },
-            {
-                breakpoint: 640,
-                settings: {
-                    slidesToShow: 1,
-                }
-            }
-        ]
-    };
-    
-
-    return (
-        <Box className='productSlider' >
-            <Box className='productSlider2'>
-           <h1>Smart Watch</h1>
-           
-           </Box>
-            <Slider {...settings} prevArrow={<Prev />} nextArrow={<Next />} >
-
-                {
-                    data?.map((item) => (
-                        <Products key={item.id} props={item} />
-                    ))
-                }
-
-            </Slider>
+  return (
+    <Box as="section" pt={{ base: "9", md: "14" }} pb={{ base: "4", md: "8" }}>
+      <Flex align="flex-end" justify="space-between" mb="5">
+        <Box>
+          <Heading size={{ base: "lg", md: "xl" }}>Smart Watches</Heading>
+          <Text mt="1" color="gray.600" fontSize="sm">
+            Smart style from our wearable partner collection.
+          </Text>
         </Box>
-    );
+        <Text
+          as={Link}
+          to="/watch"
+          color="red.500"
+          fontSize="sm"
+          fontWeight="700"
+          whiteSpace="nowrap"
+        >
+          View all
+        </Text>
+      </Flex>
+
+      {products.length > 0 ? (
+        <Box sx={scrollRowStyles}>
+          <Swiper {...scrollRowProps}>
+            {products.map((item, index) => (
+              <SwiperSlide key={item._id || index}>
+                <Products product={item} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Box>
+      ) : (
+        <Box py="12" bg="white" borderRadius="xl" textAlign="center">
+          <Text color="gray.500">Watch products will appear here.</Text>
+        </Box>
+      )}
+    </Box>
+  );
 };

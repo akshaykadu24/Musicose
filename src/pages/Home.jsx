@@ -1,43 +1,33 @@
-import React, { useEffect } from "react";
+import { Box } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Carousel from "../components/Carousel";
 import { Dailydeals } from "../components/Dailydeals";
-import Footer from "../components/Footer";
-import Gifcarousel from "../components/Gifcarousel";
 import Gifs from "../components/Gifs";
 import Landingcarousel from "../components/Landingcarousel";
-import { useDispatch, useSelector } from "react-redux";
-import { getwatchproduct } from "../redux/product/product.action";
 import { ProductCarousel } from "../components/Carousal/Carousal/ProductCarousel";
-// import { Dailydeals } from "../components/Dailydeals";
-// import Header from "../components/Header";
-// import { Dailydeals } from "../components/Dailydeals";
+import { getwatchproduct } from "../redux/product/product.action";
+
 const Home = () => {
+  const dispatch = useDispatch();
+  const watchProducts = useSelector(
+    (store) => store.productManager.watch?.products || []
+  );
 
-  let dispatch = useDispatch()
-  let data = useSelector((store=>store.productManager))
-  console.log(data)
-
-  useEffect(()=>{
-    dispatch(getwatchproduct())
-  },[])
+  useEffect(() => {
+    dispatch(getwatchproduct());
+  }, [dispatch]);
 
   return (
-    <div>
-      {/* <Header />; */}
-      
+    <Box bg="#f8fafc" overflow="hidden">
       <Carousel />
-      {/* <Dailydeals /> */}
-      <Dailydeals />
-
-  
-          <ProductCarousel  data={data.watch.products}/>
- 
-
-      <Landingcarousel />
-      <Gifcarousel />
-      <Gifs/>
-      <Dailydeals />
-    </div>
+      <Box maxW="1400px" mx="auto" px={{ base: "4", md: "6" }}>
+        <Dailydeals />
+        <ProductCarousel data={watchProducts} />
+        <Landingcarousel />
+        <Gifs />
+      </Box>
+    </Box>
   );
 };
 

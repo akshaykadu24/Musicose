@@ -1,64 +1,51 @@
-import { Box } from "@chakra-ui/react";
+import { HStack, Icon, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { FiZap } from "react-icons/fi";
+
+const getEndOfDay = () => {
+  const end = new Date();
+  end.setHours(23, 59, 59, 999);
+  return end;
+};
+
+const getTimeLeft = (deadline) => {
+  const difference = Math.max(0, deadline.getTime() - Date.now());
+
+  return {
+    hours: Math.floor(difference / 3600000),
+    minutes: Math.floor((difference / 60000) % 60),
+    seconds: Math.floor((difference / 1000) % 60),
+  };
+};
 
 export function Timer() {
-  const calculateTimeLeft = () => {
-    const difference = +new Date("2023-10-10T23:59:59+05:30") - +new Date();
-    let timeLeft = {};
-
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60) / 24),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    }
-
-    return timeLeft;
-  };
-
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [deadline] = useState(getEndOfDay);
+  const [timeLeft, setTimeLeft] = useState(() => getTimeLeft(deadline));
 
   useEffect(() => {
-    setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
+    const timer = setInterval(() => {
+      setTimeLeft(getTimeLeft(deadline));
     }, 1000);
-  });
+
+    return () => clearInterval(timer);
+  }, [deadline]);
+
+  const twoDigits = (value) => String(value).padStart(2, "0");
 
   return (
-    <Box width={"auto"}>
-      <Box
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          border: "1px solid white",
-          width: "250px",
-          height: "40px",
-          backgroundColor: "#fcc50b",
-          borderRadius: "10px",
-          fontSize: "1.1rem",
-          margin: "auto",
-          marginTop: "5px",
-          marginLeft:"3%",
-          marginBottom: "10px",
-        }}
-      >
-        <img
-          src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/thunder_2.png?v=1655103798"
-          alt="logo"
-        />
-
-        {timeLeft.hours || timeLeft.minutes || timeLeft.seconds ? (
-          <h1>
-            EndsIn: {timeLeft.days}d : {timeLeft.hours}h : {timeLeft.minutes}m :{" "}
-            {timeLeft.seconds}s
-          </h1>
-        ) : (
-          <p>Time is up 🔥</p>
-        )}
-      </Box>
-    </Box>
+    <HStack
+      bg="yellow.100"
+      color="yellow.900"
+      px="4"
+      py="2"
+      borderRadius="full"
+      spacing="2"
+      whiteSpace="nowrap"
+    >
+      <Icon as={FiZap} color="red.500" />
+      <Text fontSize="sm" fontWeight="700">
+        Ends in {twoDigits(timeLeft.hours)}:{twoDigits(timeLeft.minutes)}:{twoDigits(timeLeft.seconds)}
+      </Text>
+    </HStack>
   );
 }

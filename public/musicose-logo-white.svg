@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 100" role="img" aria-labelledby="title description">
+  <title id="title">Musicose</title>
+  <desc id="description">Musicose audio brand logo in white</desc>
+  <defs>
+    <linearGradient id="musicose-red" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f43f5e" />
+      <stop offset="1" stop-color="#dc2626" />
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="84" height="84" rx="24" fill="url(#musicose-red)" />
+  <g fill="#ffffff">
+    <rect x="25" y="39" width="8" height="22" rx="4" />
+    <rect x="39" y="29" width="8" height="42" rx="4" />
+    <rect x="53" y="20" width="8" height="60" rx="4" />
+    <rect x="67" y="32" width="8" height="36" rx="4" />
+  </g>
+  <text x="115" y="66" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="45" font-weight="800" letter-spacing="3">MUSICOSE</text>
+  <circle cx="431" cy="62" r="5" fill="#fb7185" />
+</svg>

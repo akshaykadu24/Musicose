@@ -1,282 +1,443 @@
 import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  Tag,
-  Text,
+  AspectRatio,
   Badge,
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Button,
+  Divider,
+  Flex,
+  Grid,
+  Heading,
+  HStack,
+  Icon,
+  Image,
+  Input,
+  List,
+  ListIcon,
+  ListItem,
+  SimpleGrid,
+  Skeleton,
   Stack,
+  Text,
   useToast,
 } from "@chakra-ui/react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import DetailHeader from "../../components/Revati_components/DetailHeader";
-import {  AiFillTag } from "react-icons/ai";
+import { ChevronRightIcon } from "@chakra-ui/icons";
+import axios from "axios";
 import { useEffect, useState } from "react";
+import {
+  FiCheckCircle,
+  FiRefreshCw,
+  FiShield,
+  FiShoppingBag,
+  FiTruck,
+  FiZap,
+} from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Products } from "../../components/Carousal/Carousal/Products";
+import { Ratings } from "../../components/Carousal/Carousal/Ratings";
+import { addCart } from "../../redux/cart/cart.action";
 import { getSingleData } from "../../redux/product/product.action";
-import { TrendingSlider } from "../../components/Revati_components/slider";
-import { BsBag } from "react-icons/bs";
-import { MdLocalShipping } from "react-icons/md";
-import { addCart, getCartItems } from "../../redux/cart/cart.action";
+
+const categoryInfo = {
+  earbud: { name: "Earbuds", path: "/earbuds" },
+  headphone: { name: "Wired Headphones", path: "/headphone" },
+  bluetoothHeadphone: { name: "Bluetooth Headphones", path: "/bluetoothHeadphone" },
+  speaker: { name: "Speakers", path: "/speaker" },
+  watch: { name: "Smart Watches", path: "/watch" },
+};
+
+const services = [
+  { icon: FiTruck, title: "Free delivery", text: "Delivered within 5-7 days" },
+  { icon: FiShield, title: "1 year warranty", text: "On all Musicose products" },
+  { icon: FiRefreshCw, title: "7 day replacement", text: "Easy, no questions asked" },
+];
 
 const SingleProduct = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const [pincode, setPincode] = useState("");
-  const toast = useToast();
-  //console.log(id)
-  
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const toast = useToast();
 
-  const product = useSelector((store) => {
-    return store.productManager.product;
-  });
-  console.log(product)
+  const product = useSelector((store) => store.productManager.product) || {};
+  const loading = useSelector((store) => store.productManager.loading);
+  const [requestedId, setRequestedId] = useState(null);
+  const [activeImage, setActiveImage] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [pincodeMessage, setPincodeMessage] = useState(null);
+  const [related, setRelated] = useState([]);
 
-  const cartItems = useSelector((store) => {
-    return store.cart.cart;
-  });
-  //console.log(cartItems);
+  // The store may still hold the previous product while the new one loads
+  const isCurrent = product._id === id;
+  const isLoading = !isCurrent && (loading || requestedId !== id);
+  const notFound = !isCurrent && !isLoading;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    setActiveImage("");
+    setPincode("");
+    setPincodeMessage(null);
+    setRelated([]);
     dispatch(getSingleData(id));
-    console.log(id)
+    setRequestedId(id);
+  }, [dispatch, id]);
 
-    dispatch(getCartItems());
-  }, []);
+  useEffect(() => {
+    if (!isCurrent || !product.category) return;
 
-  //let exist = false;
-  //      cartItems.forEach((e)=>{
-  //     if(e.id==id){
-  //      exist=true;
+    axios
+      .get(`${process.env.REACT_APP_MUSICOSE_API}/products`)
+      .then((res) => {
+        const sameCategory = (res.data.products || []).filter(
+          (item) => item.category === product.category && item._id !== product._id
+        );
+        setRelated(sameCategory.slice(0, 5));
+      })
+      .catch(() => setRelated([]));
+  }, [isCurrent, product._id, product.category]);
 
-  //       }
-  //    })
+  const offerPrice = Number(product.price) || 0;
+  const mrp = Number(product.price2) || 0;
+  const saving = mrp > offerPrice ? mrp - offerPrice : 0;
+  const discount = saving > 0 ? Math.round((saving * 100) / mrp) : 0;
+  const images = [product.product_item__primary_image, product.product_item__secondary_image].filter(Boolean);
+  const mainImage = activeImage || images[0];
+  const features = [product.feature, product.feature2, product.feature3].filter(Boolean);
+  const hasRating = Number(product.rating__stars) > 0;
+  const reviews = (product.rating__caption || "").replace(/reviews?/i, "").trim();
+  const category = categoryInfo[product.category];
 
-  const handleClick = () => {
-    dispatch(addCart({ ...product }));
-    toast({
-      title: "Add to Cart.",
-      description: "Item added to Cart Successfully.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-      position: "top",
-    });
+  const addToCart = () => {
+    if (!localStorage.getItem("token")) {
+      toast({ title: "Please login to add products to cart", status: "warning", position: "top" });
+      return false;
+    }
+
+    dispatch(addCart(product));
+    toast({ title: "Added to cart", status: "success", duration: 2000, position: "top" });
+    return true;
   };
 
+  const buyNow = () => {
+    if (addToCart()) navigate("/productCart");
+  };
+
+  const checkPincode = () => {
+    if (/^[1-9][0-9]{5}$/.test(pincode)) {
+      setPincodeMessage({ ok: true, text: "Delivery available. Expected in 5-7 days." });
+    } else {
+      setPincodeMessage({ ok: false, text: "Please enter a valid 6-digit pincode." });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <Box maxW="1400px" mx="auto" px={{ base: "4", md: "6" }} py="8">
+        <Grid templateColumns={{ base: "1fr", lg: "1fr 1fr" }} gap="10">
+          <Skeleton h={{ base: "320px", md: "480px" }} borderRadius="2xl" />
+          <Stack spacing="4">
+            <Skeleton h="36px" w="70%" />
+            <Skeleton h="20px" w="40%" />
+            <Skeleton h="44px" w="50%" />
+            <Skeleton h="120px" />
+            <Skeleton h="48px" />
+          </Stack>
+        </Grid>
+      </Box>
+    );
+  }
+
+  if (notFound) {
+    return (
+      <Box py="20" px="4" textAlign="center">
+        <Heading size="lg">Product not found</Heading>
+        <Text mt="2" color="gray.600">This product may have been removed or the link is incorrect.</Text>
+        <Button as={Link} to="/" mt="6" colorScheme="red" borderRadius="full">
+          Back to home
+        </Button>
+      </Box>
+    );
+  }
+
   return (
-    <>
-      <Box
-        display={{ lg: "flex", base: "block" }}
-        w="90%"
-        m="auto"
-        mt="40px"
-        boxShadow="rgba(149, 157, 165, 0.2) 0px 8px 24px">
-        <Box
-          flex={{ xl: "0.5", lg: "0.6" }}
-          p={{ xl: "25px", lg: "25px 10px", md: "25px", base: "25px" }}>
-          <Image
-            fallbackSrc="https://static.vecteezy.com/system/resources/thumbnails/008/034/405/small/loading-bar-doodle-element-hand-drawn-vector.jpg"
-            m={{ lg: "0px", base: "auto" }}
-            w="100%"
-            maxW={{ lg: "100%", base: "350px" }}
-            src={product.product_item__primary_image}
-          />
-        </Box>
+    <Box bg="#f8fafc" textAlign="left">
+      <Box maxW="1400px" mx="auto" px={{ base: "4", md: "6" }} py={{ base: "5", md: "8" }}>
+        <Breadcrumb
+          spacing="1"
+          separator={<ChevronRightIcon color="gray.400" />}
+          fontSize="sm"
+          color="gray.500"
+          mb={{ base: "4", md: "6" }}
+          maxW="1150px"
+          mx="auto"
+        >
+          <BreadcrumbItem>
+            <BreadcrumbLink as={Link} to="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          {category && (
+            <BreadcrumbItem>
+              <BreadcrumbLink as={Link} to={category.path}>{category.name}</BreadcrumbLink>
+            </BreadcrumbItem>
+          )}
+          <BreadcrumbItem isCurrentPage>
+            <Text as="span" color="gray.800" noOfLines={1}>
+              {product.product_item_meta__title}
+            </Text>
+          </BreadcrumbItem>
+        </Breadcrumb>
 
-        <Box flex="1" p="30px">
-          <DetailHeader product={product} />
-          <hr style={{ marginTop: "10px" }} />
-
-          <Flex direction={{ sm: "row", base: "column" }} mt="20px" mb="10px">
-            <Box flex="1">
-              <Text
-                color="teal"
-                fontSize={{ md: "14px", base: "13px" }}
-                mt={{ xl: "10px" }}
-                ml={{ xl: "-160px", sm: "-40px" }}>
-                <span style={{ marginRight: "5px" }} color="teal">
-                  MRP
-                </span>
-                <span style={{ textDecoration: "line-through" }} color="teal">
-                  {" "}
-                  {product.price2}
-                </span>
-                <span
-                  className="taxes"
-                  style={{ marginLeft: "5px" }}
-                  color="teal">
-                  (Inclusive of all Taxes)
-                </span>
-              </Text>
-              <Box display="flex" mt={{ xl: "40px" }} ml={{ xl: "10px" }}>
-                <Box mr="10px">
-                  <Text
-                    color="#FF2341"
-                    fontSize={{ md: "22px", base: "18px", lg: "25px" }}
-                    fontWeight={{ lg: "bold" }}>
-                    RS. {product.price}
-                  </Text>
-                </Box>
-                {/* <Box display="flex" alignItems="center">
-                  <Tag>{product.discount}</Tag>
-                </Box> */}
-              </Box>
+        <Grid
+          templateColumns={{ base: "1fr", lg: "minmax(0, 500px) 1fr" }}
+          gap={{ base: "6", lg: "14" }}
+          maxW="1150px"
+          mx="auto"
+        >
+          {/* Image gallery */}
+          <Box position={{ lg: "sticky" }} top={{ lg: "110px" }} alignSelf="start">
+            <Box position="relative" bg="white" borderRadius="2xl" border="1px solid" borderColor="gray.100" p={{ base: "6", md: "8", lg: "10" }} maxW={{ base: "460px", lg: "none" }} mx="auto">
+              <AspectRatio ratio={1}>
+                <Image
+                  src={mainImage}
+                  fallbackSrc="/musicose-mark.svg"
+                  alt={product.product_item_meta__title}
+                  objectFit="contain"
+                />
+              </AspectRatio>
+              {discount > 0 && (
+                <Badge position="absolute" top="4" left="4" colorScheme="red" borderRadius="full" px="3" py="1" fontSize="sm">
+                  {discount}% off
+                </Badge>
+              )}
             </Box>
 
-            <Box flex="1" display="flex" justifyContent="flex-end">
-              <Box width={{ xl: "80%", lg: "100%", md: "90%", base: "100%" }}>
-                <Box mb="7px">
-                  <Text
-                    fontSize={{
-                      xl: "15px",
-                      lg: "14px",
-                      md: "14px",
-                      base: "11px",
-                    }}
-                    color="#747774">
-                    (2) Offers | Applicable on Cart
-                  </Text>
-                </Box>
-                <Box
-                  border="2px solid #747774"
-                  p="10px 10px"
-                  borderStyle="dashed"
-                  color="teal">
-                  <Flex mb="5px" pb="5px" borderBottom="1px solid #747774">
-                    <Box flex="0.20">
-                      <Tag
-                        size={{ xl: "md", lg: "sm", md: "md", base: "xs" }}
-                        bgColor="#5EA8C8"
-                        p={{
-                          xl: "4px 4px",
-                          lg: "2px 2px",
-                          md: "4px 4px",
-                          base: "2px 2px",
-                        }}>
-                        <AiFillTag color="white" fontSize={20} />
-                      </Tag>
-                    </Box>
-                    <Box flex="1">
-                      <Text
-                        lineHeight={1.3}
-                        color="#747774"
-                        fontSize={{
-                          xl: "15px",
-                          lg: "14px",
-                          md: "14px",
-                          base: "11px",
-                        }}>
-                        15% Instant Discount Using AU Small Finance Bank Debit &
-                        Credit Cards.
-                      </Text>
-                    </Box>
-                  </Flex>
-                  <Flex>
-                    <Box flex="0.20">
-                      <Tag
-                        size={{ xl: "md", lg: "sm", md: "md", base: "xs" }}
-                        bgColor="#5EA8C8"
-                        p={{
-                          xl: "4px 4px",
-                          lg: "2px 2px",
-                          md: "4px 4px",
-                          base: "2px 2px",
-                        }}>
-                        <AiFillTag color="white" fontSize={20} />
-                      </Tag>
-                    </Box>
-                    <Box flex="1">
-                      <Text
-                        lineHeight={1.3}
-                        color="#747774"
-                        fontSize={{
-                          xl: "15px",
-                          lg: "14px",
-                          md: "14px",
-                          base: "11px",
-                        }}>
-                        Apply for a Boat BOB Credit Card & get 5% Unlimited
-                        Cashback.
-                      </Text>
-                    </Box>
-                  </Flex>
-                </Box>
-              </Box>
-            </Box>
-          </Flex>
-
-          <Box p="20px 0px">
-            <Box
-              h={{ xl: "125px", lg: "105px", md: "105px", base: "75px" }}
-              alignItems="center">
-              <Box
-                flex={{ md: "0.15", sm: "0.25", base: "0" }}
-                display={{ md: "block", base: "block" }}></Box>
-              <Box flex="1">
-                {
-                  <Button
-                    colorScheme="red"
-                    ml={{ xl: "-410px", lg: "-410px" }}
-                    w={{ sm: "100%", lg: "50%", xl: "50%" }}
-                    _hover={{
-                      bgColor: "white",
-                      color: "#333333",
-                      border: "2px solid #333333",
-                    }}
-                    onClick={handleClick}>
-                    <BsBag />
-                    <span>-</span> ADD TO CART
-                  </Button>
-                }
-              </Box>
-              <Box flex="0.2" display={{ md: "block", base: "none" }}></Box>
-            </Box>
-
-            <Badge
-              w={{ base: "90%", sm: "100%", lg: "100%" }}
-              borderRadius="full"
-              p={2}
-              px="2"
-              colorScheme="teal">
-              You will receive cashback worth ₹76 on this purchase
-            </Badge>
-
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent={"center"}>
-              <MdLocalShipping />
-              <Text> delivery within 1 week</Text>
-            </Stack>
-
-            <Box display="flex">
-              <Box
-                flex={{ xl: "0.15", lg: "0.2", md: "0.2", base: "0.25" }}
-                display="flex"
-                alignItems="center"></Box>
-              <Box flex="1"></Box>
-              <Box
-                flex={{ md: "0.2", base: "0.3" }}
-                display={{ md: "flex", base: "none" }}></Box>
-            </Box>
+            {images.length > 1 && (
+              <HStack mt="3" spacing="3">
+                {images.map((image) => (
+                  <Box
+                    as="button"
+                    key={image}
+                    onClick={() => setActiveImage(image)}
+                    w="76px"
+                    p="2"
+                    bg="white"
+                    borderRadius="lg"
+                    border="2px solid"
+                    borderColor={mainImage === image ? "red.400" : "gray.100"}
+                    aria-label="Show product image"
+                    _hover={{ borderColor: "red.300" }}
+                  >
+                    <AspectRatio ratio={1}>
+                      <Image src={image} alt="" objectFit="contain" />
+                    </AspectRatio>
+                  </Box>
+                ))}
+              </HStack>
+            )}
           </Box>
+
+          {/* Product details */}
+          <Stack spacing="5">
+            <Box>
+              {category && (
+                <Text color="red.500" fontSize="sm" fontWeight="700" textTransform="uppercase" letterSpacing="wide">
+                  {category.name}
+                </Text>
+              )}
+              <Heading mt="1" size={{ base: "lg", md: "xl" }} lineHeight="short">
+                {product.product_item_meta__title}
+              </Heading>
+              <HStack mt="3" spacing="2">
+                {hasRating ? (
+                  <>
+                    <Ratings rating={product.rating__stars} />
+                    {reviews && <Text fontSize="sm" color="gray.500">| {reviews} reviews</Text>}
+                  </>
+                ) : (
+                  <Badge colorScheme="green" borderRadius="full" px="2">New arrival</Badge>
+                )}
+              </HStack>
+            </Box>
+
+            <Box bg="white" borderRadius="xl" border="1px solid" borderColor="gray.100" p="5">
+              <HStack align="baseline" spacing="3" flexWrap="wrap">
+                <Text fontSize={{ base: "3xl", md: "4xl" }} fontWeight="800" color="gray.900">
+                  ₹{offerPrice.toLocaleString("en-IN")}
+                </Text>
+                {saving > 0 && (
+                  <>
+                    <Text fontSize="lg" color="gray.500" textDecoration="line-through">
+                      ₹{mrp.toLocaleString("en-IN")}
+                    </Text>
+                    <Badge colorScheme="red" fontSize="sm" borderRadius="md">{discount}% off</Badge>
+                  </>
+                )}
+              </HStack>
+              {saving > 0 && (
+                <Text mt="1" color="green.600" fontWeight="700" fontSize="sm">
+                  You save ₹{saving.toLocaleString("en-IN")}
+                </Text>
+              )}
+              <Text mt="1" color="gray.500" fontSize="xs">Inclusive of all taxes</Text>
+            </Box>
+
+            {features.length > 0 && (
+              <Box>
+                <Text fontWeight="700" mb="2">Key features</Text>
+                <List spacing="2">
+                  {features.map((item) => (
+                    <ListItem key={item} display="flex" alignItems="center" fontSize="sm" color="gray.700">
+                      <ListIcon as={FiCheckCircle} color="green.500" />
+                      {item}
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
+            )}
+
+            <Flex gap="3" display={{ base: "none", md: "flex" }}>
+              <Button
+                flex="1"
+                size="lg"
+                colorScheme="red"
+                variant="outline"
+                borderRadius="full"
+                leftIcon={<FiShoppingBag />}
+                onClick={addToCart}
+              >
+                Add to cart
+              </Button>
+              <Button
+                flex="1"
+                size="lg"
+                colorScheme="red"
+                borderRadius="full"
+                leftIcon={<FiZap />}
+                onClick={buyNow}
+              >
+                Buy now
+              </Button>
+            </Flex>
+
+            <Box bg="white" borderRadius="xl" border="1px solid" borderColor="gray.100" p="5">
+              <Text fontWeight="700" mb="3">Check delivery</Text>
+              <HStack>
+                <Input
+                  value={pincode}
+                  onChange={(e) => setPincode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  onKeyDown={(e) => e.key === "Enter" && checkPincode()}
+                  placeholder="Enter pincode"
+                  inputMode="numeric"
+                  focusBorderColor="red.400"
+                  borderRadius="full"
+                />
+                <Button onClick={checkPincode} borderRadius="full" px="6">
+                  Check
+                </Button>
+              </HStack>
+              {pincodeMessage && (
+                <Text mt="2" fontSize="sm" color={pincodeMessage.ok ? "green.600" : "red.500"}>
+                  {pincodeMessage.text}
+                </Text>
+              )}
+
+              <Divider my="4" />
+
+              <SimpleGrid columns={{ base: 1, sm: 3 }} gap="4">
+                {services.map((item) => (
+                  <HStack key={item.title} align="flex-start" spacing="3">
+                    <Flex boxSize="36px" flexShrink="0" align="center" justify="center" bg="red.50" color="red.500" borderRadius="full">
+                      <Icon as={item.icon} />
+                    </Flex>
+                    <Box>
+                      <Text fontSize="sm" fontWeight="700">{item.title}</Text>
+                      <Text fontSize="xs" color="gray.500">{item.text}</Text>
+                    </Box>
+                  </HStack>
+                ))}
+              </SimpleGrid>
+            </Box>
+          </Stack>
+        </Grid>
+
+        {related.length > 0 && (
+          <Box mt={{ base: "12", md: "16" }}>
+            <Flex align="flex-end" justify="space-between" mb="4">
+              <Heading size={{ base: "md", md: "lg" }}>You may also like</Heading>
+              {category && (
+                <Text as={Link} to={category.path} color="red.500" fontSize="sm" fontWeight="700">
+                  View all
+                </Text>
+              )}
+            </Flex>
+            <SimpleGrid columns={{ base: 2, md: 3, lg: 4, xl: 5 }} gap={{ base: "3", md: "4" }}>
+              {related.map((item) => (
+                <Products key={item._id} product={item} />
+              ))}
+            </SimpleGrid>
+          </Box>
+        )}
+      </Box>
+
+      {/* Mobile: buttons stay at the bottom of the screen while scrolling */}
+      <HStack
+        display={{ base: "flex", md: "none" }}
+        position="sticky"
+        bottom="0"
+        zIndex="100"
+        spacing="3"
+        px="4"
+        py="3"
+        bg="white"
+        borderTop="1px solid"
+        borderColor="gray.100"
+        boxShadow="0 -6px 20px rgba(15, 23, 42, 0.08)"
+      >
+        <Box flexShrink="0" minW="76px" lineHeight="1.2">
+          <HStack spacing="1.5" align="baseline">
+            <Text fontSize="lg" fontWeight="800">
+              ₹{offerPrice.toLocaleString("en-IN")}
+            </Text>
+            {saving > 0 && (
+              <Text fontSize="xs" color="gray.500" textDecoration="line-through">
+                ₹{mrp.toLocaleString("en-IN")}
+              </Text>
+            )}
+          </HStack>
+          {saving > 0 && (
+            <Text fontSize="11px" color="green.600" fontWeight="700" whiteSpace="nowrap">
+              You save ₹{saving.toLocaleString("en-IN")}
+            </Text>
+          )}
         </Box>
-      </Box>
-
-      <Box>
-        <Image
-          w={{ sm: "100%", lg: "100%", xl: "100%" }}
-          src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/AD175-web_718c99fd-75ff-45bb-b448-4166822698c3.png?v=1653473462"
-        />
-      </Box>
-
-      <Box>
-        <TrendingSlider />
-      </Box>
-    </>
+        <Button
+          flex="1"
+          h="44px"
+          colorScheme="red"
+          variant="outline"
+          borderRadius="full"
+          fontSize="sm"
+          px="2"
+          leftIcon={<FiShoppingBag />}
+          onClick={addToCart}
+        >
+          Add to cart
+        </Button>
+        <Button
+          flex="1"
+          h="44px"
+          colorScheme="red"
+          borderRadius="full"
+          fontSize="sm"
+          px="2"
+          leftIcon={<FiZap />}
+          onClick={buyNow}
+        >
+          Buy now
+        </Button>
+      </HStack>
+    </Box>
   );
 };
 

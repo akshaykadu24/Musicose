@@ -2,261 +2,284 @@ import { useState } from "react";
 import {
   Box,
   Flex,
-  Grid,
-  Heading,
   HStack,
+  Icon,
   Image,
   Input,
+  InputGroup,
+  InputLeftElement,
   ListItem,
-  Stack,
   Text,
   UnorderedList,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
-import { FaUser } from "react-icons/fa";
-import { IoMdCart } from "react-icons/io";
+import { FiShoppingBag } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Categories } from "./Categories";
-// import { MenuDrop } from "./MenuDrop";
-import LoginPopup from "./LoginPopup";
-// import { CartPopup } from "./CartPopup";
-import "./Navbar.css";
 import { NavSlider } from "./NavSlider";
+import { MobileSearch } from "./MobileSearch";
 import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
-import { useDispatch, useSelector } from "react-redux";
+import AuthModal from "./auth/AuthModal";
+import LoginRequiredModal from "./auth/LoginRequiredModal";
 import { getSearchProducts } from "../redux/product/product.action";
 
 function Navbar() {
-  const [login, setLogin] = useState(false);
-  const [cartShow, setCartShow] = useState(false);
-  const [show, setShow] = useState(false);
-  const [menu, setMenu] = useState(false);
-  const [value,setValue] = useState("")
-  const dispatch = useDispatch()
-  const data = useSelector((store)=>store.productManager.searchData)
-// console.log(data)
-  const cartCount = {
-    height: "20px",
-    width: "20px",
-    backgroundColor: "red",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "50%",
-    fontSize: "11px",
-    position: "absolute",
-    right: "40px",
-    top: "10px",
-    color: "white",
-    paddingTop: "1px",
+  const [showCategories, setShowCategories] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [authMode, setAuthMode] = useState("login");
+  const cartPrompt = useDisclosure();
+  const authModal = useDisclosure();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const searchData = useSelector((store) => store.productManager.searchData);
+
+  const handleSearch = (event) => {
+    const value = event.target.value;
+    setSearchValue(value);
+
+    if (value.trim()) {
+      dispatch(getSearchProducts(value));
+    }
   };
 
-  const handleDrop = () => {
-    setShow(!show);
+  // This navbar only renders for logged-out users, and /productCart is a
+  // private route, so prompt for login instead of navigating and bouncing back.
+  const openAuthFromCart = (mode) => {
+    setAuthMode(mode);
+    cartPrompt.onClose();
+    authModal.onOpen();
   };
-
-  const removeDrop = () => {
-    setShow(!show);
-  };
-
-  const handleMenu = () => {
-    setMenu(!menu);
-  };
-
-  const removeMenu = () => {
-    setMenu(!menu);
-  };
- 
-  console.log(value)
-  const handleSearch = (e) =>{
-    console.log(e.target.value)
-    let val = e.target.value
-     setValue(val)
-
-    dispatch(getSearchProducts(val))
-  }
-
 
   return (
-    <Box>
-      {/* <Stack
-        w={"100%"}
-        color={"white"}
-        bg="black"
-        textAlign={"center"}
-        p="7px 20px"
+    <Box
+      position="sticky"
+      top="0"
+      zIndex="1000"
+      w="100%"
+      bg="white"
+      boxShadow="0 8px 24px rgba(15, 23, 42, 0.08)"
+    >
+      <Box
+        h="32px"
+        bg="#111827"
+        color="white"
+        px="4"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        fontSize="sm"
+        whiteSpace="nowrap"
+        overflow="hidden"
+        textOverflow="ellipsis"
       >
-        Plug in to festivities with 75% OFF! Come Sail with boAt 💃{" "}
-      </Stack> */}
+        Great sound, better moments — free shipping on selected products
+      </Box>
 
       <Flex
-        justify={"flex-start"}
-        align={"center"}
-        bg="white"
-        color={"black"}
-        mb={"5px"}
-        position={"sticky"}
-        zIndex={"10"}
-        top="0px"
-        boxShadow={" rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;"}
+        w="100%"
+        maxW="1400px"
+        minH={{ base: "64px", md: "72px" }}
+        mx="auto"
+        px={{ base: "3", md: "6" }}
+        align="center"
+        gap={{ base: "2", lg: "6" }}
       >
-        <HStack w={"68%"} justify={"flex-start"} align={"center"}>
-          <Box>
-            <Link to={"/"}>
-              <Image
-                padding={"15px"}
-                width={"200px"}
-                marginLeft={"20px"}
-                // marginTop={"-10px"}
-                // marginBottom={"-10px"}
-                src={"logo.png"}
-                alt="musicose"
-              />
-            </Link>
+        <Box display={{ base: "block", lg: "none" }} flexShrink="0">
+          <NavSlider />
+        </Box>
+
+        <Box as={Link} to="/" flexShrink="0">
+          <Image
+            src="/musicose-logo.svg"
+            alt="Musicose home"
+            w={{ base: "120px", md: "170px" }}
+            objectFit="contain"
+          />
+        </Box>
+
+        <UnorderedList
+          m="0"
+          listStyleType="none"
+          display={{ base: "none", lg: "block" }}
+        >
+          <HStack spacing="1">
+            <ListItem
+              position="relative"
+              px="3"
+              py="6"
+              cursor="pointer"
+              fontWeight="600"
+              fontSize="sm"
+              onMouseEnter={() => setShowCategories(true)}
+              onMouseLeave={() => setShowCategories(false)}
+              _hover={{ color: "red.500" }}
+            >
+              Categories <ChevronDownIcon />
+              {showCategories && <Categories />}
+            </ListItem>
+            <ListItem>
+              <Box
+                as={Link}
+                to="/watch"
+                display="block"
+                px="3"
+                py="6"
+                fontWeight="600"
+                fontSize="sm"
+                _hover={{ color: "red.500" }}
+              >
+                Smart Watches
+              </Box>
+            </ListItem>
+            <ListItem>
+              <Box
+                as={Link}
+                to="/about"
+                display="block"
+                px="3"
+                py="6"
+                fontWeight="600"
+                fontSize="sm"
+                _hover={{ color: "red.500" }}
+              >
+                About
+              </Box>
+            </ListItem>
+          </HStack>
+        </UnorderedList>
+
+        <Box flex="1" />
+
+        <Box
+          position="relative"
+          w={{ lg: "240px", xl: "300px" }}
+          display={{ base: "none", md: "block" }}
+        >
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="gray.500" />
+            </InputLeftElement>
+            <Input
+              value={searchValue}
+              onChange={handleSearch}
+              placeholder="Search products"
+              bg="gray.100"
+              border="1px solid"
+              borderColor="transparent"
+              borderRadius="full"
+              _hover={{ bg: "gray.50", borderColor: "gray.200" }}
+              _focus={{ bg: "white", borderColor: "red.400" }}
+            />
+          </InputGroup>
+
+          {searchValue && Array.isArray(searchData) && searchData.length > 0 && (
+            <Box
+              position="absolute"
+              top="48px"
+              left="0"
+              w="100%"
+              maxH="340px"
+              overflowY="auto"
+              bg="white"
+              borderRadius="lg"
+              boxShadow="xl"
+              border="1px solid"
+              borderColor="gray.100"
+              p="2"
+            >
+              {searchData.slice(0, 8).map((product) => (
+                <Box
+                  as={Link}
+                  to={`/products/${product._id}`}
+                  key={product._id}
+                  display="flex"
+                  alignItems="center"
+                  gap="3"
+                  p="2"
+                  borderRadius="md"
+                  textAlign="left"
+                  onClick={() => setSearchValue("")}
+                  _hover={{ bg: "gray.100" }}
+                >
+                  <Image
+                    boxSize="44px"
+                    objectFit="contain"
+                    src={product.product_item__primary_image}
+                    alt={product.product_item_meta__title}
+                  />
+                  <Text fontSize="sm" fontWeight="600" noOfLines={2}>
+                    {product.product_item_meta__title}
+                  </Text>
+                </Box>
+              ))}
+            </Box>
+          )}
+        </Box>
+
+        <HStack spacing={{ base: "1", md: "3" }} flexShrink="0">
+          <Box display={{ base: "block", md: "none" }}>
+            <MobileSearch />
           </Box>
 
-          <UnorderedList
-            mr={"10px"}
-            alignItems={"center"}
-            listStyleType={"none"}
-            display={{ base: "none", sm: "none", md: "block", lg: "block" }}
-          >
-            <HStack justify={"center"} align={"center"}>
-              <ListItem
-                onMouseEnter={handleDrop}
-                onMouseLeave={removeDrop}
-                cursor="pointer"
-                p={"10px 5px"}
-                _hover={{ textDecoration: "underline" }}
-                fontSize={{ base: "13px", sm: "14px", md: "14px", lg: "15px" }}
-              >
-                CATEGORIES <ChevronDownIcon />
-                {show && <Categories />}
-              </ListItem>
-
-              <Link to={"/Watch"}>
-                <ListItem
-                  cursor="pointer"
-                  p={"10px 5px"}
-                  _hover={{ textDecoration: "underline" }}
-                  fontSize={{
-                    base: "13px",
-                    sm: "14px",
-                    md: "14px",
-                    lg: "15px",
-                  }}
-                >
-                  Smart Watch
-                </ListItem>
-              </Link>
-
-              <Link to={"/about"}>
-              <ListItem
-                onMouseEnter={handleMenu}
-                onMouseLeave={removeMenu}
-                cursor="pointer"
-                p={"10px 5px"}
-                _hover={{ textDecoration: "underline" }}
-                fontSize={{ base: "13px", sm: "14px", md: "14px", lg: "15px" }}
-                >
-                About 
-                {/* <ChevronDownIcon /> */}
-                {/* {menu && <MenuDrop />} */}
-              </ListItem>
-                </Link>
-            </HStack>
-          </UnorderedList>
-        </HStack>
-
-        <HStack
-          mr={"10px"}
-          w={{ base: "80%", sm: "80%", md: "32%", lg: "32%" }}
-          justify={"flex-end"}
-          align={"center"}
-        >
-          <UnorderedList
-            display={{ base: "none", sm: "block", md: "block", lg: "block" }}
-          >
-            <Stack w={"100%"} justify={"center"} align={"center"}>
-              <HStack
-                w={"70%"}
-                minW="200px"
-                p={"0px 20px"}
-                justify={"center"}
-                align={"center"}
-                borderRadius={"25px"}
-                bg="#EAEAEA"
-              >
-                <SearchIcon alignItems={"center"} zIndex="5" color={"black"} />
-                <Input
-                  outline={"none"}
-                  border={"none"}
-                  p={"0px"}
-                  w={"100%"}
-                  onChange={(e)=>handleSearch(e)}
-                  focusBorderColor={"transparent"}
-                  placeholder="Search..."
-                  color={"black"}
-                />
-              </HStack>
-              <Box position={"absolute"} zIndex="3" backgroundColor={"lightgray"} top={"51px"} pr="20px">
-                {
-                  
-                 value? data.map((el,i)=>{
-                    if(i<8){
-                      return (
-                        <Link to={`/products/${el._id}`}  >
-                          <Box display={"flex"}  key={el._id}>
-                            <Image width={"50px"} src={el.product_item__primary_image} alt="" />
-                            <Heading size={"xs"}>{el.product_item_meta__title}</Heading>
-                          </Box>
-                        </Link>
-                      )
-                    }
-                  }):""
-                }
-              </Box>
-            </Stack>
-          </UnorderedList>
+          <Box display={{ base: "block", md: "none" }}>
+            <Login iconOnly />
+          </Box>
 
           <HStack
-            p={"10px"}
-            color="black"
-            position={"relative"}
-            justify={"space-between"}
-            align={"center"}
+            display={{ base: "none", md: "flex" }}
+            spacing="2"
+            fontWeight="600"
+            cursor="pointer"
           >
-            {/* <Box>
-              <FaUser cursor={"pointer"} onClick={() => setLogin(!login)} />
-              {login ? <LoginPopup setLogin={setLogin} login={login} /> : null}
-            </Box> */}
-            <Box>
-              <Login/>
+            <Box px="1" _hover={{ color: "red.500" }}>
+              <Login />
             </Box>
-
-            <Box  >
-              <Signup/>
-            </Box>
-
-            <Box fontSize={"20px"}>
-            <Link to={"/productCart"}>
-              <IoMdCart
-              fontSize={"30px"}
-                cursor={"pointer"}
-                onClick={() => setCartShow(!cartShow)}
-              />
-              </Link>
+            <Box
+              bg="red.500"
+              color="white"
+              px="3"
+              py="2"
+              borderRadius="full"
+              _hover={{ bg: "red.600" }}
+            >
+              <Signup />
             </Box>
           </HStack>
 
-          <UnorderedList
-            display={{ base: "block", sm: "block", md: "none", lg: "none" }}
+          <Box
+            as="button"
+            type="button"
+            onClick={cartPrompt.onOpen}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            boxSize="40px"
+            borderRadius="full"
+            aria-label="Open cart"
+            _hover={{ bg: "gray.100", color: "red.500" }}
           >
-            <NavSlider />
-          </UnorderedList>
+            <Icon as={FiShoppingBag} boxSize="24px" />
+          </Box>
         </HStack>
+
+        <LoginRequiredModal
+          isOpen={cartPrompt.isOpen}
+          onClose={cartPrompt.onClose}
+          onLogin={() => openAuthFromCart("login")}
+          onSignup={() => openAuthFromCart("signup")}
+        />
+        <AuthModal
+          isOpen={authModal.isOpen}
+          onClose={authModal.onClose}
+          initialMode={authMode}
+          onLoginSuccess={() => navigate("/productCart")}
+        />
       </Flex>
     </Box>
   );
 }
+
 export default Navbar;

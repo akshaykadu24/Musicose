@@ -34,26 +34,11 @@ const adminReducer = (state = initialState, {type,payload}) => {
       };
 
       //////////////////////////////////// add product /////////////////////
-    case ADD_PRODUCT_REQUEST:{
-      return{
-        ...state,
-        Loading:true,
-      }
-    }
-    case ADD_PRODUCT_SUCCESS:{
-      return{
-        ...state,
-        Loading:false,
-        products:payload
-      }
-    }
-    case ADD_PRODUCT_FAILURE:{
-      return{
-        ...state,
-        Loading:false,
-        Error:true
-      }
-    }
+    // Adding a product doesn't touch the product list; the list page refetches it
+    case ADD_PRODUCT_REQUEST:
+    case ADD_PRODUCT_SUCCESS:
+    case ADD_PRODUCT_FAILURE:
+      return state;
 
       //////////////////////////////////// get users /////////////////////
 
